@@ -1,0 +1,3236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#8B5E3C">
+
+<title>KIVOO — Discover what inspires you</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+/* =========================================================
+   KIVOO DESIGN SYSTEM
+========================================================= */
+
+:root{
+  --brown:#8B5E3C;
+  --brown-dark:#63412b;
+  --brown-light:#b98962;
+  --cream:#f7f3ee;
+  --cream-2:#eee6dc;
+  --white:#ffffff;
+  --black:#211a15;
+  --gray:#756b63;
+  --line:#e8dfd6;
+  --shadow:0 15px 45px rgba(74,48,30,.10);
+  --shadow-soft:0 8px 25px rgba(74,48,30,.08);
+  --radius:22px;
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  color:var(--black);
+  background:var(--cream);
+  min-height:100vh;
+}
+
+button,
+input,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+img{
+  max-width:100%;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* =========================================================
+   BACKGROUND DECOR
+========================================================= */
+
+body::before{
+  content:"";
+  position:fixed;
+  width:420px;
+  height:420px;
+  border-radius:50%;
+  background:rgba(185,137,98,.09);
+  top:-180px;
+  left:-150px;
+  pointer-events:none;
+  z-index:-1;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  background:rgba(139,94,60,.06);
+  bottom:-170px;
+  right:-120px;
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* =========================================================
+   AUTH
+========================================================= */
+
+#authPage{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(185,137,98,.17),transparent 30%),
+    radial-gradient(circle at 85% 80%,rgba(139,94,60,.10),transparent 30%),
+    var(--cream);
+}
+
+.auth-card{
+  width:100%;
+  max-width:450px;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(139,94,60,.12);
+  border-radius:32px;
+  padding:42px 34px;
+  box-shadow:var(--shadow);
+  backdrop-filter:blur(15px);
+}
+
+.brand{
+  text-align:center;
+  font-size:42px;
+  font-weight:950;
+  letter-spacing:-3px;
+  color:var(--brown);
+}
+
+.brand-subtitle{
+  text-align:center;
+  color:var(--gray);
+  font-size:14px;
+  margin-top:7px;
+  margin-bottom:30px;
+}
+
+.auth-tabs{
+  display:flex;
+  padding:5px;
+  background:var(--cream);
+  border-radius:16px;
+  margin-bottom:24px;
+}
+
+.auth-tabs button{
+  flex:1;
+  border:0;
+  padding:12px;
+  border-radius:12px;
+  background:transparent;
+  color:var(--gray);
+  font-weight:700;
+  transition:.2s;
+}
+
+.auth-tabs button.active{
+  background:var(--white);
+  color:var(--brown);
+  box-shadow:var(--shadow-soft);
+}
+
+.field{
+  margin-bottom:16px;
+}
+
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:750;
+  margin-bottom:7px;
+}
+
+.field input,
+.field textarea{
+  width:100%;
+  border:1px solid var(--line);
+  background:#fcfaf8;
+  color:var(--black);
+  outline:none;
+  padding:14px 15px;
+  border-radius:15px;
+  transition:.2s;
+}
+
+.field input:focus,
+.field textarea:focus{
+  border-color:var(--brown-light);
+  background:white;
+  box-shadow:0 0 0 4px rgba(139,94,60,.08);
+}
+
+.primary-btn{
+  width:100%;
+  border:0;
+  background:var(--brown);
+  color:white;
+  padding:14px 18px;
+  border-radius:15px;
+  font-weight:800;
+  transition:.2s;
+  box-shadow:0 7px 20px rgba(139,94,60,.18);
+}
+
+.primary-btn:hover{
+  background:var(--brown-dark);
+  transform:translateY(-1px);
+}
+
+.primary-btn:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.auth-message{
+  min-height:20px;
+  margin-top:13px;
+  text-align:center;
+  font-size:13px;
+}
+
+/* =========================================================
+   APP HEADER
+========================================================= */
+
+#app{
+  display:none;
+}
+
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:80;
+  height:78px;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:0 25px;
+  background:rgba(247,243,238,.90);
+  border-bottom:1px solid rgba(139,94,60,.10);
+  backdrop-filter:blur(18px);
+}
+
+.header-brand{
+  font-size:30px;
+  font-weight:950;
+  letter-spacing:-2px;
+  color:var(--brown);
+  flex-shrink:0;
+}
+
+.search-wrap{
+  position:relative;
+  flex:1;
+  max-width:760px;
+  margin:auto;
+}
+
+.search-icon{
+  position:absolute;
+  left:17px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--brown);
+  pointer-events:none;
+}
+
+.search-input{
+  width:100%;
+  border:1px solid transparent;
+  outline:none;
+  background:#ebe4dc;
+  border-radius:18px;
+  padding:14px 18px 14px 48px;
+  color:var(--black);
+  transition:.2s;
+}
+
+.search-input:focus{
+  background:white;
+  border-color:var(--brown-light);
+  box-shadow:0 0 0 4px rgba(139,94,60,.07);
+}
+
+.header-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.round-btn{
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:0;
+  background:transparent;
+  color:var(--black);
+  border-radius:50%;
+  transition:.2s;
+}
+
+.round-btn:hover{
+  background:var(--cream-2);
+  color:var(--brown);
+}
+
+.create-btn{
+  border:0;
+  background:var(--brown);
+  color:white;
+  padding:12px 18px;
+  border-radius:15px;
+  font-weight:800;
+  box-shadow:0 6px 18px rgba(139,94,60,.15);
+  transition:.2s;
+}
+
+.create-btn:hover{
+  background:var(--brown-dark);
+  transform:translateY(-1px);
+}
+
+.user-avatar{
+  width:44px;
+  height:44px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:var(--brown);
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+  border:3px solid white;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+}
+
+.user-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* =========================================================
+   NAV
+========================================================= */
+
+.main-nav{
+  max-width:1500px;
+  margin:auto;
+  padding:13px 25px 3px;
+  display:flex;
+  gap:7px;
+}
+
+.nav-btn{
+  border:0;
+  background:transparent;
+  color:var(--gray);
+  padding:10px 17px;
+  border-radius:14px;
+  font-weight:750;
+  transition:.2s;
+}
+
+.nav-btn:hover{
+  color:var(--brown);
+  background:rgba(139,94,60,.07);
+}
+
+.nav-btn.active{
+  background:var(--brown);
+  color:white;
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main{
+  max-width:1550px;
+  margin:auto;
+  padding:10px 25px 70px;
+}
+
+.hero{
+  text-align:center;
+  padding:45px 15px 35px;
+}
+
+.hero-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  color:var(--brown);
+  font-weight:800;
+  font-size:13px;
+  background:rgba(139,94,60,.08);
+  border:1px solid rgba(139,94,60,.10);
+  padding:8px 13px;
+  border-radius:30px;
+  margin-bottom:15px;
+}
+
+.hero h1{
+  font-size:clamp(32px,5vw,58px);
+  line-height:1.05;
+  letter-spacing:-3px;
+  margin-bottom:12px;
+}
+
+.hero h1 span{
+  color:var(--brown);
+}
+
+.hero p{
+  color:var(--gray);
+  max-width:560px;
+  margin:auto;
+  line-height:1.7;
+}
+
+/* =========================================================
+   MASONRY
+========================================================= */
+
+.pin-grid{
+  columns:5 220px;
+  column-gap:18px;
+}
+
+.pin-card{
+  break-inside:avoid;
+  margin-bottom:19px;
+  cursor:pointer;
+  position:relative;
+}
+
+.pin-image-wrap{
+  position:relative;
+  overflow:hidden;
+  border-radius:20px;
+  background:var(--cream-2);
+}
+
+.pin-image{
+  display:block;
+  width:100%;
+  height:auto;
+  transition:transform .35s ease,filter .35s ease;
+}
+
+.pin-card:hover .pin-image{
+  transform:scale(1.025);
+  filter:brightness(.91);
+}
+
+.pin-overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  padding:13px;
+  opacity:0;
+  transition:.25s;
+  background:linear-gradient(transparent 55%,rgba(25,17,12,.48));
+}
+
+.pin-card:hover .pin-overlay{
+  opacity:1;
+}
+
+.pin-save{
+  border:0;
+  background:white;
+  color:var(--brown);
+  padding:9px 13px;
+  border-radius:12px;
+  font-weight:850;
+  box-shadow:0 5px 16px rgba(0,0,0,.13);
+}
+
+.pin-likes-overlay{
+  color:white;
+  font-weight:800;
+  font-size:13px;
+}
+
+.pin-info{
+  padding:10px 4px 4px;
+}
+
+.pin-title{
+  font-size:15px;
+  font-weight:850;
+  line-height:1.3;
+}
+
+.pin-description{
+  margin-top:5px;
+  color:var(--gray);
+  font-size:13px;
+  line-height:1.45;
+}
+
+.pin-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-top:8px;
+  color:var(--gray);
+  font-size:12px;
+}
+
+.pin-likes{
+  color:var(--brown);
+  font-weight:800;
+}
+
+/* =========================================================
+   EMPTY / LOADING
+========================================================= */
+
+.empty{
+  column-span:all;
+  text-align:center;
+  padding:80px 20px;
+  color:var(--gray);
+}
+
+.empty-icon{
+  font-size:46px;
+  margin-bottom:12px;
+}
+
+.empty h2{
+  color:var(--black);
+  margin-bottom:7px;
+}
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:rgba(31,23,18,.62);
+  backdrop-filter:blur(8px);
+}
+
+.modal.show{
+  display:flex;
+}
+
+.modal-card{
+  position:relative;
+  width:100%;
+  max-width:1080px;
+  max-height:94vh;
+  overflow:auto;
+  background:white;
+  border-radius:27px;
+  box-shadow:0 30px 90px rgba(0,0,0,.25);
+}
+
+.close-btn{
+  position:absolute;
+  right:15px;
+  top:15px;
+  z-index:5;
+  width:42px;
+  height:42px;
+  border:0;
+  border-radius:50%;
+  background:rgba(255,255,255,.95);
+  color:var(--black);
+  font-size:23px;
+  box-shadow:0 5px 18px rgba(0,0,0,.12);
+}
+
+.close-btn:hover{
+  color:var(--brown);
+}
+
+/* =========================================================
+   PIN DETAIL
+========================================================= */
+
+.pin-detail{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(350px,.8fr);
+}
+
+.detail-image-area{
+  min-height:550px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#eee7df;
+}
+
+.detail-image{
+  width:100%;
+  max-height:82vh;
+  object-fit:contain;
+}
+
+.detail-content{
+  padding:58px 36px 30px;
+}
+
+.detail-title{
+  font-size:clamp(25px,4vw,37px);
+  line-height:1.1;
+  letter-spacing:-1px;
+}
+
+.detail-user{
+  margin-top:10px;
+  color:var(--gray);
+  font-size:13px;
+}
+
+.detail-description{
+  color:#5e554e;
+  line-height:1.8;
+  margin:18px 0;
+  white-space:pre-wrap;
+}
+
+.detail-stats{
+  display:flex;
+  gap:15px;
+  color:var(--gray);
+  font-size:14px;
+  font-weight:700;
+  margin:15px 0;
+}
+
+.detail-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:20px 0 28px;
+}
+
+.action-btn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--black);
+  padding:12px 16px;
+  border-radius:14px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.action-btn:hover{
+  border-color:var(--brown-light);
+  color:var(--brown);
+  background:var(--cream);
+}
+
+.action-btn.save{
+  background:var(--brown);
+  border-color:var(--brown);
+  color:white;
+}
+
+.action-btn.save:hover{
+  background:var(--brown-dark);
+  color:white;
+}
+
+.action-btn.download{
+  background:var(--cream);
+  color:var(--brown);
+  border-color:transparent;
+}
+
+.action-btn.liked{
+  color:#b13e48;
+  background:#fff0f1;
+  border-color:#f1c8cc;
+}
+
+/* =========================================================
+   COMMENTS
+========================================================= */
+
+.comments-heading{
+  font-size:16px;
+  margin-bottom:12px;
+}
+
+.comments-list{
+  max-height:220px;
+  overflow:auto;
+}
+
+.comment{
+  padding:10px 0;
+  border-bottom:1px solid var(--line);
+}
+
+.comment strong{
+  font-size:13px;
+}
+
+.comment p{
+  margin-top:4px;
+  color:var(--gray);
+  font-size:14px;
+  line-height:1.5;
+}
+
+.comment-form{
+  display:flex;
+  gap:7px;
+  margin-top:12px;
+}
+
+.comment-form input{
+  flex:1;
+  min-width:0;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:12px 14px;
+  outline:none;
+}
+
+.comment-form button{
+  border:0;
+  border-radius:14px;
+  padding:0 17px;
+  background:var(--brown);
+  color:white;
+  font-weight:800;
+}
+
+/* =========================================================
+   CREATE
+========================================================= */
+
+.create-card{
+  max-width:650px;
+  padding:38px;
+}
+
+.create-card h2{
+  font-size:27px;
+  margin-bottom:6px;
+}
+
+.create-subtitle{
+  color:var(--gray);
+  margin-bottom:22px;
+  font-size:14px;
+}
+
+.upload-box{
+  min-height:280px;
+  border:2px dashed #d6c8bb;
+  background:#faf7f3;
+  border-radius:21px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  cursor:pointer;
+  margin-bottom:20px;
+  text-align:center;
+  transition:.2s;
+}
+
+.upload-box:hover{
+  border-color:var(--brown);
+  background:#f8f2ec;
+}
+
+.upload-placeholder{
+  padding:35px;
+  color:var(--gray);
+}
+
+.upload-icon{
+  width:65px;
+  height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 13px;
+  border-radius:20px;
+  background:rgba(139,94,60,.10);
+  color:var(--brown);
+  font-size:30px;
+}
+
+.preview{
+  display:none;
+  width:100%;
+  max-height:500px;
+  object-fit:contain;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.profile-header{
+  text-align:center;
+  padding:45px 20px 30px;
+}
+
+.profile-avatar{
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  background:var(--brown);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  margin:auto;
+  font-size:38px;
+  font-weight:900;
+  border:5px solid white;
+  box-shadow:var(--shadow-soft);
+}
+
+.profile-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.profile-header h1{
+  margin-top:14px;
+  font-size:28px;
+}
+
+.profile-username{
+  color:var(--brown);
+  margin-top:4px;
+  font-weight:700;
+}
+
+.profile-bio{
+  max-width:500px;
+  margin:10px auto;
+  color:var(--gray);
+  line-height:1.6;
+}
+
+.logout-btn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--brown);
+  padding:10px 17px;
+  border-radius:13px;
+  font-weight:800;
+  margin-top:12px;
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+#toast{
+  position:fixed;
+  left:50%;
+  bottom:25px;
+  z-index:400;
+  transform:translate(-50%,100px);
+  opacity:0;
+  background:var(--black);
+  color:white;
+  padding:13px 19px;
+  border-radius:15px;
+  box-shadow:var(--shadow);
+  transition:.3s;
+  font-size:14px;
+}
+
+#toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width:900px){
+
+  .topbar{
+    padding:0 15px;
+    gap:10px;
+  }
+
+  .header-brand{
+    font-size:26px;
+  }
+
+  .pin-grid{
+    columns:3 180px;
+  }
+
+  .pin-detail{
+    grid-template-columns:1fr;
+  }
+
+  .detail-image-area{
+    min-height:350px;
+  }
+
+}
+
+@media(max-width:650px){
+
+  .topbar{
+    height:auto;
+    min-height:68px;
+    flex-wrap:wrap;
+    padding:10px;
+  }
+
+  .header-brand{
+    font-size:25px;
+  }
+
+  .search-wrap{
+    order:3;
+    flex-basis:100%;
+    max-width:none;
+  }
+
+  .header-actions{
+    margin-left:auto;
+  }
+
+  .create-btn{
+    padding:10px 13px;
+  }
+
+  .main-nav{
+    overflow-x:auto;
+    padding:9px 10px;
+  }
+
+  .nav-btn{
+    white-space:nowrap;
+    padding:9px 13px;
+  }
+
+  .main{
+    padding:0 10px 50px;
+  }
+
+  .hero{
+    padding:32px 10px 25px;
+  }
+
+  .hero h1{
+    letter-spacing:-2px;
+  }
+
+  .pin-grid{
+    columns:2 140px;
+    column-gap:10px;
+  }
+
+  .pin-card{
+    margin-bottom:12px;
+  }
+
+  .pin-image-wrap{
+    border-radius:15px;
+  }
+
+  .pin-overlay{
+    display:none;
+  }
+
+  .pin-info{
+    padding:7px 2px;
+  }
+
+  .pin-title{
+    font-size:13px;
+  }
+
+  .pin-description{
+    font-size:11px;
+  }
+
+  .detail-content{
+    padding:50px 20px 25px;
+  }
+
+  .detail-image-area{
+    min-height:290px;
+  }
+
+  .detail-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+  }
+
+  .action-btn{
+    width:100%;
+  }
+
+  .create-card{
+    padding:30px 18px;
+  }
+
+  .auth-card{
+    padding:32px 20px;
+  }
+
+}
+
+@media(max-width:380px){
+
+  .pin-grid{
+    columns:2 125px;
+  }
+
+  .header-brand{
+    font-size:23px;
+  }
+
+  .user-avatar,
+  .round-btn{
+    width:40px;
+    height:40px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<!-- ========================================================
+AUTH
+========================================================= -->
+
+<section id="authPage">
+
+<div class="auth-card">
+
+<div class="brand">KIVOO</div>
+
+<div class="brand-subtitle">
+Discover ideas. Save inspiration. Create your world.
+</div>
+
+<div class="auth-tabs">
+
+<button
+id="loginTab"
+class="active"
+onclick="showAuth('login')">
+Sign in
+</button>
+
+<button
+id="signupTab"
+onclick="showAuth('signup')">
+Create account
+</button>
+
+</div>
+
+<form id="loginForm">
+
+<div class="field">
+<label>Email address</label>
+<input
+id="loginEmail"
+type="email"
+required
+placeholder="you@example.com">
+</div>
+
+<div class="field">
+<label>Password</label>
+<input
+id="loginPassword"
+type="password"
+required
+placeholder="Your password">
+</div>
+
+<button class="primary-btn">
+Sign in to KIVOO
+</button>
+
+</form>
+
+<form
+id="signupForm"
+style="display:none">
+
+<div class="field">
+<label>Username</label>
+<input
+id="signupUsername"
+required
+minlength="3"
+maxlength="30"
+placeholder="yourusername">
+</div>
+
+<div class="field">
+<label>Display name</label>
+<input
+id="signupDisplayName"
+required
+placeholder="Your name">
+</div>
+
+<div class="field">
+<label>Email address</label>
+<input
+id="signupEmail"
+type="email"
+required
+placeholder="you@example.com">
+</div>
+
+<div class="field">
+<label>Password</label>
+<input
+id="signupPassword"
+type="password"
+minlength="6"
+required
+placeholder="At least 6 characters">
+</div>
+
+<button class="primary-btn">
+Create my KIVOO account
+</button>
+
+</form>
+
+<div
+id="authMessage"
+class="auth-message">
+</div>
+
+</div>
+</section>
+
+
+<!-- ========================================================
+APP
+========================================================= -->
+
+<div id="app">
+
+<header class="topbar">
+
+<div class="header-brand">
+KIVOO
+</div>
+
+<div class="search-wrap">
+
+<span class="search-icon">⌕</span>
+
+<input
+id="searchInput"
+class="search-input"
+placeholder="Search ideas, images and inspiration...">
+
+</div>
+
+<div class="header-actions">
+
+<button
+class="round-btn"
+title="Home"
+onclick="loadHome()">
+⌂
+</button>
+
+<button
+class="create-btn"
+onclick="openCreate()">
+＋ Create
+</button>
+
+<div
+id="headerAvatar"
+class="user-avatar"
+onclick="showProfile()">
+K
+</div>
+
+</div>
+
+</header>
+
+
+<nav class="main-nav">
+
+<button
+id="homeNav"
+class="nav-btn active"
+onclick="loadHome()">
+Home
+</button>
+
+<button
+id="savedNav"
+class="nav-btn"
+onclick="loadSaved()">
+Saved
+</button>
+
+<button
+class="nav-btn"
+onclick="showProfile()">
+Profile
+</button>
+
+</nav>
+
+
+<main
+id="mainContent"
+class="main">
+</main>
+
+</div>
+
+
+<!-- ========================================================
+PIN MODAL
+========================================================= -->
+
+<div
+id="pinModal"
+class="modal">
+
+<div class="modal-card">
+
+<button
+class="close-btn"
+onclick="closeModal('pinModal')">
+×
+</button>
+
+<div class="pin-detail">
+
+<div class="detail-image-area">
+
+<img
+id="detailImage"
+class="detail-image"
+alt="KIVOO image">
+
+</div>
+
+<div class="detail-content">
+
+<h1
+id="detailTitle"
+class="detail-title">
+</h1>
+
+<div
+id="detailUser"
+class="detail-user">
+</div>
+
+<p
+id="detailDescription"
+class="detail-description">
+</p>
+
+<div class="detail-stats">
+
+<span id="detailLikes">
+♥ 0 likes
+</span>
+
+<span id="detailSaves">
+♡ 0 saves
+</span>
+
+</div>
+
+<div class="detail-actions">
+
+<button
+id="saveBtn"
+class="action-btn save"
+onclick="toggleSave()">
+＋ Save
+</button>
+
+<button
+class="action-btn download"
+onclick="downloadImage()">
+↓ Download
+</button>
+
+<button
+id="likeBtn"
+class="action-btn"
+onclick="toggleLike()">
+♡ Like
+</button>
+
+</div>
+
+<h3 class="comments-heading">
+Comments
+</h3>
+
+<div
+id="comments"
+class="comments-list">
+</div>
+
+<form
+id="commentForm"
+class="comment-form">
+
+<input
+id="commentInput"
+maxlength="500"
+required
+placeholder="Add a comment...">
+
+<button>
+Post
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<!-- ========================================================
+CREATE MODAL
+========================================================= -->
+
+<div
+id="createModal"
+class="modal">
+
+<div class="modal-card create-card">
+
+<button
+class="close-btn"
+onclick="closeModal('createModal')">
+×
+</button>
+
+<h2>Create a Pin</h2>
+
+<p class="create-subtitle">
+Share something inspiring with KIVOO.
+</p>
+
+<label
+for="imageInput"
+class="upload-box">
+
+<div
+id="uploadPlaceholder"
+class="upload-placeholder">
+
+<div class="upload-icon">
+＋
+</div>
+
+<strong>
+Choose an image
+</strong>
+
+<p style="margin-top:6px">
+JPG, PNG or WEBP
+</p>
+
+</div>
+
+<img
+id="preview"
+class="preview"
+alt="Preview">
+
+</label>
+
+<input
+id="imageInput"
+type="file"
+accept="image/*"
+hidden>
+
+<div class="field">
+
+<label>Title</label>
+
+<input
+id="pinTitle"
+maxlength="100"
+placeholder="Give your Pin a title">
+
+</div>
+
+<div class="field">
+
+<label>Description</label>
+
+<textarea
+id="pinDescription"
+maxlength="1000"
+placeholder="Tell people about this idea..."></textarea>
+
+</div>
+
+<button
+id="publishBtn"
+class="primary-btn"
+onclick="createPin()">
+Publish Pin
+</button>
+
+</div>
+</div>
+
+
+<!-- ========================================================
+PROFILE MODAL
+========================================================= -->
+
+<div
+id="profileModal"
+class="modal">
+
+<div class="modal-card">
+
+<button
+class="close-btn"
+onclick="closeModal('profileModal')">
+×
+</button>
+
+<div class="profile-header">
+
+<div
+id="profileAvatar"
+class="profile-avatar">
+K
+</div>
+
+<h1 id="profileName"></h1>
+
+<div
+id="profileUsername"
+class="profile-username">
+</div>
+
+<p
+id="profileBio"
+class="profile-bio">
+</p>
+
+<button
+class="logout-btn"
+onclick="logout()">
+Sign out
+</button>
+
+</div>
+
+<div style="padding:0 25px 45px">
+
+<h3 style="margin-bottom:17px">
+Your Pins
+</h3>
+
+<div
+id="profilePins"
+class="pin-grid">
+</div>
+
+</div>
+
+</div>
+</div>
+
+
+<div id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+SUPABASE
+========================================================= */
+
+const SUPABASE_URL =
+"https://qhaermspgqrlfbmrlvau.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_bmtDHwZwSSB-JGbxDhhT9g_-XxI4so5";
+
+const db =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
+
+
+/* =========================================================
+STATE
+========================================================= */
+
+let currentUser=null;
+let currentProfile=null;
+let currentPin=null;
+let selectedFile=null;
+let searchTimer=null;
+
+
+/* =========================================================
+AUTH TABS
+========================================================= */
+
+function showAuth(type){
+
+document.getElementById("loginForm")
+.style.display =
+type==="login" ? "block" : "none";
+
+document.getElementById("signupForm")
+.style.display =
+type==="signup" ? "block" : "none";
+
+document.getElementById("loginTab")
+.classList.toggle(
+"active",
+type==="login"
+);
+
+document.getElementById("signupTab")
+.classList.toggle(
+"active",
+type==="signup"
+);
+
+document.getElementById("authMessage")
+.textContent="";
+
+}
+
+
+/* =========================================================
+SIGN UP
+========================================================= */
+
+document
+.getElementById("signupForm")
+.addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const username=
+document.getElementById("signupUsername")
+.value.trim()
+.toLowerCase();
+
+const displayName=
+document.getElementById("signupDisplayName")
+.value.trim();
+
+const email=
+document.getElementById("signupEmail")
+.value.trim();
+
+const password=
+document.getElementById("signupPassword")
+.value;
+
+const message=
+document.getElementById("authMessage");
+
+if(!/^[a-zA-Z0-9_.-]+$/.test(username)){
+
+message.style.color="#a52d35";
+
+message.textContent=
+"Username can only contain letters, numbers, dots and dashes.";
+
+return;
+}
+
+message.style.color=varColor("gray");
+message.textContent="Creating your account...";
+
+
+const {data:existing,error:checkError}=
+await db
+.from("profiles")
+.select("id")
+.eq("username",username)
+.maybeSingle();
+
+
+if(checkError){
+
+console.error(checkError);
+
+message.style.color="#a52d35";
+message.textContent=
+"Could not check this username.";
+
+return;
+}
+
+
+if(existing){
+
+message.style.color="#a52d35";
+message.textContent=
+"This username is already taken.";
+
+return;
+}
+
+
+const {data,error}=
+await db.auth.signUp({
+
+email,
+password,
+
+options:{
+data:{
+username,
+display_name:displayName
+}
+}
+
+});
+
+
+if(error){
+
+message.style.color="#a52d35";
+message.textContent=error.message;
+
+return;
+}
+
+
+if(data.session){
+
+currentUser=data.user;
+
+await startApp();
+
+}else{
+
+message.style.color="#6c8b52";
+
+message.textContent=
+"Account created. You can sign in now.";
+
+}
+
+});
+
+
+/* =========================================================
+LOGIN
+========================================================= */
+
+document
+.getElementById("loginForm")
+.addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const email=
+document.getElementById("loginEmail")
+.value.trim();
+
+const password=
+document.getElementById("loginPassword")
+.value;
+
+const message=
+document.getElementById("authMessage");
+
+message.style.color="#756b63";
+message.textContent="Signing in...";
+
+
+const {data,error}=
+await db.auth.signInWithPassword({
+email,
+password
+});
+
+
+if(error){
+
+message.style.color="#a52d35";
+message.textContent=
+"Invalid email or password.";
+
+return;
+}
+
+currentUser=data.user;
+
+await startApp();
+
+});
+
+
+/* =========================================================
+START APP
+========================================================= */
+
+async function startApp(){
+
+await loadProfile();
+
+document.getElementById("authPage")
+.style.display="none";
+
+document.getElementById("app")
+.style.display="block";
+
+updateAvatar();
+
+await loadHome();
+
+}
+
+
+/* =========================================================
+PROFILE
+========================================================= */
+
+async function loadProfile(){
+
+const {data,error}=
+await db
+.from("profiles")
+.select("*")
+.eq("id",currentUser.id)
+.maybeSingle();
+
+
+if(error){
+
+console.error(error);
+return;
+
+}
+
+
+if(data){
+
+currentProfile=data;
+return;
+
+}
+
+
+const username=
+currentUser.user_metadata?.username ||
+"user_"+currentUser.id.slice(0,8);
+
+const displayName=
+currentUser.user_metadata?.display_name ||
+"User";
+
+
+const {data:created,error:createError}=
+await db
+.from("profiles")
+.insert({
+
+id:currentUser.id,
+username,
+display_name:displayName,
+bio:""
+
+})
+.select()
+.single();
+
+
+if(!createError){
+
+currentProfile=created;
+
+}
+
+}
+
+
+/* =========================================================
+AVATAR
+========================================================= */
+
+function updateAvatar(){
+
+const avatar=
+document.getElementById("headerAvatar");
+
+if(currentProfile?.avatar_url){
+
+avatar.innerHTML=
+`<img src="${safe(currentProfile.avatar_url)}" alt="Profile">`;
+
+}else{
+
+avatar.textContent=
+initial(currentProfile?.display_name||"K");
+
+}
+
+}
+
+
+/* =========================================================
+HOME
+========================================================= */
+
+async function loadHome(){
+
+setNav("homeNav");
+
+document.getElementById("mainContent").innerHTML=`
+
+<section class="hero">
+
+<div class="hero-kicker">
+✦ Welcome to KIVOO
+</div>
+
+<h1>
+Discover what <span>inspires</span> you.
+</h1>
+
+<p>
+Explore beautiful ideas, save the things you love,
+and create your own collection of inspiration.
+</p>
+
+</section>
+
+<div
+id="pinsGrid"
+class="pin-grid">
+</div>
+
+`;
+
+await fetchPins();
+
+}
+
+
+/* =========================================================
+FETCH PINS
+========================================================= */
+
+async function fetchPins(query=""){
+
+const grid=
+document.getElementById("pinsGrid");
+
+if(!grid)return;
+
+grid.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">
+✦
+</div>
+
+<p>Loading inspiration...</p>
+
+</div>
+
+`;
+
+
+let request=
+db
+.from("pins")
+.select(`
+*,
+profiles(
+username,
+display_name,
+avatar_url
+)
+`)
+.order("created_at",{ascending:false});
+
+
+if(query){
+
+const q=
+query
+.replace(/[%_]/g,"");
+
+request=request.or(
+`title.ilike.%${q}%,description.ilike.%${q}%`
+);
+
+}
+
+
+const {data,error}=
+await request;
+
+
+if(error){
+
+console.error(error);
+
+grid.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">
+!
+</div>
+
+<h2>Something went wrong</h2>
+
+<p>${safe(error.message)}</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const pins=await addCounts(data||[]);
+
+renderPins(grid,pins);
+
+}
+
+
+/* =========================================================
+ADD LIKE / SAVE COUNTS
+========================================================= */
+
+async function addCounts(pins){
+
+if(!pins.length)
+return [];
+
+
+const ids=
+pins.map(p=>p.id);
+
+
+const {data:likes}=
+await db
+.from("likes")
+.select("pin_id")
+.in("pin_id",ids);
+
+
+const {data:saves}=
+await db
+.from("saved_pins")
+.select("pin_id")
+.in("pin_id",ids);
+
+
+return pins.map(pin=>({
+
+...pin,
+
+likeCount:
+(likes||[])
+.filter(x=>x.pin_id===pin.id)
+.length,
+
+saveCount:
+(saves||[])
+.filter(x=>x.pin_id===pin.id)
+.length
+
+}));
+
+}
+
+
+/* =========================================================
+RENDER
+========================================================= */
+
+function renderPins(container,pins){
+
+if(!pins.length){
+
+container.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">
+⌕
+</div>
+
+<h2>No Pins found</h2>
+
+<p>Try another search or create the first Pin.</p>
+
+</div>
+
+`;
+
+return;
+}
+
+
+container.innerHTML=
+pins.map(pin=>{
+
+const profile=
+pin.profiles||{};
+
+return `
+
+<article
+class="pin-card"
+onclick="openPin('${pin.id}')">
+
+<div class="pin-image-wrap">
+
+<img
+class="pin-image"
+src="${safe(pin.image_url)}"
+alt="${safe(pin.title)}"
+loading="lazy">
+
+<div class="pin-overlay">
+
+<button
+class="pin-save"
+onclick="event.stopPropagation();quickSave('${pin.id}')">
+Save
+</button>
+
+<span class="pin-likes-overlay">
+♥ ${pin.likeCount||0}
+</span>
+
+</div>
+
+</div>
+
+<div class="pin-info">
+
+<div class="pin-title">
+${safe(pin.title)}
+</div>
+
+${
+pin.description
+?
+`<div class="pin-description">
+${safe(pin.description)}
+</div>`
+:""
+}
+
+<div class="pin-meta">
+
+<span>
+@${safe(profile.username||"user")}
+</span>
+
+<span class="pin-likes">
+♥ ${pin.likeCount||0}
+</span>
+
+</div>
+
+</div>
+
+</article>
+
+`;
+
+}).join("");
+
+}
+
+
+/* =========================================================
+SEARCH
+========================================================= */
+
+document
+.getElementById("searchInput")
+.addEventListener("input",function(){
+
+clearTimeout(searchTimer);
+
+const query=this.value.trim();
+
+searchTimer=setTimeout(()=>{
+
+if(!query){
+
+loadHome();
+
+}else{
+
+searchPins(query);
+
+}
+
+},300);
+
+});
+
+
+async function searchPins(query){
+
+setNav(null);
+
+document.getElementById("mainContent").innerHTML=`
+
+<section class="hero" style="padding-bottom:25px">
+
+<div class="hero-kicker">
+⌕ Search
+</div>
+
+<h1>
+Results for <span>${safe(query)}</span>
+</h1>
+
+</section>
+
+<div
+id="pinsGrid"
+class="pin-grid">
+</div>
+
+`;
+
+await fetchPins(query);
+
+}
+
+
+/* =========================================================
+OPEN PIN
+========================================================= */
+
+async function openPin(id){
+
+const {data,error}=
+await db
+.from("pins")
+.select(`
+*,
+profiles(
+username,
+display_name,
+avatar_url
+)
+`)
+.eq("id",id)
+.single();
+
+
+if(error){
+
+console.error(error);
+showToast("Could not open this Pin.");
+return;
+
+}
+
+
+currentPin=data;
+
+document.getElementById("detailImage")
+.src=data.image_url;
+
+document.getElementById("detailTitle")
+.textContent=data.title;
+
+document.getElementById("detailDescription")
+.textContent=data.description||"";
+
+
+const profile=
+data.profiles||{};
+
+
+document.getElementById("detailUser")
+.innerHTML=`
+By <strong>
+@${safe(profile.username||"user")}
+</strong>
+`;
+
+
+await updateActions();
+
+await loadComments();
+
+document
+.getElementById("pinModal")
+.classList.add("show");
+
+}
+
+
+/* =========================================================
+UPDATE ACTIONS + COUNTS
+========================================================= */
+
+async function updateActions(){
+
+if(!currentPin)return;
+
+
+const {data:saved}=
+await db
+.from("saved_pins")
+.select("id")
+.eq("pin_id",currentPin.id)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+
+const {data:liked}=
+await db
+.from("likes")
+.select("id")
+.eq("pin_id",currentPin.id)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+
+const {count:likeCount}=
+await db
+.from("likes")
+.select("*",{count:"exact",head:true})
+.eq("pin_id",currentPin.id);
+
+
+const {count:saveCount}=
+await db
+.from("saved_pins")
+.select("*",{count:"exact",head:true})
+.eq("pin_id",currentPin.id);
+
+
+const saveBtn=
+document.getElementById("saveBtn");
+
+saveBtn.textContent=
+saved
+?"✓ Saved"
+:"＋ Save";
+
+saveBtn.classList.toggle("save",!saved);
+
+
+const likeBtn=
+document.getElementById("likeBtn");
+
+likeBtn.textContent=
+liked
+?"♥ Liked"
+:"♡ Like";
+
+likeBtn.classList.toggle("liked",!!liked);
+
+
+document.getElementById("detailLikes")
+.textContent=
+`♥ ${likeCount||0} likes`;
+
+document.getElementById("detailSaves")
+.textContent=
+`♡ ${saveCount||0} saves`;
+
+}
+
+
+/* =========================================================
+QUICK SAVE
+========================================================= */
+
+async function quickSave(pinId){
+
+const {data:existing}=
+await db
+.from("saved_pins")
+.select("id")
+.eq("pin_id",pinId)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+
+if(existing){
+
+await db
+.from("saved_pins")
+.delete()
+.eq("id",existing.id);
+
+showToast("Removed from Saved.");
+
+}else{
+
+const {error}=
+await db
+.from("saved_pins")
+.insert({
+
+pin_id:pinId,
+user_id:currentUser.id
+
+});
+
+
+if(error){
+
+console.error(error);
+showToast("Could not save this Pin.");
+return;
+
+}
+
+showToast("Saved to your collection.");
+
+}
+
+}
+
+
+/* =========================================================
+SAVE
+========================================================= */
+
+async function toggleSave(){
+
+if(!currentPin)return;
+
+
+const {data:existing}=
+await db
+.from("saved_pins")
+.select("id")
+.eq("pin_id",currentPin.id)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+
+if(existing){
+
+await db
+.from("saved_pins")
+.delete()
+.eq("id",existing.id);
+
+showToast("Removed from Saved.");
+
+}else{
+
+const {error}=
+await db
+.from("saved_pins")
+.insert({
+
+pin_id:currentPin.id,
+user_id:currentUser.id
+
+});
+
+
+if(error){
+
+console.error(error);
+showToast("Could not save this Pin.");
+return;
+
+}
+
+showToast("Saved to your collection.");
+
+}
+
+await updateActions();
+
+}
+
+
+/* =========================================================
+LIKE
+========================================================= */
+
+async function toggleLike(){
+
+if(!currentPin)return;
+
+
+const {data:existing}=
+await db
+.from("likes")
+.select("id")
+.eq("pin_id",currentPin.id)
+.eq("user_id",currentUser.id)
+.maybeSingle();
+
+
+if(existing){
+
+await db
+.from("likes")
+.delete()
+.eq("id",existing.id);
+
+}else{
+
+const {error}=
+await db
+.from("likes")
+.insert({
+
+pin_id:currentPin.id,
+user_id:currentUser.id
+
+});
+
+
+if(error){
+
+console.error(error);
+showToast("Could not like this Pin.");
+return;
+
+}
+
+}
+
+await updateActions();
+
+}
+
+
+/* =========================================================
+DOWNLOAD ORIGINAL
+========================================================= */
+
+async function downloadImage(){
+
+if(!currentPin?.image_url)
+return;
+
+
+try{
+
+showToast("Preparing original image...");
+
+const response=
+await fetch(currentPin.image_url);
+
+if(!response.ok)
+throw new Error("Download failed");
+
+
+const blob=
+await response.blob();
+
+const url=
+URL.createObjectURL(blob);
+
+const a=
+document.createElement("a");
+
+a.href=url;
+
+a.download=
+cleanFileName(
+currentPin.title||"KIVOO-image"
+)+"."+getExtension(currentPin.image_url);
+
+document.body.appendChild(a);
+
+a.click();
+
+a.remove();
+
+URL.revokeObjectURL(url);
+
+showToast("Image downloaded.");
+
+}catch(error){
+
+console.error(error);
+
+window.open(
+currentPin.image_url,
+"_blank"
+);
+
+}
+
+}
+
+
+/* =========================================================
+COMMENTS
+========================================================= */
+
+async function loadComments(){
+
+const box=
+document.getElementById("comments");
+
+box.innerHTML=
+`<div style="color:#756b63">Loading comments...</div>`;
+
+
+const {data,error}=
+await db
+.from("comments")
+.select(`
+*,
+profiles(
+username,
+display_name
+)
+`)
+.eq("pin_id",currentPin.id)
+.order("created_at",{ascending:true});
+
+
+if(error){
+
+box.innerHTML=
+`<div style="color:#a52d35">
+Could not load comments.
+</div>`;
+
+return;
+
+}
+
+
+if(!data.length){
+
+box.innerHTML=
+`<div style="color:#756b63">
+No comments yet. Be the first.
+</div>`;
+
+return;
+
+}
+
+
+box.innerHTML=
+data.map(comment=>`
+
+<div class="comment">
+
+<strong>
+@${safe(comment.profiles?.username||"user")}
+</strong>
+
+<p>
+${safe(comment.content)}
+</p>
+
+</div>
+
+`).join("");
+
+}
+
+
+document
+.getElementById("commentForm")
+.addEventListener("submit",async e=>{
+
+e.preventDefault();
+
+const input=
+document.getElementById("commentInput");
+
+const content=
+input.value.trim();
+
+if(!content)return;
+
+
+const {error}=
+await db
+.from("comments")
+.insert({
+
+user_id:currentUser.id,
+pin_id:currentPin.id,
+content
+
+});
+
+
+if(error){
+
+console.error(error);
+showToast("Could not post comment.");
+return;
+
+}
+
+input.value="";
+
+await loadComments();
+
+});
+
+
+/* =========================================================
+CREATE
+========================================================= */
+
+function openCreate(){
+
+selectedFile=null;
+
+document.getElementById("imageInput").value="";
+
+document.getElementById("preview")
+.style.display="none";
+
+document.getElementById("uploadPlaceholder")
+.style.display="block";
+
+document.getElementById("pinTitle").value="";
+
+document.getElementById("pinDescription").value="";
+
+document
+.getElementById("createModal")
+.classList.add("show");
+
+}
+
+
+document
+.getElementById("imageInput")
+.addEventListener("change",e=>{
+
+const file=e.target.files[0];
+
+if(!file)return;
+
+
+if(!file.type.startsWith("image/")){
+
+showToast("Please select an image.");
+return;
+
+}
+
+
+selectedFile=file;
+
+
+const reader=new FileReader();
+
+reader.onload=e=>{
+
+document.getElementById("preview")
+.src=e.target.result;
+
+document.getElementById("preview")
+.style.display="block";
+
+document.getElementById("uploadPlaceholder")
+.style.display="none";
+
+};
+
+reader.readAsDataURL(file);
+
+});
+
+
+/* =========================================================
+CREATE PIN
+========================================================= */
+
+async function createPin(){
+
+if(!selectedFile){
+
+showToast("Choose an image first.");
+return;
+
+}
+
+
+const title=
+document.getElementById("pinTitle")
+.value.trim();
+
+const description=
+document.getElementById("pinDescription")
+.value.trim();
+
+
+if(!title){
+
+showToast("Please add a title.");
+return;
+
+}
+
+
+const button=
+document.getElementById("publishBtn");
+
+button.disabled=true;
+button.textContent="Uploading...";
+
+
+try{
+
+const extension=
+selectedFile.name
+.split(".")
+.pop()
+.toLowerCase();
+
+
+const fileName=
+crypto.randomUUID()+"."+extension;
+
+const path=
+currentUser.id+"/"+fileName;
+
+
+const {error:uploadError}=
+await db
+.storage
+.from("pins")
+.upload(
+path,
+selectedFile,
+{
+cacheControl:"3600",
+upsert:false,
+contentType:selectedFile.type
+}
+);
+
+
+if(uploadError){
+
+throw new Error(
+"Image upload failed: "+
+uploadError.message
+);
+
+}
+
+
+const {data:urlData}=
+db
+.storage
+.from("pins")
+.getPublicUrl(path);
+
+
+const imageUrl=
+urlData.publicUrl;
+
+
+const {error:pinError}=
+await db
+.from("pins")
+.insert({
+
+user_id:currentUser.id,
+title,
+description,
+image_url:imageUrl
+
+});
+
+
+if(pinError){
+
+await db
+.storage
+.from("pins")
+.remove([path]);
+
+throw new Error(
+"Could not create Pin: "+
+pinError.message
+);
+
+}
+
+
+closeModal("createModal");
+
+showToast("Your Pin is live.");
+
+await loadHome();
+
+
+}catch(error){
+
+console.error(error);
+
+showToast(error.message);
+
+}finally{
+
+button.disabled=false;
+button.textContent="Publish Pin";
+
+}
+
+}
+
+
+/* =========================================================
+SAVED
+========================================================= */
+
+async function loadSaved(){
+
+setNav("savedNav");
+
+document.getElementById("mainContent").innerHTML=`
+
+<section class="hero" style="padding-bottom:25px">
+
+<div class="hero-kicker">
+♡ Your collection
+</div>
+
+<h1>
+Your <span>Saved</span> Pins
+</h1>
+
+<p>
+Everything you want to keep in one beautiful place.
+</p>
+
+</section>
+
+<div
+id="pinsGrid"
+class="pin-grid">
+</div>
+
+`;
+
+
+const grid=
+document.getElementById("pinsGrid");
+
+grid.innerHTML=`
+
+<div class="empty">
+<div class="empty-icon">♡</div>
+<p>Loading your collection...</p>
+</div>
+
+`;
+
+
+const {data,error}=
+await db
+.from("saved_pins")
+.select(`
+pin_id,
+created_at,
+pins(
+*,
+profiles(
+username,
+display_name,
+avatar_url
+)
+)
+`)
+.eq("user_id",currentUser.id)
+.order("created_at",{ascending:false});
+
+
+if(error){
+
+console.error(error);
+
+grid.innerHTML=`
+
+<div class="empty">
+
+<div class="empty-icon">!</div>
+
+<h2>Could not load Saved</h2>
+
+<p>${safe(error.message)}</p>
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+const pins=
+(data||[])
+.map(x=>x.pins)
+.filter(Boolean);
+
+
+const counted=
+await addCounts(pins);
+
+renderPins(grid,counted);
+
+}
+
+
+/* =========================================================
+PROFILE
+========================================================= */
+
+async function showProfile(){
+
+await loadProfile();
+
+document.getElementById("profileName")
+.textContent=
+currentProfile?.display_name||"User";
+
+document.getElementById("profileUsername")
+.textContent=
+"@"+(currentProfile?.username||"user");
+
+document.getElementById("profileBio")
+.textContent=
+currentProfile?.bio||"";
+
+
+const avatar=
+document.getElementById("profileAvatar");
+
+
+if(currentProfile?.avatar_url){
+
+avatar.innerHTML=
+`<img src="${safe(currentProfile.avatar_url)}">`;
+
+}else{
+
+avatar.textContent=
+initial(currentProfile?.display_name||"K");
+
+}
+
+
+const {data}=
+await db
+.from("pins")
+.select(`
+*,
+profiles(
+username,
+display_name,
+avatar_url
+)
+`)
+.eq("user_id",currentUser.id)
+.order("created_at",{ascending:false});
+
+
+const pins=
+await addCounts(data||[]);
+
+renderPins(
+document.getElementById("profilePins"),
+pins
+);
+
+
+document
+.getElementById("profileModal")
+.classList.add("show");
+
+}
+
+
+/* =========================================================
+LOGOUT
+========================================================= */
+
+async function logout(){
+
+await db.auth.signOut();
+
+currentUser=null;
+currentProfile=null;
+
+document.getElementById("app")
+.style.display="none";
+
+document.getElementById("authPage")
+.style.display="flex";
+
+showAuth("login");
+
+}
+
+
+/* =========================================================
+SESSION
+========================================================= */
+
+async function checkSession(){
+
+const {data}=
+await db.auth.getSession();
+
+if(data.session?.user){
+
+currentUser=data.session.user;
+
+await startApp();
+
+}
+
+}
+
+checkSession();
+
+
+/* =========================================================
+UTILITIES
+========================================================= */
+
+function setNav(id){
+
+document
+.querySelectorAll(".nav-btn")
+.forEach(button=>
+button.classList.remove("active")
+);
+
+if(id){
+
+document
+.getElementById(id)
+.classList.add("active");
+
+}
+
+}
+
+
+function closeModal(id){
+
+document
+.getElementById(id)
+.classList.remove("show");
+
+}
+
+
+document
+.querySelectorAll(".modal")
+.forEach(modal=>{
+
+modal.addEventListener("click",e=>{
+
+if(e.target===modal){
+
+modal.classList.remove("show");
+
+}
+
+});
+
+});
+
+
+function initial(value){
+
+return String(value||"K")
+.trim()
+.charAt(0)
+.toUpperCase();
+
+}
+
+
+function safe(value){
+
+return String(value??"")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
+
+
+function getExtension(url){
+
+try{
+
+const pathname=
+new URL(url).pathname;
+
+const ext=
+pathname.split(".").pop().toLowerCase();
+
+if(
+["jpg","jpeg","png","webp","gif","avif"]
+.includes(ext)
+){
+
+return ext;
+
+}
+
+}catch(e){}
+
+return "jpg";
+
+}
+
+
+function cleanFileName(value){
+
+return String(value)
+.replace(/[\\/:*?"<>|]/g,"-")
+.trim()
+.substring(0,80);
+
+}
+
+
+function showToast(message){
+
+const toast=
+document.getElementById("toast");
+
+toast.textContent=message;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},3000);
+
+}
+
+
+function varColor(name){
+
+if(name==="gray")
+return "#756b63";
+
+return "#211a15";
+
+}
+
+</script>
+
+</body>
+</html>
