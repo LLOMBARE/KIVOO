@@ -1453,6 +1453,198 @@ img{
   }
 
 }
+
+
+/* =========================================================
+   SOCIAL SYSTEM
+========================================================= */
+.messages-top-btn{
+  border:1px solid var(--line);
+  background:white;
+  color:var(--brown-800);
+  min-height:42px;
+  padding:0 13px;
+  border-radius:14px;
+  font-weight:800;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  position:relative;
+}
+.messages-top-btn:hover{background:var(--cream)}
+.unread-badge{
+  min-width:18px;height:18px;padding:0 5px;border-radius:999px;
+  background:var(--brown);color:#fff;font-size:10px;display:inline-flex;
+  align-items:center;justify-content:center;
+}
+.social-page{max-width:1000px;margin:0 auto;padding-bottom:50px}
+.people-list{display:grid;gap:10px}
+.person-row,.conversation-row{
+  display:flex;align-items:center;gap:13px;padding:13px 15px;background:#fff;
+  border:1px solid var(--line);border-radius:18px;cursor:pointer;transition:.2s;
+}
+.person-row:hover,.conversation-row:hover{transform:translateY(-1px);box-shadow:0 8px 25px rgba(70,40,20,.08)}
+.person-avatar,.conversation-avatar{width:48px;height:48px;border-radius:50%;overflow:hidden;background:var(--cream);display:grid;place-items:center;font-weight:800;color:var(--brown-800);flex:none}
+.person-avatar img,.conversation-avatar img{width:100%;height:100%;object-fit:cover}
+.person-main,.conversation-main{min-width:0;flex:1}
+.person-name,.conversation-name{font-weight:850;color:var(--text)}
+.person-username,.conversation-preview{font-size:12px;color:var(--muted);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.person-actions{display:flex;gap:7px}
+.social-btn{border:0;border-radius:12px;padding:9px 13px;font-weight:800;cursor:pointer}
+.social-btn.follow{background:var(--brown);color:#fff}
+.social-btn.following{background:var(--cream);color:var(--brown-800);border:1px solid var(--line)}
+.social-btn.message{background:#241a14;color:#fff}
+.profile-social{padding:25px;border-bottom:1px solid var(--line);text-align:center}
+.profile-social .profile-avatar{margin:0 auto 13px;width:86px;height:86px}
+.profile-social .profile-avatar img{width:100%;height:100%;object-fit:cover}
+.profile-stats{display:flex;justify-content:center;gap:30px;margin:18px 0}
+.profile-stat{background:none;border:0;cursor:pointer;color:var(--text)}
+.profile-stat strong{display:block;font-size:19px}.profile-stat span{font-size:11px;color:var(--muted)}
+.profile-buttons{display:flex;justify-content:center;gap:9px}.profile-buttons button{min-width:120px}
+.social-section{padding:25px}.social-section h2{margin:0}.social-tabs{display:flex;gap:7px;margin:0 0 20px}.social-tab{border:0;background:var(--cream);padding:10px 14px;border-radius:12px;font-weight:800}.social-tab.active{background:var(--brown);color:#fff}
+.chat-page{max-width:900px;margin:0 auto;display:flex;flex-direction:column;height:calc(100vh - 170px);min-height:520px;background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden}
+.chat-head{display:flex;align-items:center;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line);background:#fff}
+.chat-back{border:0;background:var(--cream);border-radius:11px;padding:9px 12px;font-weight:800}
+.chat-head-user{display:flex;align-items:center;gap:10px;flex:1;cursor:pointer}.chat-head-user strong{display:block}.chat-head-user small{color:var(--muted)}
+.chat-messages{flex:1;overflow:auto;padding:20px;background:#fbf7f2;display:flex;flex-direction:column;gap:8px}
+.chat-empty{margin:auto;color:var(--muted);text-align:center}
+.bubble{max-width:min(72%,520px);padding:10px 13px;border-radius:17px;line-height:1.45;word-break:break-word}.bubble.mine{align-self:flex-end;background:var(--brown);color:#fff;border-bottom-right-radius:5px}.bubble.theirs{align-self:flex-start;background:#fff;color:var(--text);border:1px solid var(--line);border-bottom-left-radius:5px}.bubble-time{font-size:9px;opacity:.65;margin-top:4px}
+.chat-form{display:flex;gap:9px;padding:13px;border-top:1px solid var(--line);background:#fff}.chat-form input{flex:1;border:1px solid var(--line);border-radius:14px;padding:13px 14px;outline:none}.chat-form button{border:0;background:var(--brown);color:#fff;border-radius:14px;padding:0 18px;font-weight:800}
+.messages-page{max-width:850px;margin:0 auto}.messages-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.messages-title h1{margin:0}
+@media(max-width:650px){
+ .messages-top-btn{padding:0 10px}.messages-top-btn span{display:none}
+ .person-row{padding:11px}.person-actions{flex-direction:column}.social-btn{padding:8px 10px}
+ .profile-stats{gap:18px}.profile-buttons button{min-width:0;flex:1}.profile-buttons{padding:0 8px}
+ .chat-page{height:calc(100vh - 125px);min-height:0;border-radius:20px 20px 0 0;margin:0 -10px;border-left:0;border-right:0}
+ .bubble{max-width:82%}.chat-form{padding:9px}.chat-form button{padding:0 14px}
+}
+
+
+/* =========================================================
+   KIVOO MOBILE APP LAYOUT - SAFE MOBILE OVERRIDE
+========================================================= */
+.mobile-only-nav{display:none}
+.nav-icon{font-size:20px;line-height:1}
+.nav-create-icon{font-size:25px;line-height:1;font-weight:400}
+.create-icon{font-size:19px}
+
+@media(max-width:650px){
+  body{padding-bottom:78px;overflow-x:hidden}
+
+  .topbar{
+    position:sticky;top:0;z-index:80;
+    min-height:58px;padding:8px 12px;gap:8px;
+    flex-wrap:nowrap;background:rgba(255,255,255,.96);
+    backdrop-filter:blur(14px);
+  }
+  .header-brand{font-size:25px;flex:0 0 auto}
+  .search-wrap{
+    order:0;flex:1;min-width:0;max-width:none;
+  }
+  .search-input{height:42px;font-size:13px;padding-left:38px}
+  .search-wrap .search-icon{left:13px}
+  .header-actions{margin-left:0;gap:5px;flex:0 0 auto}
+  .header-actions>.round-btn{display:none}
+  .header-actions>.create-btn{display:none}
+  .header-actions>.messages-top-btn{display:none}
+  .header-actions>.user-avatar{width:40px;height:40px;flex:0 0 40px}
+
+  .main-nav{
+    position:fixed;left:0;right:0;bottom:0;z-index:100;
+    height:68px;padding:6px 5px calc(6px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.97);backdrop-filter:blur(18px);
+    border-top:1px solid var(--line);
+    box-shadow:0 -8px 30px rgba(36,26,20,.08);
+    display:flex;align-items:stretch;justify-content:space-around;gap:2px;
+    overflow:visible;
+  }
+  .main-nav .nav-btn{
+    display:flex;flex:1;max-width:92px;height:56px;
+    padding:5px 2px;border-radius:15px;
+    flex-direction:column;align-items:center;justify-content:center;gap:3px;
+    font-size:10px;font-weight:800;white-space:normal;
+  }
+  .main-nav .nav-btn:not(.mobile-only-nav){display:none}
+  .main-nav .mobile-only-nav{display:flex}
+  .main-nav .mobile-only-nav:nth-last-child(4){display:flex}
+  .main-nav .nav-icon{font-size:19px}
+  .main-nav .nav-create-icon{
+    width:34px;height:34px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--brown);color:#fff;font-size:24px;
+  }
+  .main-nav .nav-btn.active{background:transparent;color:var(--brown)}
+
+  .main{padding:0 11px 30px}
+  .hero{padding:25px 5px 20px}
+  .hero h1{font-size:34px;line-height:1.02}
+  .hero p{max-width:320px}
+  .section-bar{gap:8px}
+  .section-bar h2{font-size:21px}
+
+  .pin-grid{columns:2 minmax(0,1fr);column-gap:9px}
+  .pin-card{margin-bottom:13px}
+  .pin-image-wrap{border-radius:15px}
+  .pin-info{padding:6px 1px 2px}
+  .pin-title{font-size:12.5px;line-height:1.25}
+  .pin-description{font-size:10.5px;line-height:1.3}
+  .pin-meta{font-size:9.5px}
+
+  .messages-page{width:100%;max-width:none}
+  .messages-title{padding:7px 2px 12px}
+  .messages-title h1{font-size:27px}
+  .messages-top-btn{min-height:38px}
+
+  .chat-page{
+    height:calc(100dvh - 58px - 68px);min-height:0;
+    margin:0 -11px;border:0;border-radius:0;
+  }
+  .chat-head{
+    position:sticky;top:58px;z-index:5;
+    padding:10px 12px;min-height:58px;
+  }
+  .chat-back{font-size:0;width:38px;height:38px;padding:0}
+  .chat-back:after{content:'‹';font-size:27px;line-height:38px}
+  .chat-messages{padding:13px 11px 18px;gap:7px}
+  .bubble{max-width:82%;font-size:13px;padding:9px 12px}
+  .chat-form{
+    position:sticky;bottom:0;z-index:6;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    gap:7px;
+  }
+  .chat-form input{height:44px;padding:11px 13px;font-size:14px}
+  .chat-form button{
+    width:44px;height:44px;flex:0 0 44px;padding:0;
+    border-radius:50%;font-size:18px;
+    display:flex;align-items:center;justify-content:center;
+  }
+
+  .profile-social{padding:22px 13px 20px}
+  .profile-social .profile-avatar{width:76px;height:76px}
+  .profile-stats{gap:0;justify-content:space-around;margin:15px 0}
+  .profile-stat{min-width:90px}
+  .profile-buttons{gap:7px;padding:0}
+  .profile-buttons button{min-height:43px}
+  .social-section{padding:18px 12px}
+  .social-tabs{overflow:auto;padding-bottom:2px}
+  .social-tab{white-space:nowrap}
+
+  .modal-card{width:100%;max-width:none}
+  .detail-content{padding:43px 16px 22px}
+
+  .create-card{padding:25px 14px}
+  .upload-box{min-height:220px}
+}
+
+@media(max-width:380px){
+  .header-brand{font-size:22px}
+  .search-input{font-size:12px}
+  .pin-grid{column-gap:8px}
+  .main-nav .nav-btn{font-size:9px}
+}
+
+
+.inline-profile-link{border:0;background:transparent;color:var(--brown);font-weight:850;padding:0;cursor:pointer}
 </style>
 </head>
 
@@ -1592,8 +1784,15 @@ APP
       </button>
 
       <button class="create-btn"
-              onclick="openCreate()">
-        ＋ Create
+              onclick="openCreate()"
+              title="Create">
+        <span class="create-icon">＋</span><span class="create-label">Create</span>
+      </button>
+
+      <button class="messages-top-btn"
+              title="Messages"
+              onclick="loadMessages()">
+        <span class="message-icon">✉</span><span>Messages</span><b id="unreadBadge" class="unread-badge hidden">0</b>
       </button>
 
       <div id="headerAvatar"
@@ -1621,9 +1820,25 @@ APP
       Saved
     </button>
 
-    <button class="nav-btn"
+    <button class="nav-btn desktop-profile-nav"
             onclick="showProfile()">
       Profile
+    </button>
+
+    <button class="nav-btn mobile-only-nav" onclick="focusSearch()">
+      <span class="nav-icon">⌕</span><span>Search</span>
+    </button>
+
+    <button class="nav-btn mobile-only-nav" onclick="openCreate()">
+      <span class="nav-create-icon">＋</span><span>Create</span>
+    </button>
+
+    <button class="nav-btn mobile-only-nav" onclick="loadMessages()">
+      <span class="nav-icon">✉</span><span>Messages</span>
+    </button>
+
+    <button class="nav-btn mobile-only-nav" onclick="showProfile()">
+      <span class="nav-icon">◉</span><span>Profile</span>
     </button>
 
   </nav>
@@ -1884,10 +2099,16 @@ PROFILE MODAL
          class="profile-bio">
       </p>
 
-      <button class="logout-btn"
-              onclick="logout()">
-        Sign out
-      </button>
+      <div class="profile-stats">
+        <button class="profile-stat" onclick="showFollowers(document.getElementById('profileModal').dataset.userId)"><strong id="profileFollowersCount">0</strong><span>Followers</span></button>
+        <button class="profile-stat" onclick="showFollowing(document.getElementById('profileModal').dataset.userId)"><strong id="profileFollowingCount">0</strong><span>Following</span></button>
+      </div>
+
+      <div id="profileSocialActions" class="profile-buttons"></div>
+
+      <div id="profileLogoutWrap" class="profile-buttons" style="margin-top:9px">
+        <button class="logout-btn" onclick="logout()">Sign out</button>
+      </div>
 
     </div>
 
@@ -1896,7 +2117,7 @@ PROFILE MODAL
       <div class="section-bar">
 
         <h2>
-          Your Pins
+          <span id="profileOwnerLabel">Your Pins</span>
         </h2>
 
         <span>
@@ -2200,6 +2421,7 @@ async function startApp(){
   updateAvatar();
 
   await loadHome();
+  await updateUnreadBadge();
 
 }
 
@@ -2610,7 +2832,7 @@ function renderPins(container,pins){
             <div class="pin-meta">
 
               <span class="pin-meta-user">
-                @${username}
+                <button class="inline-profile-link" onclick="event.stopPropagation();showUserProfile('${pin.user_id}')">@${username}</button>
               </span>
 
               <div class="pin-stats">
@@ -2637,6 +2859,13 @@ function renderPins(container,pins){
 
 }
 
+
+function focusSearch(){
+  const input=document.getElementById("searchInput");
+  if(!input)return;
+  input.scrollIntoView({behavior:"smooth",block:"center"});
+  setTimeout(()=>{ input.focus(); input.select(); },250);
+}
 
 /* =========================================================
 SEARCH
@@ -2674,47 +2903,118 @@ async function searchPins(query){
   setNav(null);
 
   document.getElementById("mainContent").innerHTML=`
+    <section class="social-page">
+      <section class="hero" style="padding-bottom:22px">
+        <div class="hero-kicker">⌕ Search</div>
+        <h1>Results for <span>${safe(query)}</span></h1>
+        <p>Find people and Pins on KIVOO.</p>
+      </section>
+      <div class="section-bar"><h2>People</h2><span>KIVOO accounts</span></div>
+      <div id="peopleResults" class="people-list"></div>
+      <div class="section-bar" style="margin-top:30px"><h2>Pins</h2><span>Inspiration</span></div>
+      <div id="pinsGrid" class="pin-grid"></div>
+    </section>`;
 
-    <section class="hero"
-             style="padding-bottom:25px">
+  const q=query.replace(/[%_]/g,"").trim();
+  const {data:people,error:peopleError}=await db
+    .from("profiles")
+    .select("id,username,display_name,bio,avatar_url")
+    .or(`username.ilike.%${q}%,display_name.ilike.%${q}%`)
+    .limit(20);
 
-      <div class="hero-kicker">
-        ⌕ Search
-      </div>
-
-      <h1>
-        Results for
-        <span>${safe(query)}</span>
-      </h1>
-
-      <p>
-        Discover Pins matching your search.
-      </p>
-
-    </section>
-
-    <div class="section-bar">
-
-      <h2>
-        Results
-      </h2>
-
-      <span>
-        KIVOO Search
-      </span>
-
-    </div>
-
-    <div id="pinsGrid"
-         class="pin-grid">
-    </div>
-
-  `;
+  const peopleBox=document.getElementById("peopleResults");
+  if(peopleError){
+    peopleBox.innerHTML=`<div class="empty"><h2>Could not search accounts</h2><p>${safe(peopleError.message)}</p></div>`;
+  }else if(!people?.length){
+    peopleBox.innerHTML=`<div class="empty" style="padding:20px"><p>No accounts found.</p></div>`;
+  }else{
+    const enriched=await Promise.all(people.map(async p=>({...p, ...(await getFollowState(p.id))})));
+    peopleBox.innerHTML=enriched.map(p=>personRowHTML(p)).join("");
+  }
 
   await fetchPins(query);
-
 }
 
+function personRowHTML(p){
+  const avatar=p.avatar_url
+    ? `<img src="${safe(p.avatar_url)}" alt="${safe(p.display_name||p.username)}">`
+    : initial(p.display_name||p.username||"K");
+  return `<div class="person-row" onclick="showUserProfile('${p.id}')">
+    <div class="person-avatar">${avatar}</div>
+    <div class="person-main"><div class="person-name">${safe(p.display_name||p.username||"User")}</div><div class="person-username">@${safe(p.username||"user")} · ${p.followers||0} Followers</div></div>
+    <div class="person-actions" onclick="event.stopPropagation()">
+      ${p.id!==currentUser.id?`<button class="social-btn ${p.isFollowing?'following':'follow'}" onclick="toggleFollow('${p.id}',this)">${p.isFollowing?'Following':'Follow'}</button><button class="social-btn message" onclick="openConversation('${p.id}')">Message</button>`:''}
+    </div>
+  </div>`;
+}
+
+async function getFollowState(userId){
+  const [followers,following,me]=await Promise.all([
+    db.from("follows").select("id",{count:"exact",head:true}).eq("following_id",userId),
+    db.from("follows").select("id",{count:"exact",head:true}).eq("follower_id",userId),
+    currentUser && userId!==currentUser.id
+      ? db.from("follows").select("id").eq("follower_id",currentUser.id).eq("following_id",userId).maybeSingle()
+      : Promise.resolve({data:null})
+  ]);
+  return {followers:followers.count||0,following:following.count||0,isFollowing:!!me.data};
+}
+
+async function toggleFollow(userId,button){
+  if(!currentUser || userId===currentUser.id)return;
+  button.disabled=true;
+  const {data:existing,error:readError}=await db.from("follows").select("id").eq("follower_id",currentUser.id).eq("following_id",userId).maybeSingle();
+  if(readError){showToast(readError.message);button.disabled=false;return;}
+  let error;
+  if(existing){
+    ({error}=await db.from("follows").delete().eq("id",existing.id));
+    if(!error){button.textContent="Follow";button.classList.remove("following");button.classList.add("follow");}
+  }else{
+    ({error}=await db.from("follows").insert({follower_id:currentUser.id,following_id:userId}));
+    if(!error){button.textContent="Following";button.classList.remove("follow");button.classList.add("following");}
+  }
+  button.disabled=false;
+  if(error)showToast(error.message);
+}
+
+async function showUserProfile(userId){
+  if(!userId)return;
+  const {data:user,error}=await db.from("profiles").select("*").eq("id",userId).single();
+  if(error){showToast("Could not open this profile.");return;}
+  const state=await getFollowState(userId);
+  const {data:pins,error:pinsError}=await db.from("pins").select(`*,profiles(username,display_name,avatar_url)`).eq("user_id",userId).order("created_at",{ascending:false});
+  if(pinsError){showToast("Could not load this profile.");return;}
+  document.getElementById("profileName").textContent=user.display_name||"User";
+  document.getElementById("profileUsername").textContent="@"+(user.username||"user");
+  document.getElementById("profileBio").textContent=user.bio||"";
+  const avatar=document.getElementById("profileAvatar");
+  avatar.innerHTML=user.avatar_url?`<img src="${safe(user.avatar_url)}" alt="Profile">`:initial(user.display_name||"K");
+  const oldActions=document.getElementById("profileSocialActions");
+  oldActions.innerHTML=user.id===currentUser.id
+    ? ``
+    : `<button id="profileFollowBtn" class="social-btn ${state.isFollowing?'following':'follow'}" onclick="toggleFollow('${user.id}',this)">${state.isFollowing?'Following':'Follow'}</button><button class="social-btn message" onclick="openConversation('${user.id}')">Message</button>`;
+  document.getElementById("profileFollowersCount").textContent=state.followers;
+  document.getElementById("profileFollowingCount").textContent=state.following;
+  document.getElementById("profileOwnerLabel").textContent=user.id===currentUser.id?"Your Pins":`${safe(user.display_name||user.username||"User")}'s Pins`;
+  document.getElementById("profileLogoutWrap").classList.toggle("hidden",user.id!==currentUser.id);
+  document.getElementById("profilePins").innerHTML="";
+  renderPins(document.getElementById("profilePins"),await addCounts(pins||[]));
+  document.getElementById("profileModal").classList.add("show");
+  document.getElementById("profileModal").dataset.userId=user.id;
+}
+
+async function showFollowers(userId){await showPeopleList(userId,"followers");}
+async function showFollowing(userId){await showPeopleList(userId,"following");}
+async function showPeopleList(userId,type){
+  closeModal("profileModal");
+  const {data,error}=await db.from("follows").select(type==="followers"?"follower_id":"following_id").eq(type==="followers"?"following_id":"follower_id",userId);
+  if(error){showToast(error.message);return;}
+  const ids=(data||[]).map(x=>type==="followers"?x.follower_id:x.following_id);
+  const people=ids.length?(await db.from("profiles").select("id,username,display_name,bio,avatar_url").in("id",ids)).data||[]:[];
+  document.getElementById("mainContent").innerHTML=`<section class="social-page"><div class="section-bar"><h2>${type==="followers"?"Followers":"Following"}</h2><button class="social-btn following" onclick="showUserProfile('${userId}')">← Profile</button></div><div class="people-list">${people.map(async p=>p).length?people.map(p=>personRowHTML({...p,...({})})).join(""):"<div class='empty'><p>No people here yet.</p></div>"}</div></section>`;
+  // refresh buttons with correct states
+  const rows=document.querySelectorAll(".person-row");
+  for(let i=0;i<people.length;i++){const st=await getFollowState(people[i].id);const btn=rows[i]?.querySelector(".follow,.following");if(btn){btn.textContent=st.isFollowing?"Following":"Follow";btn.className=`social-btn ${st.isFollowing?'following':'follow'}`;}}
+}
 
 /* =========================================================
 OPEN PIN
@@ -3637,79 +3937,119 @@ PROFILE
 ========================================================= */
 
 async function showProfile(){
-
-  await loadProfile();
-
-  document.getElementById("profileName")
-    .textContent =
-      currentProfile?.display_name || "User";
-
-  document.getElementById("profileUsername")
-    .textContent =
-      "@" +
-      (currentProfile?.username || "user");
-
-  document.getElementById("profileBio")
-    .textContent =
-      currentProfile?.bio || "";
-
-  const avatar =
-    document.getElementById("profileAvatar");
-
-  if(currentProfile?.avatar_url){
-
-    avatar.innerHTML =
-      `<img src="${safe(currentProfile.avatar_url)}" alt="Profile">`;
-
-  }else{
-
-    avatar.textContent =
-      initial(
-        currentProfile?.display_name || "K"
-      );
-
-  }
-
-  const {
-    data,
-    error
-  } =
-    await db
-      .from("pins")
-      .select(`
-        *,
-        profiles(
-          username,
-          display_name,
-          avatar_url
-        )
-      `)
-      .eq("user_id",currentUser.id)
-      .order("created_at",{ascending:false});
-
-  if(error){
-
-    console.error(error);
-
-    showToast("Could not load your Pins.");
-
-    return;
-  }
-
-  const pins =
-    await addCounts(data || []);
-
-  renderPins(
-    document.getElementById("profilePins"),
-    pins
-  );
-
-  document
-    .getElementById("profileModal")
-    .classList.add("show");
-
+  await showUserProfile(currentUser.id);
 }
 
+
+/* =========================================================
+MESSAGES
+========================================================= */
+
+let activeConversationId=null;
+let activeChatUser=null;
+let messageChannel=null;
+
+async function getConversation(userId){
+  const me=currentUser.id;
+  const {data,error}=await db.from("conversations").select("*").or(`and(user_one.eq.${me},user_two.eq.${userId}),and(user_one.eq.${userId},user_two.eq.${me})`).limit(1).maybeSingle();
+  if(error)return {data:null,error};
+  if(data)return {data,error:null};
+  const {data:created,error:createError}=await db.from("conversations").insert({user_one:me,user_two:userId}).select().single();
+  return {data:created,error:createError};
+}
+
+async function loadMessages(){
+  if(!currentUser)return;
+  if(messageChannel){await db.removeChannel(messageChannel);messageChannel=null;}
+  setNav(null);
+  const {data:convs,error}=await db.from("conversations").select("*").or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`).order("created_at",{ascending:false});
+  if(error){showToast(error.message);return;}
+  const list=[];
+  for(const c of (convs||[])){
+    const otherId=c.user_one===currentUser.id?c.user_two:c.user_one;
+    const [{data:user},{data:last}] = await Promise.all([
+      db.from("profiles").select("id,username,display_name,avatar_url").eq("id",otherId).maybeSingle(),
+      db.from("messages").select("content,created_at,read_at,sender_id").eq("conversation_id",c.id).order("created_at",{ascending:false}).limit(1).maybeSingle()
+    ]);
+    if(user)list.push({c,user,last});
+  }
+  document.getElementById("mainContent").innerHTML=`<section class="messages-page"><div class="messages-title"><h1>Messages</h1><span>${list.length} conversations</span></div><div class="people-list" id="conversationList"></div></section>`;
+  const box=document.getElementById("conversationList");
+  box.innerHTML=list.length?list.map(x=>conversationRowHTML(x)).join(""):`<div class="empty"><div class="empty-icon">✉</div><h2>No messages yet</h2><p>Open a profile and tap Message to start a conversation.</p></div>`;
+  await updateUnreadBadge();
+}
+
+function conversationRowHTML(x){
+  const a=x.user.avatar_url?`<img src="${safe(x.user.avatar_url)}" alt="">`:initial(x.user.display_name||x.user.username||"K");
+  const text=x.last?.content||"Start a conversation";
+  return `<div class="conversation-row" onclick="openConversation('${x.user.id}')"><div class="conversation-avatar">${a}</div><div class="conversation-main"><div class="conversation-name">${safe(x.user.display_name||x.user.username||"User")}</div><div class="conversation-preview">@${safe(x.user.username||"user")} · ${safe(text)}</div></div><small>${x.last?formatMessageTime(x.last.created_at):""}</small></div>`;
+}
+
+async function openConversation(userId){
+  if(!currentUser || userId===currentUser.id)return;
+  if(document.getElementById("profileModal")?.classList.contains("show"))closeModal("profileModal");
+  const {data:user,error:userError}=await db.from("profiles").select("id,username,display_name,avatar_url").eq("id",userId).single();
+  if(userError){showToast("Could not open this conversation.");return;}
+  const result=await getConversation(userId);
+  if(result.error){showToast(result.error.message);return;}
+  activeConversationId=result.data.id;activeChatUser=user;
+  await renderConversation();
+}
+
+async function renderConversation(){
+  const user=activeChatUser;
+  const avatar=user.avatar_url?`<img src="${safe(user.avatar_url)}" alt="">`:initial(user.display_name||user.username||"K");
+  document.getElementById("mainContent").innerHTML=`<section class="chat-page"><div class="chat-head"><button class="chat-back" onclick="loadMessages()">←</button><div class="chat-head-user" onclick="showUserProfile('${user.id}')"><div class="conversation-avatar">${avatar}</div><div><strong>${safe(user.display_name||user.username||"User")}</strong><small>@${safe(user.username||"user")}</small></div></div></div><div id="chatMessages" class="chat-messages"></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="2000" autocomplete="off" placeholder="Write a message..." required><button>Send</button></form></section>`;
+  document.getElementById("chatForm").addEventListener("submit",sendMessage);
+  await loadConversationMessages();
+  if(messageChannel)await db.removeChannel(messageChannel);
+  messageChannel=db.channel("kivoo-chat-"+activeConversationId).on("postgres_changes",{event:"INSERT",schema:"public",table:"messages",filter:`conversation_id=eq.${activeConversationId}`},async payload=>{
+    if(payload.new.sender_id!==currentUser.id){await markMessageRead(payload.new.id);}
+    await loadConversationMessages();
+  }).subscribe();
+}
+
+async function loadConversationMessages(){
+  const {data,error}=await db.from("messages").select("*").eq("conversation_id",activeConversationId).order("created_at",{ascending:true});
+  if(error){showToast(error.message);return;}
+  const box=document.getElementById("chatMessages");if(!box)return;
+  box.innerHTML=data?.length?data.map(m=>`<div class="bubble ${m.sender_id===currentUser.id?'mine':'theirs'}"><div>${safe(m.content).replace(/\n/g,"<br>")}</div><div class="bubble-time">${formatMessageTime(m.created_at)}</div></div>`).join(""):`<div class="chat-empty">Say hello 👋</div>`;
+  box.scrollTop=box.scrollHeight;
+  const unread=(data||[]).filter(m=>m.sender_id!==currentUser.id&&!m.read_at);
+  for(const m of unread)await markMessageRead(m.id);
+  await updateUnreadBadge();
+}
+
+async function sendMessage(e){
+  e.preventDefault();
+  const input=document.getElementById("chatInput");const content=input.value.trim();if(!content)return;
+  input.disabled=true;
+  const {error}=await db.from("messages").insert({conversation_id:activeConversationId,sender_id:currentUser.id,content});
+  input.disabled=false;
+  if(error){showToast(error.message);return;}
+  input.value="";
+  await loadConversationMessages();
+}
+
+async function markMessageRead(id){await db.from("messages").update({read_at:new Date().toISOString()}).eq("id",id).eq("sender_id",activeChatUser?.id||"");}
+
+async function updateUnreadBadge(){
+  const {data:convs}=await db.from("conversations").select("id").or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`);
+  let count=0;
+  for(const c of (convs||[])){
+    const {count:n}=await db.from("messages").select("id",{count:"exact",head:true}).eq("conversation_id",c.id).neq("sender_id",currentUser.id).is("read_at",null);
+    count+=n||0;
+  }
+  const badge=document.getElementById("unreadBadge");if(!badge)return;
+  badge.textContent=count>99?"99+":count;badge.classList.toggle("hidden",count===0);
+}
+
+function formatMessageTime(value){
+  if(!value)return"";
+  const d=new Date(value);const now=new Date();
+  if(d.toDateString()===now.toDateString())return d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  return d.toLocaleDateString([], {month:"short",day:"numeric"});
+}
 
 /* =========================================================
 DELETE PIN
@@ -3889,6 +4229,7 @@ LOGOUT
 
 async function logout(){
 
+  if(messageChannel){await db.removeChannel(messageChannel);messageChannel=null;}
   await db.auth.signOut();
 
   currentUser=null;
