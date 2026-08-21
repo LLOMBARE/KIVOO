@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAYLY Chat</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --dayly-orange: #ffb36b;
+            --dayly-orange-soft: #ffe2c5;
+            --dayly-orange-pale: #fff4e8;
+            --dayly-black: #171513;
+            --dayly-ink: #28231f;
+            --dayly-muted: #8b8178;
+            --dayly-line: #eee4da;
+            --dayly-white: #fffdf9;
+            --dayly-shadow: 0 24px 70px rgba(45, 31, 19, .10);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Inter, "Segoe UI", Tahoma, system-ui, -apple-system, sans-serif;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 12% 15%, rgba(255,179,107,.28), transparent 25%),
+                radial-gradient(circle at 88% 84%, rgba(255,226,197,.65), transparent 28%),
+                #f8f3ed;
+            color: var(--dayly-ink);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            width: 260px;
+            height: 260px;
+            border: 1px solid rgba(255,179,107,.35);
+            border-radius: 46% 54% 62% 38% / 52% 42% 58% 48%;
+            right: -95px;
+            top: -80px;
+            transform: rotate(18deg);
+            pointer-events: none;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(255,179,107,.10);
+            left: -80px;
+            bottom: -80px;
+            pointer-events: none;
+        }
+
+        button, input {
+            font: inherit;
+        }
+
+        button {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* ---------------- DAYLY AUTH ---------------- */
+
+        .auth-container {
+            position: relative;
+            width: min(420px, calc(100% - 32px));
+            padding: 42px 34px 34px;
+            background: rgba(255,253,249,.92);
+            border: 1px solid rgba(255,255,255,.85);
+            border-radius: 32px;
+            box-shadow: var(--dayly-shadow);
+            backdrop-filter: blur(18px);
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .auth-container::before {
+            content: "DAYLY";
+            display: block;
+            color: var(--dayly-black);
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: .30em;
+            margin-bottom: 34px;
+        }
+
+        .auth-container::after {
+            content: "";
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: var(--dayly-orange-soft);
+            right: -48px;
+            top: -48px;
+            opacity: .75;
+        }
+
+        .auth-container h2 {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 9px;
+            color: var(--dayly-black);
+            font-size: clamp(30px, 7vw, 42px);
+            line-height: 1;
+            letter-spacing: -.055em;
+            font-weight: 900;
+        }
+
+        .auth-container h2::after {
+            content: "private conversations, your way.";
+            display: block;
+            margin-top: 12px;
+            color: var(--dayly-muted);
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0;
+        }
+
+        .auth-container input {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding: 14px 16px;
+            margin: 7px 0;
+            border: 1px solid var(--dayly-line);
+            border-radius: 15px;
+            color: var(--dayly-black);
+            background: #fffaf5;
+            outline: none;
+            font-size: 14px;
+            transition: border-color .2s, box-shadow .2s, background .2s, transform .2s;
+        }
+
+        .auth-container input:focus {
+            border-color: var(--dayly-orange);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(255,179,107,.16);
+            transform: translateY(-1px);
+        }
+
+        .auth-container button {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            padding: 14px 18px;
+            margin-top: 13px;
+            border: 0;
+            border-radius: 15px;
+            background: var(--dayly-black);
+            color: #fff;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 12px 24px rgba(23,21,19,.16);
+            transition: transform .2s, box-shadow .2s, background .2s;
+        }
+
+        .auth-container button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 28px rgba(23,21,19,.20);
+            background: #25211e;
+        }
+
+        .auth-container button:active {
+            transform: translateY(0);
+        }
+
+        .auth-message {
+            margin-top: 14px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        /* ---------------- MAIN DAYLY APP ---------------- */
+
+        .chat-app {
+            width: min(1400px, 100vw);
+            height: min(900px, 100vh);
+            display: none;
+            position: relative;
+            overflow: hidden;
+            background: var(--dayly-white);
+            border: 1px solid rgba(45,31,19,.07);
+            border-radius: 28px;
+            box-shadow: var(--dayly-shadow);
+        }
+
+        .sidebar {
+            position: relative;
+            width: 355px;
+            min-width: 355px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: #fffdf9;
+            border-right: 1px solid var(--dayly-line);
+            transition: transform .3s ease;
+        }
+
+        .sidebar::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 42% 58% 60% 40%;
+            background: var(--dayly-orange-pale);
+            right: -55px;
+            top: 105px;
+            pointer-events: none;
+        }
+
+        .my-profile {
+            padding: 24px 22px 18px;
+            background: transparent;
+            border-bottom: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .my-profile span {
+            color: var(--dayly-black);
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: -.03em;
+        }
+
+        .my-profile span::before {
+            content: "DAYLY";
+            display: block;
+            color: var(--dayly-orange);
+            font-size: 9px;
+            letter-spacing: .28em;
+            margin-bottom: 4px;
+        }
+
+        .logout-btn {
+            border: 1px solid var(--dayly-line);
+            background: #fff8f1;
+            color: var(--dayly-black);
+            padding: 8px 12px;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            transition: .2s;
+        }
+
+        .logout-btn:hover {
+            background: var(--dayly-orange-soft);
+            border-color: var(--dayly-orange);
+        }
+
+        .search-container {
+            position: relative;
+            z-index: 1;
+            padding: 12px 18px 18px;
+            background: transparent;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 13px 16px 13px 43px;
+            border: 1px solid var(--dayly-line);
+            background: #fdf7f0;
+            color: var(--dayly-black);
+            border-radius: 16px;
+            font-size: 13px;
+            outline: none;
+            transition: .2s;
+        }
+
+        .search-container::before {
+            content: "⌕";
+            position: absolute;
+            left: 33px;
+            top: 21px;
+            z-index: 2;
+            color: var(--dayly-muted);
+            font-size: 18px;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .search-container input:focus {
+            background: #fff;
+            border-color: var(--dayly-orange);
+            box-shadow: 0 0 0 4px rgba(255,179,107,.13);
+        }
+
+        .section-title {
+            padding: 5px 21px 11px;
+            color: var(--dayly-muted);
+            font-size: 9px;
+            font-weight: 900;
+            letter-spacing: .17em;
+            text-transform: uppercase;
+        }
+
+        .users-list {
+            list-style: none;
+            overflow-y: auto;
+            flex: 1;
+            padding: 0 10px 15px;
+            scrollbar-width: thin;
+            scrollbar-color: #e8d8c8 transparent;
+        }
+
+        .users-list li {
+            position: relative;
+            padding: 12px 11px;
+            margin: 3px 0;
+            border: 1px solid transparent;
+            border-radius: 17px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            transition: background .2s, border-color .2s, transform .2s;
+        }
+
+        .users-list li:hover {
+            background: #fff4e8;
+            border-color: #f3dfca;
+            transform: translateX(2px);
+        }
+
+        .avatar {
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
+            background: var(--dayly-black);
+            color: #fff;
+            border-radius: 15px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 14px;
+            box-shadow: 4px 5px 0 var(--dayly-orange-soft);
+        }
+
+        .users-list li span {
+            color: var(--dayly-ink);
+            font-size: 13px;
+            font-weight: 750;
+        }
+
+        /* ---------------- CHAT AREA ---------------- */
+
+        .chat-area {
+            position: relative;
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background:
+                radial-gradient(circle at 90% 12%, rgba(255,179,107,.16), transparent 24%),
+                #fdf9f4;
+        }
+
+        .chat-area::after {
+            content: "D";
+            position: absolute;
+            right: 32px;
+            bottom: 70px;
+            color: rgba(255,179,107,.12);
+            font-size: 180px;
+            line-height: .7;
+            font-weight: 900;
+            letter-spacing: -.15em;
+            pointer-events: none;
+        }
+
+        .no-chat-selected {
+            position: relative;
+            z-index: 1;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--dayly-muted);
+            font-size: 14px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .no-chat-selected::before {
+            content: "DAYLY";
+            position: absolute;
+            transform: translateY(-56px);
+            color: var(--dayly-black);
+            font-size: clamp(42px, 7vw, 78px);
+            font-weight: 950;
+            letter-spacing: -.07em;
+        }
+
+        .no-chat-selected::after {
+            content: "Choose someone and start a conversation";
+            position: absolute;
+            transform: translateY(35px);
+            color: var(--dayly-muted);
+            font-size: 12px;
+        }
+
+        .chat-header {
+            position: relative;
+            z-index: 3;
+            padding: 16px 22px;
+            background: rgba(255,253,249,.88);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--dayly-line);
+            font-weight: 800;
+            font-size: 15px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-btn {
+            display: none;
+            background: transparent;
+            border: 0;
+            font-size: 22px;
+            cursor: pointer;
+            margin-right: 10px;
+            color: var(--dayly-black);
+        }
+
+        .block-btn {
+            background: var(--dayly-black);
+            color: #fff;
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 11px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 800;
+            transition: .2s;
+        }
+
+        .block-btn:hover {
+            background: #3b342f;
+        }
+
+        .block-btn.blocked {
+            background: var(--dayly-orange);
+            color: var(--dayly-black);
+        }
+
+        .messages-container {
+            position: relative;
+            z-index: 2;
+            flex: 1;
+            padding: 24px clamp(16px, 4vw, 44px);
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            gap: 9px;
+            scrollbar-width: thin;
+            scrollbar-color: #dfcdbb transparent;
+        }
+
+        /* ---------------- MESSAGE COMPOSITION ---------------- */
+
+        .chat-input-container {
+            position: relative;
+            z-index: 4;
+            padding: 14px 18px 17px;
+            background: rgba(255,253,249,.92);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--dayly-line);
+            display: none;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .chat-input-container input[type="text"] {
+            flex: 1;
+            min-width: 0;
+            padding: 13px 16px;
+            border: 1px solid var(--dayly-line);
+            background: #fffaf5;
+            color: var(--dayly-black);
+            border-radius: 15px;
+            outline: none;
+            font-size: 13px;
+            transition: .2s;
+        }
+
+        .chat-input-container input[type="text"]:focus {
+            background: #fff;
+            border-color: var(--dayly-orange);
+            box-shadow: 0 0 0 4px rgba(255,179,107,.13);
+        }
+
+        .chat-input-container button {
+            padding: 12px 19px;
+            background: var(--dayly-orange);
+            color: var(--dayly-black);
+            border: 0;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 7px 15px rgba(255,179,107,.25);
+            transition: .2s;
+        }
+
+        .chat-input-container button:hover {
+            transform: translateY(-1px);
+            background: #ffab5b;
+        }
+
+        /* ---------------- BUBBLES ---------------- */
+
+        .message-bubble {
+            max-width: min(72%, 620px);
+            padding: 11px 15px;
+            border-radius: 17px;
+            font-size: 13px;
+            line-height: 1.45;
+            word-wrap: break-word;
+            animation: daylyMessage .18s ease-out;
+        }
+
+        @keyframes daylyMessage {
+            from { opacity: 0; transform: translateY(4px) scale(.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .received {
+            background: #fff;
+            color: var(--dayly-ink);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+            border: 1px solid var(--dayly-line);
+            box-shadow: 0 5px 16px rgba(48,35,24,.045);
+        }
+
+        .sent {
+            background: var(--dayly-orange);
+            color: var(--dayly-black);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+            box-shadow: 0 7px 17px rgba(255,179,107,.20);
+        }
+
+        /* ---------------- MOBILE ---------------- */
+
+        @media (max-width: 768px) {
+            body {
+                background: #f8f3ed;
+            }
+
+            .chat-app {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                border: 0;
+                box-shadow: none;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: 100%;
+                position: absolute;
+                z-index: 2;
+                top: 0;
+                bottom: 0;
+            }
+
+            .chat-area {
+                width: 100%;
+                position: absolute;
+                z-index: 1;
+                top: 0;
+                bottom: 0;
+            }
+
+            .chat-app.show-chat .sidebar {
+                display: none;
+            }
+
+            .chat-app.show-chat .chat-area {
+                z-index: 3;
+            }
+
+            .back-btn {
+                display: inline-block;
+            }
+
+            .message-bubble {
+                max-width: 86%;
+            }
+
+            .auth-container {
+                padding: 35px 24px 27px;
+                border-radius: 27px;
+            }
+
+            .my-profile {
+                padding-top: 20px;
+            }
+
+            .chat-header {
+                padding: 13px 15px;
+            }
+
+            .messages-container {
+                padding: 18px 14px;
+            }
+
+            .chat-input-container {
+                padding: 10px 10px calc(10px + env(safe-area-inset-bottom));
+            }
+
+            .chat-input-container button {
+                padding: 12px 16px;
+            }
+        }
+
+        @media (max-width: 390px) {
+            .auth-container {
+                width: calc(100% - 22px);
+                padding: 30px 18px 22px;
+            }
+
+            .message-bubble {
+                max-width: 90%;
+            }
+
+            .chat-input-container button {
+                padding-left: 13px;
+                padding-right: 13px;
+            }
+        }
+
+    
+        /* =========================================================
+           DAYLY — CROSS-DEVICE COMPATIBILITY LAYER
+           iPhone / iPad / Android / Windows / macOS
+           Does not change the application's JavaScript or Supabase.
+           ========================================================= */
+
+        html {
+            width: 100%;
+            min-height: 100%;
+            -webkit-text-size-adjust: 100%;
+            text-size-adjust: 100%;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            width: 100%;
+            min-width: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            height: auto;
+            overflow: hidden;
+            overscroll-behavior: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        input,
+        button,
+        textarea {
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input,
+        button {
+            touch-action: manipulation;
+        }
+
+        input::placeholder {
+            color: #9a9087;
+            opacity: 1;
+        }
+
+        .chat-app {
+            width: 100%;
+            max-width: 1400px;
+            height: 100vh;
+            height: 100dvh;
+            min-height: 0;
+            max-height: 100dvh;
+        }
+
+        .sidebar,
+        .chat-area {
+            min-height: 0;
+        }
+
+        .users-list,
+        .messages-container {
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+        }
+
+        /* Prevent iOS zoom when focusing form controls. */
+        @media (max-width: 768px) {
+            input,
+            button,
+            select,
+            textarea {
+                font-size: 16px;
+            }
+
+            .auth-container input {
+                font-size: 16px;
+            }
+
+            .search-container input,
+            .chat-input-container input[type="text"] {
+                font-size: 16px;
+            }
+
+            .chat-app {
+                height: 100vh;
+                height: 100dvh;
+                min-height: -webkit-fill-available;
+                max-height: none;
+            }
+
+            .sidebar,
+            .chat-area {
+                height: 100vh;
+                height: 100dvh;
+                min-height: -webkit-fill-available;
+            }
+
+            .my-profile {
+                padding-top: max(20px, env(safe-area-inset-top));
+            }
+
+            .chat-header {
+                padding-top: max(13px, env(safe-area-inset-top));
+            }
+
+            .chat-input-container {
+                padding-bottom: max(10px, env(safe-area-inset-bottom));
+            }
+
+            .auth-container {
+                max-height: calc(100dvh - 32px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .users-list {
+                padding-bottom: max(15px, env(safe-area-inset-bottom));
+            }
+        }
+
+        /* Very small phones */
+        @media (max-width: 360px) {
+            .auth-container {
+                width: calc(100% - 18px);
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .my-profile {
+                padding-left: 15px;
+                padding-right: 15px;
+            }
+
+            .search-container {
+                padding-left: 13px;
+                padding-right: 13px;
+            }
+
+            .section-title {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+            .users-list {
+                padding-left: 6px;
+                padding-right: 6px;
+            }
+
+            .chat-input-container {
+                gap: 7px;
+            }
+
+            .chat-input-container button {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+
+        /* Tablets: keep the two-panel experience without oversized spacing. */
+        @media (min-width: 769px) and (max-width: 1100px) {
+            .sidebar {
+                width: 310px;
+                min-width: 310px;
+            }
+
+            .message-bubble {
+                max-width: 78%;
+            }
+        }
+
+        /* Devices with a pointer: hover effects only where hover exists. */
+        @media (hover: none) {
+            .users-list li:hover,
+            .auth-container button:hover,
+            .logout-btn:hover,
+            .block-btn:hover,
+            .chat-input-container button:hover {
+                transform: none;
+                box-shadow: inherit;
+            }
+        }
+
+        /* Landscape phones */
+        @media (max-width: 900px) and (orientation: landscape) and (max-height: 520px) {
+            .auth-container {
+                padding-top: 20px;
+                padding-bottom: 18px;
+            }
+
+            .auth-container::before {
+                margin-bottom: 16px;
+            }
+
+            .auth-container h2 {
+                font-size: 28px;
+            }
+
+            .auth-container input {
+                margin: 4px 0;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+
+            .auth-container button {
+                margin-top: 7px;
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="auth-container" id="auth-screen">
+        <h2>DAYLY Chat</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="handleRegister()">Sign Up / Login</button>
+        <div id="auth-message" class="auth-message"></div>
+    </div>
+
+    <div class="chat-app" id="chat-screen">
+        <div class="sidebar">
+            <div class="my-profile">
+                <span id="my-account-name">My Account</span>
+                <button class="logout-btn" onclick="handleLogout()">Logout</button>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-box" placeholder="Search users..." oninput="searchUsers()">
+            </div>
+            <div class="section-title" id="list-title">Recent Chats</div>
+            <ul class="users-list" id="users-list"></ul>
+        </div>
+
+        <div class="chat-area">
+            <div class="no-chat-selected" id="no-chat-placeholder">Select a user to start chatting</div>
+            
+            <div class="chat-header" id="chat-header">
+                <div style="display: flex; align-items: center;">
+                    <button class="back-btn" onclick="closeChat()">←</button>
+                    <span id="chat-user-name">User Name</span>
+                </div>
+                <button class="block-btn" id="block-btn" onclick="toggleBlockUser()">Block User</button>
+            </div>
+            
+            <div class="messages-container" id="messages-container"></div>
+            
+            <div class="chat-input-container" id="chat-input-container">
+                <input type="text" id="message-input" placeholder="Type a message..." onkeypress="if(event.key==='Enter') sendMessage()">
+                <button onclick="sendMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SUPABASE_URL = 'https://yqruiftarssneyzgmdri.supabase.co';
+        const SUPABASE_KEY = 'sb_publishable_k_xzj6_DLdZHxusINZxM4Q_mDx46NeB';
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let currentUser = null;
+        let activeTargetUser = null;
+        let isBlocked = false;
+
+        window.onload = async () => {
+            const { data: { session } } = await _supabase.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                const { data: profile } = await _supabase
+                    .from('profiles')
+                    .select('username')
+                    .eq('id', currentUser.id)
+                    .single();
+                
+                showChatInterface(profile ? profile.username : currentUser.email);
+            }
+        };
+
+        async function handleRegister() {
+            const username = document.getElementById('username').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const msg = document.getElementById('auth-message');
+
+            if (!email || !password) {
+                msg.style.color = 'red';
+                msg.innerText = 'Email and Password are required!';
+                return;
+            }
+
+            msg.style.color = 'blue';
+            msg.innerText = 'Processing...';
+
+            let { data, error } = await _supabase.auth.signUp({
+                email: email,
+                password: password,
+                options: { data: { display_name: username } }
+            });
+
+            if (error && error.message.includes('already registered')) {
+                const loginResult = await _supabase.auth.signInWithPassword({ email, password });
+                data = loginResult.data;
+                error = loginResult.error;
+            }
+
+            if (error) {
+                msg.style.color = 'red';
+                msg.innerText = error.message;
+            } else if (data.user) {
+                currentUser = data.user;
+                if (username) {
+                    await _supabase.from('profiles').upsert([{ id: currentUser.id, username, email }]);
+                }
+                showChatInterface(username || email);
+            }
+        }
+
+        function showChatInterface(name) {
+            document.getElementById('auth-screen').style.display = 'none';
+            document.getElementById('chat-screen').style.display = 'flex';
+            document.getElementById('my-account-name').innerText = name;
+            
+            loadRecentChats();
+            listenToIncomingMessages();
+        }
+
+        async function handleLogout() {
+            await _supabase.auth.signOut();
+            location.reload();
+        }
+
+        async function loadRecentChats() {
+            document.getElementById('list-title').innerText = "Recent Chats";
+            const list = document.getElementById('users-list');
+            list.innerHTML = '';
+
+            const { data: messages } = await _supabase
+                .from('messages')
+                .select('sender_id, receiver_id')
+                .or(`sender_id.eq.${currentUser.id},receiver_id.eq.${currentUser.id}`);
+
+            if (!messages) return;
+
+            const userIds = new Set();
+            messages.forEach(m => {
+                if (m.sender_id !== currentUser.id) userIds.add(m.sender_id);
+                if (m.receiver_id !== currentUser.id) userIds.add(m.receiver_id);
+            });
+
+            if (userIds.size === 0) return;
+
+            const { data: profiles } = await _supabase
+                .from('profiles')
+                .select('id, username')
+                .in('id', Array.from(userIds));
+
+            if (profiles) {
+                profiles.forEach(user => renderUserListItem(user));
+            }
+        }
+
+        async function searchUsers() {
+            const query = document.getElementById('search-box').value.trim();
+            if (!query) {
+                loadRecentChats();
+                return;
+            }
+
+            document.getElementById('list-title').innerText = "Search Results";
+            const list = document.getElementById('users-list');
+            list.innerHTML = '';
+
+            const { data: users } = await _supabase
+                .from('profiles')
+                .select('id, username')
+                .ilike('username', `%${query}%`);
+
+            if (users) {
+                users.forEach(user => {
+                    if (user.id !== currentUser.id) renderUserListItem(user);
+                });
+            }
+        }
+
+        function renderUserListItem(user) {
+            const list = document.getElementById('users-list');
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <div class="avatar">${user.username.charAt(0).toUpperCase()}</div> 
+                <span>${user.username}</span>
+            `;
+            li.onclick = () => openChat(user);
+            list.appendChild(li);
+        }
+
+        async function openChat(targetUser) {
+            activeTargetUser = targetUser;
+
+            document.getElementById('chat-screen').classList.add('show-chat');
+            document.getElementById('no-chat-placeholder').style.display = 'none';
+            document.getElementById('chat-header').style.display = 'flex';
+            document.getElementById('messages-container').style.display = 'flex';
+            document.getElementById('chat-input-container').style.display = 'flex';
+            document.getElementById('chat-user-name').innerText = targetUser.username;
+
+            await checkBlockStatus();
+            await loadMessages();
+        }
+
+        function closeChat() {
+            document.getElementById('chat-screen').classList.remove('show-chat');
+        }
+
+        async function checkBlockStatus() {
+            const { data } = await _supabase
+                .from('blocked_users')
+                .select('id')
+                .eq('blocker_id', currentUser.id)
+                .eq('blocked_id', activeTargetUser.id);
+
+            const btn = document.getElementById('block-btn');
+            if (data && data.length > 0) {
+                isBlocked = true;
+                btn.innerText = "Unblock User";
+                btn.classList.add('blocked');
+            } else {
+                isBlocked = false;
+                btn.innerText = "Block User";
+                btn.classList.remove('blocked');
+            }
+        }
+
+        async function toggleBlockUser() {
+            if (!activeTargetUser) return;
+
+            const btn = document.getElementById('block-btn');
+
+            if (isBlocked) {
+                await _supabase
+                    .from('blocked_users')
+                    .delete()
+                    .eq('blocker_id', currentUser.id)
+                    .eq('blocked_id', activeTargetUser.id);
+
+                isBlocked = false;
+                btn.innerText = "Block User";
+                btn.classList.remove('blocked');
+            } else {
+                await _supabase
+                    .from('blocked_users')
+                    .insert([{ blocker_id: currentUser.id, blocked_id: activeTargetUser.id }]);
+
+                isBlocked = true;
+                btn.innerText = "Unblock User";
+                btn.classList.add('blocked');
+            }
+            
+            await loadMessages();
+        }
+
+        async function isUserPairBlocked(userA, userB) {
+            const { data } = await _supabase
+                .from('blocked_users')
+                .select('id')
+                .or(`and(blocker_id.eq.${userA},blocked_id.eq.${userB}),and(blocker_id.eq.${userB},blocked_id.eq.${userA})`);
+
+            return data && data.length > 0;
+        }
+
+        async function loadMessages() {
+            const container = document.getElementById('messages-container');
+            container.innerHTML = '';
+
+            const hasBlock = await isUserPairBlocked(currentUser.id, activeTargetUser.id);
+            if (hasBlock) {
+                container.innerHTML = '<div style="text-align:center; color:#8c98a4; padding:20px; font-size:14px;">Cannot view messages due to a block.</div>';
+                return;
+            }
+
+            const { data: messages } = await _supabase
+                .from('messages')
+                .select('*')
+                .or(`and(sender_id.eq.${currentUser.id},receiver_id.eq.${activeTargetUser.id}),and(sender_id.eq.${activeTargetUser.id},receiver_id.eq.${currentUser.id})`)
+                .order('created_at', { ascending: true });
+
+            if (messages) {
+                messages.forEach(msg => appendMessage(msg));
+            }
+        }
+
+        function appendMessage(msg) {
+            const container = document.getElementById('messages-container');
+            const div = document.createElement('div');
+            div.className = `message-bubble ${msg.sender_id === currentUser.id ? 'sent' : 'received'}`;
+            div.innerText = msg.content;
+
+            container.appendChild(div);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('message-input');
+            const text = input.value.trim();
+
+            if (!text || !activeTargetUser) return;
+
+            const hasBlock = await isUserPairBlocked(currentUser.id, activeTargetUser.id);
+            if (hasBlock) {
+                alert('Messaging is blocked between you and this user.');
+                return;
+            }
+
+            input.value = '';
+
+            await _supabase.from('messages').insert([{
+                sender_id: currentUser.id,
+                receiver_id: activeTargetUser.id,
+                content: text
+            }]);
+        }
+
+        function listenToIncomingMessages() {
+            _supabase
+                .channel('public:messages')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages' }, async payload => {
+                    const newMsg = payload.new;
+
+                    const hasBlock = await isUserPairBlocked(newMsg.sender_id, newMsg.receiver_id);
+                    if (hasBlock) {
+                        return;
+                    }
+                    
+                    if (activeTargetUser && (
+                        (newMsg.sender_id === activeTargetUser.id && newMsg.receiver_id === currentUser.id) ||
+                        (newMsg.sender_id === currentUser.id && newMsg.receiver_id === activeTargetUser.id)
+                    )) {
+                        appendMessage(newMsg);
+                    }
+                    
+                    loadRecentChats();
+                })
+                .subscribe();
+        }
+    </script>
+</body>
+</html>
