@@ -2,31 +2,50 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#8B5E3C">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="theme-color" content="#6f4328">
 
 <title>KIVOO — Discover what inspires you</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 /* =========================================================
-   KIVOO DESIGN SYSTEM
+   KIVOO 2.0
 ========================================================= */
 
 :root{
-  --brown:#8B5E3C;
-  --brown-dark:#63412b;
-  --brown-light:#b98962;
-  --cream:#f7f3ee;
-  --cream-2:#eee6dc;
-  --white:#ffffff;
-  --black:#211a15;
-  --gray:#756b63;
-  --line:#e8dfd6;
-  --shadow:0 15px 45px rgba(74,48,30,.10);
-  --shadow-soft:0 8px 25px rgba(74,48,30,.08);
-  --radius:22px;
+  --brown-950:#24150d;
+  --brown-900:#321c10;
+  --brown-800:#452717;
+  --brown-700:#5a321d;
+  --brown:#704328;
+  --brown-600:#805033;
+  --brown-500:#986748;
+  --brown-400:#b88662;
+  --brown-300:#d0a887;
+
+  --cream:#efe5d9;
+  --cream-2:#e5d7c7;
+  --sand:#d7c4b0;
+
+  --paper:#f7f0e8;
+  --white:#fffaf4;
+
+  --text:#291b13;
+  --muted:#806f61;
+
+  --red:#a63d35;
+
+  --shadow:0 25px 70px rgba(49,28,15,.18);
+  --shadow-soft:0 12px 35px rgba(49,28,15,.12);
+
+  --radius:24px;
 }
 
 *{
@@ -40,17 +59,39 @@ html{
 }
 
 body{
-  font-family:
-    Inter,
-    ui-sans-serif,
-    system-ui,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    sans-serif;
-  color:var(--black);
-  background:var(--cream);
   min-height:100vh;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 8% 8%,rgba(184,134,98,.20),transparent 23%),
+    radial-gradient(circle at 95% 45%,rgba(112,67,40,.14),transparent 25%),
+    var(--cream);
+  font-family:"DM Sans",sans-serif;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  width:500px;
+  height:500px;
+  border-radius:50%;
+  background:rgba(112,67,40,.08);
+  top:-250px;
+  right:-180px;
+  pointer-events:none;
+  z-index:-1;
+}
+
+body::after{
+  content:"";
+  position:fixed;
+  width:350px;
+  height:350px;
+  border-radius:50%;
+  background:rgba(216,187,160,.20);
+  bottom:-200px;
+  left:-150px;
+  pointer-events:none;
+  z-index:-1;
 }
 
 button,
@@ -72,36 +113,6 @@ img{
 }
 
 /* =========================================================
-   BACKGROUND DECOR
-========================================================= */
-
-body::before{
-  content:"";
-  position:fixed;
-  width:420px;
-  height:420px;
-  border-radius:50%;
-  background:rgba(185,137,98,.09);
-  top:-180px;
-  left:-150px;
-  pointer-events:none;
-  z-index:-1;
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  width:350px;
-  height:350px;
-  border-radius:50%;
-  background:rgba(139,94,60,.06);
-  bottom:-170px;
-  right:-120px;
-  pointer-events:none;
-  z-index:-1;
-}
-
-/* =========================================================
    AUTH
 ========================================================= */
 
@@ -112,91 +123,124 @@ body::after{
   justify-content:center;
   padding:25px;
   background:
-    radial-gradient(circle at 15% 20%,rgba(185,137,98,.17),transparent 30%),
-    radial-gradient(circle at 85% 80%,rgba(139,94,60,.10),transparent 30%),
-    var(--cream);
+    linear-gradient(135deg,rgba(50,28,16,.96),rgba(112,67,40,.92)),
+    var(--brown-900);
+  position:relative;
+  overflow:hidden;
+}
+
+#authPage::before{
+  content:"";
+  position:absolute;
+  width:650px;
+  height:650px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:50%;
+  top:-330px;
+  right:-180px;
+}
+
+#authPage::after{
+  content:"";
+  position:absolute;
+  width:420px;
+  height:420px;
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:50%;
+  bottom:-260px;
+  left:-170px;
 }
 
 .auth-card{
   width:100%;
-  max-width:450px;
-  background:rgba(255,255,255,.92);
-  border:1px solid rgba(139,94,60,.12);
-  border-radius:32px;
-  padding:42px 34px;
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(15px);
+  max-width:480px;
+  position:relative;
+  z-index:2;
+  background:rgba(255,250,244,.97);
+  border:1px solid rgba(255,255,255,.35);
+  border-radius:34px;
+  padding:45px 36px;
+  box-shadow:0 40px 100px rgba(0,0,0,.30);
 }
 
 .brand{
   text-align:center;
-  font-size:42px;
-  font-weight:950;
-  letter-spacing:-3px;
-  color:var(--brown);
+  font-family:"Space Grotesk",sans-serif;
+  font-size:48px;
+  font-weight:700;
+  letter-spacing:-4px;
+  color:var(--brown-800);
 }
 
 .brand-subtitle{
   text-align:center;
-  color:var(--gray);
+  color:var(--muted);
   font-size:14px;
-  margin-top:7px;
-  margin-bottom:30px;
+  line-height:1.6;
+  margin:8px auto 30px;
+  max-width:320px;
 }
 
 .auth-tabs{
   display:flex;
+  gap:5px;
   padding:5px;
   background:var(--cream);
-  border-radius:16px;
-  margin-bottom:24px;
+  border-radius:17px;
+  margin-bottom:25px;
 }
 
 .auth-tabs button{
   flex:1;
   border:0;
-  padding:12px;
-  border-radius:12px;
   background:transparent;
-  color:var(--gray);
+  color:var(--muted);
+  padding:12px;
+  border-radius:13px;
   font-weight:700;
-  transition:.2s;
 }
 
 .auth-tabs button.active{
-  background:var(--white);
-  color:var(--brown);
-  box-shadow:var(--shadow-soft);
+  background:var(--brown);
+  color:white;
+  box-shadow:0 8px 20px rgba(112,67,40,.22);
 }
 
 .field{
-  margin-bottom:16px;
+  margin-bottom:17px;
 }
 
 .field label{
   display:block;
-  font-size:13px;
-  font-weight:750;
+  font-size:12px;
+  font-weight:700;
   margin-bottom:7px;
+  color:var(--brown-800);
+  letter-spacing:.2px;
 }
 
 .field input,
 .field textarea{
   width:100%;
-  border:1px solid var(--line);
-  background:#fcfaf8;
-  color:var(--black);
+  border:1px solid #d9cabc;
+  background:#fffaf5;
+  color:var(--text);
   outline:none;
   padding:14px 15px;
   border-radius:15px;
   transition:.2s;
 }
 
+.field textarea{
+  min-height:120px;
+  resize:vertical;
+}
+
 .field input:focus,
 .field textarea:focus{
-  border-color:var(--brown-light);
+  border-color:var(--brown-500);
+  box-shadow:0 0 0 4px rgba(112,67,40,.09);
   background:white;
-  box-shadow:0 0 0 4px rgba(139,94,60,.08);
 }
 
 .primary-btn{
@@ -204,15 +248,15 @@ body::after{
   border:0;
   background:var(--brown);
   color:white;
-  padding:14px 18px;
+  padding:15px 18px;
   border-radius:15px;
   font-weight:800;
+  box-shadow:0 10px 25px rgba(112,67,40,.22);
   transition:.2s;
-  box-shadow:0 7px 20px rgba(139,94,60,.18);
 }
 
 .primary-btn:hover{
-  background:var(--brown-dark);
+  background:var(--brown-800);
   transform:translateY(-1px);
 }
 
@@ -230,39 +274,45 @@ body::after{
 }
 
 /* =========================================================
-   APP HEADER
+   APP
 ========================================================= */
 
 #app{
   display:none;
 }
 
+/* =========================================================
+   TOPBAR
+========================================================= */
+
 .topbar{
   position:sticky;
   top:0;
-  z-index:80;
-  height:78px;
+  z-index:100;
+  min-height:78px;
   display:flex;
   align-items:center;
   gap:18px;
-  padding:0 25px;
-  background:rgba(247,243,238,.90);
-  border-bottom:1px solid rgba(139,94,60,.10);
-  backdrop-filter:blur(18px);
+  padding:12px 28px;
+  background:rgba(49,28,16,.96);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(20px);
+  box-shadow:0 8px 35px rgba(42,23,12,.18);
 }
 
 .header-brand{
-  font-size:30px;
-  font-weight:950;
-  letter-spacing:-2px;
-  color:var(--brown);
+  color:#fff7ef;
+  font-family:"Space Grotesk",sans-serif;
+  font-size:31px;
+  font-weight:700;
+  letter-spacing:-2.5px;
   flex-shrink:0;
 }
 
 .search-wrap{
   position:relative;
   flex:1;
-  max-width:760px;
+  max-width:780px;
   margin:auto;
 }
 
@@ -271,25 +321,30 @@ body::after{
   left:17px;
   top:50%;
   transform:translateY(-50%);
-  color:var(--brown);
+  color:#b98a68;
+  font-size:20px;
   pointer-events:none;
 }
 
 .search-input{
   width:100%;
-  border:1px solid transparent;
+  border:1px solid rgba(255,255,255,.09);
   outline:none;
-  background:#ebe4dc;
-  border-radius:18px;
+  background:#4a2a19;
+  color:#fff7ef;
+  border-radius:17px;
   padding:14px 18px 14px 48px;
-  color:var(--black);
   transition:.2s;
 }
 
+.search-input::placeholder{
+  color:#c5aa94;
+}
+
 .search-input:focus{
-  background:white;
-  border-color:var(--brown-light);
-  box-shadow:0 0 0 4px rgba(139,94,60,.07);
+  background:#5a321d;
+  border-color:#a77857;
+  box-shadow:0 0 0 4px rgba(184,134,98,.10);
 }
 
 .header-actions{
@@ -299,53 +354,53 @@ body::after{
 }
 
 .round-btn{
-  width:44px;
-  height:44px;
+  width:43px;
+  height:43px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border:0;
-  background:transparent;
-  color:var(--black);
+  border:1px solid rgba(255,255,255,.08);
+  background:#432516;
+  color:#f9eee4;
   border-radius:50%;
   transition:.2s;
+  font-size:19px;
 }
 
 .round-btn:hover{
-  background:var(--cream-2);
-  color:var(--brown);
+  background:#654027;
+  transform:translateY(-1px);
 }
 
 .create-btn{
   border:0;
-  background:var(--brown);
-  color:white;
-  padding:12px 18px;
-  border-radius:15px;
-  font-weight:800;
-  box-shadow:0 6px 18px rgba(139,94,60,.15);
+  background:#d5a57f;
+  color:#321c10;
+  padding:12px 17px;
+  border-radius:14px;
+  font-weight:900;
+  box-shadow:0 7px 20px rgba(0,0,0,.18);
   transition:.2s;
 }
 
 .create-btn:hover{
-  background:var(--brown-dark);
+  background:#e4b993;
   transform:translateY(-1px);
 }
 
 .user-avatar{
-  width:44px;
-  height:44px;
+  width:43px;
+  height:43px;
   border-radius:50%;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
-  background:var(--brown);
+  background:#c18c66;
   color:white;
   font-weight:900;
   cursor:pointer;
-  border:3px solid white;
-  box-shadow:0 3px 12px rgba(0,0,0,.08);
+  border:2px solid rgba(255,255,255,.7);
 }
 
 .user-avatar img{
@@ -355,35 +410,36 @@ body::after{
 }
 
 /* =========================================================
-   NAV
+   NAVIGATION
 ========================================================= */
 
 .main-nav{
-  max-width:1500px;
+  max-width:1550px;
   margin:auto;
-  padding:13px 25px 3px;
+  padding:17px 28px 8px;
   display:flex;
   gap:7px;
 }
 
 .nav-btn{
-  border:0;
-  background:transparent;
-  color:var(--gray);
+  border:1px solid transparent;
+  background:rgba(112,67,40,.08);
+  color:var(--brown-700);
   padding:10px 17px;
-  border-radius:14px;
-  font-weight:750;
+  border-radius:13px;
+  font-weight:800;
   transition:.2s;
 }
 
 .nav-btn:hover{
-  color:var(--brown);
-  background:rgba(139,94,60,.07);
+  background:var(--brown);
+  color:white;
 }
 
 .nav-btn.active{
   background:var(--brown);
   color:white;
+  box-shadow:0 8px 20px rgba(112,67,40,.18);
 }
 
 /* =========================================================
@@ -391,46 +447,101 @@ body::after{
 ========================================================= */
 
 .main{
-  max-width:1550px;
+  max-width:1580px;
   margin:auto;
-  padding:10px 25px 70px;
+  padding:0 28px 80px;
 }
 
 .hero{
+  position:relative;
+  padding:45px 20px 40px;
   text-align:center;
-  padding:45px 15px 35px;
+  overflow:hidden;
+}
+
+.hero::before{
+  content:"K";
+  position:absolute;
+  left:3%;
+  top:-35px;
+  font-family:"Playfair Display",serif;
+  font-size:180px;
+  line-height:1;
+  color:rgba(112,67,40,.055);
+  pointer-events:none;
+}
+
+.hero::after{
+  content:"✦";
+  position:absolute;
+  right:7%;
+  bottom:15px;
+  font-size:65px;
+  color:rgba(112,67,40,.10);
+  pointer-events:none;
 }
 
 .hero-kicker{
+  position:relative;
   display:inline-flex;
   align-items:center;
-  gap:7px;
-  color:var(--brown);
-  font-weight:800;
-  font-size:13px;
-  background:rgba(139,94,60,.08);
-  border:1px solid rgba(139,94,60,.10);
-  padding:8px 13px;
+  gap:8px;
+  color:#fff;
+  background:var(--brown);
+  padding:8px 14px;
   border-radius:30px;
-  margin-bottom:15px;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.5px;
+  margin-bottom:17px;
 }
 
 .hero h1{
-  font-size:clamp(32px,5vw,58px);
-  line-height:1.05;
-  letter-spacing:-3px;
-  margin-bottom:12px;
+  position:relative;
+  font-family:"Playfair Display",serif;
+  font-size:clamp(38px,6vw,70px);
+  line-height:1;
+  letter-spacing:-2.5px;
+  color:var(--brown-950);
+  margin-bottom:15px;
 }
 
 .hero h1 span{
   color:var(--brown);
+  font-style:italic;
 }
 
 .hero p{
-  color:var(--gray);
-  max-width:560px;
+  position:relative;
+  max-width:610px;
   margin:auto;
+  color:var(--muted);
   line-height:1.7;
+  font-size:15px;
+}
+
+/* =========================================================
+   SECTION BAR
+========================================================= */
+
+.section-bar{
+  display:flex;
+  align-items:end;
+  justify-content:space-between;
+  margin:0 0 20px;
+  padding:0 3px;
+}
+
+.section-bar h2{
+  font-family:"Playfair Display",serif;
+  font-size:28px;
+  color:var(--brown-900);
+}
+
+.section-bar span{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
 }
 
 /* =========================================================
@@ -444,7 +555,7 @@ body::after{
 
 .pin-card{
   break-inside:avoid;
-  margin-bottom:19px;
+  margin-bottom:22px;
   cursor:pointer;
   position:relative;
 }
@@ -452,20 +563,23 @@ body::after{
 .pin-image-wrap{
   position:relative;
   overflow:hidden;
-  border-radius:20px;
-  background:var(--cream-2);
+  border-radius:22px;
+  background:var(--brown-300);
+  box-shadow:0 8px 24px rgba(70,39,22,.10);
 }
 
 .pin-image{
   display:block;
   width:100%;
   height:auto;
-  transition:transform .35s ease,filter .35s ease;
+  min-height:150px;
+  object-fit:cover;
+  transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .35s;
 }
 
 .pin-card:hover .pin-image{
-  transform:scale(1.025);
-  filter:brightness(.91);
+  transform:scale(1.035);
+  filter:brightness(.78);
 }
 
 .pin-overlay{
@@ -474,10 +588,13 @@ body::after{
   display:flex;
   align-items:flex-end;
   justify-content:space-between;
-  padding:13px;
+  padding:14px;
   opacity:0;
   transition:.25s;
-  background:linear-gradient(transparent 55%,rgba(25,17,12,.48));
+  background:linear-gradient(
+    transparent 35%,
+    rgba(32,17,9,.72)
+  );
 }
 
 .pin-card:hover .pin-overlay{
@@ -486,69 +603,109 @@ body::after{
 
 .pin-save{
   border:0;
-  background:white;
+  background:#fff9f2;
   color:var(--brown);
-  padding:9px 13px;
+  padding:9px 14px;
   border-radius:12px;
-  font-weight:850;
-  box-shadow:0 5px 16px rgba(0,0,0,.13);
+  font-weight:900;
+  box-shadow:0 5px 18px rgba(0,0,0,.20);
 }
 
 .pin-likes-overlay{
   color:white;
-  font-weight:800;
+  font-weight:900;
   font-size:13px;
 }
 
+/* =========================================================
+   PIN INFO
+========================================================= */
+
 .pin-info{
-  padding:10px 4px 4px;
+  padding:11px 4px 4px;
 }
 
 .pin-title{
+  font-family:"Space Grotesk",sans-serif;
   font-size:15px;
-  font-weight:850;
-  line-height:1.3;
+  font-weight:700;
+  line-height:1.35;
+  color:var(--brown-950);
 }
 
 .pin-description{
   margin-top:5px;
-  color:var(--gray);
-  font-size:13px;
+  color:var(--muted);
+  font-size:12px;
   line-height:1.45;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
 }
 
 .pin-meta{
   display:flex;
   align-items:center;
-  justify-content:space-between;
-  margin-top:8px;
-  color:var(--gray);
-  font-size:12px;
+  gap:10px;
+  margin-top:9px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+}
+
+.pin-meta-user{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.pin-stats{
+  margin-left:auto;
+  display:flex;
+  gap:8px;
+  white-space:nowrap;
 }
 
 .pin-likes{
   color:var(--brown);
-  font-weight:800;
+  font-weight:900;
+}
+
+.pin-comments-count{
+  color:var(--brown-600);
 }
 
 /* =========================================================
-   EMPTY / LOADING
+   EMPTY
 ========================================================= */
 
 .empty{
   column-span:all;
   text-align:center;
-  padding:80px 20px;
-  color:var(--gray);
+  padding:90px 20px;
+  color:var(--muted);
 }
 
 .empty-icon{
-  font-size:46px;
-  margin-bottom:12px;
+  width:70px;
+  height:70px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 15px;
+  border-radius:24px;
+  background:var(--brown);
+  color:white;
+  font-size:27px;
+  box-shadow:var(--shadow-soft);
 }
 
 .empty h2{
-  color:var(--black);
+  font-family:"Playfair Display",serif;
+  color:var(--brown-900);
+  font-size:28px;
   margin-bottom:7px;
 }
 
@@ -559,13 +716,13 @@ body::after{
 .modal{
   position:fixed;
   inset:0;
-  z-index:200;
+  z-index:300;
   display:none;
   align-items:center;
   justify-content:center;
   padding:15px;
-  background:rgba(31,23,18,.62);
-  backdrop-filter:blur(8px);
+  background:rgba(27,14,7,.76);
+  backdrop-filter:blur(10px);
 }
 
 .modal.show{
@@ -575,31 +732,32 @@ body::after{
 .modal-card{
   position:relative;
   width:100%;
-  max-width:1080px;
+  max-width:1120px;
   max-height:94vh;
   overflow:auto;
-  background:white;
-  border-radius:27px;
-  box-shadow:0 30px 90px rgba(0,0,0,.25);
+  background:var(--paper);
+  border-radius:28px;
+  box-shadow:0 35px 100px rgba(0,0,0,.40);
 }
 
 .close-btn{
   position:absolute;
   right:15px;
   top:15px;
-  z-index:5;
-  width:42px;
-  height:42px;
+  z-index:20;
+  width:43px;
+  height:43px;
   border:0;
   border-radius:50%;
-  background:rgba(255,255,255,.95);
-  color:var(--black);
-  font-size:23px;
-  box-shadow:0 5px 18px rgba(0,0,0,.12);
+  background:rgba(255,250,244,.95);
+  color:var(--brown-900);
+  font-size:24px;
+  box-shadow:0 6px 20px rgba(0,0,0,.15);
 }
 
 .close-btn:hover{
-  color:var(--brown);
+  background:var(--brown);
+  color:white;
 }
 
 /* =========================================================
@@ -608,153 +766,246 @@ body::after{
 
 .pin-detail{
   display:grid;
-  grid-template-columns:minmax(0,1fr) minmax(350px,.8fr);
+  grid-template-columns:minmax(0,1.1fr) minmax(370px,.9fr);
+  min-height:620px;
 }
 
 .detail-image-area{
-  min-height:550px;
+  min-height:600px;
   display:flex;
   align-items:center;
   justify-content:center;
-  background:#eee7df;
+  padding:25px;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,255,255,.08),transparent 35%),
+    var(--brown-900);
 }
 
 .detail-image{
   width:100%;
   max-height:82vh;
   object-fit:contain;
+  border-radius:17px;
+  box-shadow:0 20px 55px rgba(0,0,0,.28);
 }
 
 .detail-content{
-  padding:58px 36px 30px;
+  padding:58px 34px 32px;
+  background:var(--paper);
+}
+
+.detail-topline{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--brown);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin-bottom:13px;
 }
 
 .detail-title{
-  font-size:clamp(25px,4vw,37px);
-  line-height:1.1;
-  letter-spacing:-1px;
+  font-family:"Playfair Display",serif;
+  font-size:clamp(30px,4vw,46px);
+  line-height:1.05;
+  letter-spacing:-1.4px;
+  color:var(--brown-950);
 }
 
 .detail-user{
-  margin-top:10px;
-  color:var(--gray);
+  margin-top:13px;
+  color:var(--muted);
   font-size:13px;
 }
 
+.detail-user strong{
+  color:var(--brown);
+}
+
 .detail-description{
-  color:#5e554e;
+  color:#66564a;
   line-height:1.8;
-  margin:18px 0;
+  margin:20px 0;
   white-space:pre-wrap;
+  font-size:14px;
 }
 
 .detail-stats{
   display:flex;
-  gap:15px;
-  color:var(--gray);
-  font-size:14px;
-  font-weight:700;
-  margin:15px 0;
+  gap:9px;
+  flex-wrap:wrap;
+  margin:18px 0;
+}
+
+.detail-stat{
+  background:#e5d5c5;
+  color:var(--brown-800);
+  padding:9px 12px;
+  border-radius:11px;
+  font-size:12px;
+  font-weight:900;
 }
 
 .detail-actions{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:1fr 1fr;
   gap:8px;
   margin:20px 0 28px;
 }
 
 .action-btn{
-  border:1px solid var(--line);
-  background:white;
-  color:var(--black);
-  padding:12px 16px;
-  border-radius:14px;
-  font-weight:800;
+  border:1px solid #d8c6b5;
+  background:#fffaf5;
+  color:var(--brown-900);
+  padding:12px 14px;
+  border-radius:13px;
+  font-weight:900;
   transition:.2s;
 }
 
 .action-btn:hover{
-  border-color:var(--brown-light);
+  border-color:var(--brown);
   color:var(--brown);
-  background:var(--cream);
+  transform:translateY(-1px);
 }
 
 .action-btn.save{
   background:var(--brown);
-  border-color:var(--brown);
   color:white;
+  border-color:var(--brown);
 }
 
 .action-btn.save:hover{
-  background:var(--brown-dark);
+  background:var(--brown-800);
   color:white;
 }
 
 .action-btn.download{
-  background:var(--cream);
-  color:var(--brown);
+  background:#dcc5b0;
   border-color:transparent;
 }
 
 .action-btn.liked{
-  color:#b13e48;
-  background:#fff0f1;
-  border-color:#f1c8cc;
+  background:#f4dfdc;
+  border-color:#d7aaa5;
+  color:#9d332d;
+}
+
+.action-btn.delete{
+  grid-column:1 / -1;
+  color:#963a32;
+  border-color:#d9aaa5;
+  background:#f8e8e5;
+}
+
+.action-btn.delete:hover{
+  background:#963a32;
+  color:white;
 }
 
 /* =========================================================
    COMMENTS
 ========================================================= */
 
+.comments-section{
+  border-top:1px solid #d9c8b7;
+  padding-top:22px;
+}
+
 .comments-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-family:"Space Grotesk",sans-serif;
   font-size:16px;
-  margin-bottom:12px;
+  margin-bottom:14px;
+  color:var(--brown-900);
+}
+
+.comments-heading span{
+  color:var(--brown);
+  font-size:12px;
 }
 
 .comments-list{
-  max-height:220px;
+  max-height:260px;
   overflow:auto;
+  padding-right:3px;
 }
 
 .comment{
-  padding:10px 0;
-  border-bottom:1px solid var(--line);
+  display:flex;
+  gap:10px;
+  padding:11px 0;
+  border-bottom:1px solid #dfd1c3;
+}
+
+.comment-avatar{
+  flex:0 0 34px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  background:var(--brown);
+  color:white;
+  font-size:12px;
+  font-weight:900;
+}
+
+.comment-avatar img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.comment-body{
+  min-width:0;
 }
 
 .comment strong{
-  font-size:13px;
+  font-size:12px;
+  color:var(--brown-900);
 }
 
 .comment p{
-  margin-top:4px;
-  color:var(--gray);
-  font-size:14px;
+  margin-top:3px;
+  color:#6f5d4f;
+  font-size:13px;
   line-height:1.5;
 }
 
 .comment-form{
   display:flex;
   gap:7px;
-  margin-top:12px;
+  margin-top:13px;
 }
 
 .comment-form input{
   flex:1;
   min-width:0;
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:12px 14px;
+  border:1px solid #d5c2b0;
+  border-radius:13px;
+  padding:12px 13px;
   outline:none;
+  background:#fffaf5;
+}
+
+.comment-form input:focus{
+  border-color:var(--brown);
 }
 
 .comment-form button{
   border:0;
-  border-radius:14px;
+  border-radius:13px;
   padding:0 17px;
   background:var(--brown);
   color:white;
-  font-weight:800;
+  font-weight:900;
 }
 
 /* =========================================================
@@ -762,26 +1013,30 @@ body::after{
 ========================================================= */
 
 .create-card{
-  max-width:650px;
+  max-width:680px;
   padding:38px;
 }
 
 .create-card h2{
-  font-size:27px;
-  margin-bottom:6px;
+  font-family:"Playfair Display",serif;
+  font-size:34px;
+  color:var(--brown-900);
+  margin-bottom:5px;
 }
 
 .create-subtitle{
-  color:var(--gray);
+  color:var(--muted);
   margin-bottom:22px;
   font-size:14px;
 }
 
 .upload-box{
-  min-height:280px;
-  border:2px dashed #d6c8bb;
-  background:#faf7f3;
-  border-radius:21px;
+  min-height:310px;
+  border:2px dashed #b79578;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(112,67,40,.08),transparent 40%),
+    #eee1d2;
+  border-radius:23px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -794,31 +1049,32 @@ body::after{
 
 .upload-box:hover{
   border-color:var(--brown);
-  background:#f8f2ec;
+  background:#e8d8c7;
 }
 
 .upload-placeholder{
   padding:35px;
-  color:var(--gray);
+  color:var(--muted);
 }
 
 .upload-icon{
-  width:65px;
-  height:65px;
+  width:72px;
+  height:72px;
   display:flex;
   align-items:center;
   justify-content:center;
-  margin:0 auto 13px;
-  border-radius:20px;
-  background:rgba(139,94,60,.10);
-  color:var(--brown);
+  margin:0 auto 14px;
+  border-radius:23px;
+  background:var(--brown);
+  color:white;
   font-size:30px;
+  box-shadow:0 10px 25px rgba(112,67,40,.20);
 }
 
 .preview{
   display:none;
   width:100%;
-  max-height:500px;
+  max-height:520px;
   object-fit:contain;
 }
 
@@ -827,25 +1083,51 @@ body::after{
 ========================================================= */
 
 .profile-header{
+  position:relative;
   text-align:center;
-  padding:45px 20px 30px;
+  padding:55px 20px 35px;
+  background:
+    linear-gradient(145deg,var(--brown-950),var(--brown));
+  color:white;
+  overflow:hidden;
+}
+
+.profile-header::before{
+  content:"";
+  position:absolute;
+  width:280px;
+  height:280px;
+  border:1px solid rgba(255,255,255,.10);
+  border-radius:50%;
+  top:-150px;
+  left:-80px;
+}
+
+.profile-header::after{
+  content:"✦";
+  position:absolute;
+  font-size:130px;
+  color:rgba(255,255,255,.045);
+  right:-20px;
+  bottom:-30px;
 }
 
 .profile-avatar{
-  width:105px;
-  height:105px;
+  position:relative;
+  width:110px;
+  height:110px;
   border-radius:50%;
-  background:var(--brown);
+  background:#bd8963;
   color:white;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
   margin:auto;
-  font-size:38px;
+  font-size:40px;
   font-weight:900;
-  border:5px solid white;
-  box-shadow:var(--shadow-soft);
+  border:5px solid rgba(255,255,255,.9);
+  box-shadow:0 15px 40px rgba(0,0,0,.25);
 }
 
 .profile-avatar img{
@@ -855,31 +1137,96 @@ body::after{
 }
 
 .profile-header h1{
+  position:relative;
   margin-top:14px;
-  font-size:28px;
+  font-family:"Playfair Display",serif;
+  font-size:31px;
 }
 
 .profile-username{
-  color:var(--brown);
+  position:relative;
+  color:#dcb89e;
   margin-top:4px;
-  font-weight:700;
+  font-weight:800;
 }
 
 .profile-bio{
+  position:relative;
   max-width:500px;
   margin:10px auto;
-  color:var(--gray);
+  color:#e3d2c2;
   line-height:1.6;
 }
 
 .logout-btn{
-  border:1px solid var(--line);
-  background:white;
-  color:var(--brown);
+  position:relative;
+  border:1px solid rgba(255,255,255,.20);
+  background:rgba(255,255,255,.08);
+  color:white;
   padding:10px 17px;
   border-radius:13px;
   font-weight:800;
   margin-top:12px;
+}
+
+/* =========================================================
+   DELETE CONFIRMATION
+========================================================= */
+
+.confirm-card{
+  max-width:430px;
+  padding:35px;
+  text-align:center;
+}
+
+.confirm-icon{
+  width:65px;
+  height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto 15px;
+  border-radius:20px;
+  background:#f2dedb;
+  color:#9c3932;
+  font-size:28px;
+}
+
+.confirm-card h2{
+  font-family:"Playfair Display",serif;
+  font-size:30px;
+  color:var(--brown-900);
+}
+
+.confirm-card p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+  margin:8px 0 22px;
+}
+
+.confirm-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+
+.confirm-cancel{
+  border:1px solid #d7c4b2;
+  background:white;
+  color:var(--brown);
+  padding:12px;
+  border-radius:13px;
+  font-weight:900;
+}
+
+.confirm-delete{
+  border:0;
+  background:#963a32;
+  color:white;
+  padding:12px;
+  border-radius:13px;
+  font-weight:900;
 }
 
 /* =========================================================
@@ -890,16 +1237,19 @@ body::after{
   position:fixed;
   left:50%;
   bottom:25px;
-  z-index:400;
+  z-index:500;
   transform:translate(-50%,100px);
   opacity:0;
-  background:var(--black);
+  background:var(--brown-950);
   color:white;
   padding:13px 19px;
   border-radius:15px;
   box-shadow:var(--shadow);
   transition:.3s;
-  font-size:14px;
+  font-size:13px;
+  font-weight:700;
+  max-width:90%;
+  text-align:center;
 }
 
 #toast.show{
@@ -911,16 +1261,19 @@ body::after{
    MOBILE
 ========================================================= */
 
-@media(max-width:900px){
+@media(max-width:1000px){
 
-  .topbar{
-    padding:0 15px;
-    gap:10px;
+  .pin-grid{
+    columns:4 190px;
   }
 
-  .header-brand{
-    font-size:26px;
+  .pin-detail{
+    grid-template-columns:minmax(0,1fr) minmax(330px,.8fr);
   }
+
+}
+
+@media(max-width:800px){
 
   .pin-grid{
     columns:3 180px;
@@ -931,7 +1284,12 @@ body::after{
   }
 
   .detail-image-area{
-    min-height:350px;
+    min-height:420px;
+    max-height:60vh;
+  }
+
+  .detail-image{
+    max-height:55vh;
   }
 
 }
@@ -939,14 +1297,14 @@ body::after{
 @media(max-width:650px){
 
   .topbar{
-    height:auto;
-    min-height:68px;
+    min-height:65px;
+    padding:9px 10px;
+    gap:9px;
     flex-wrap:wrap;
-    padding:10px;
   }
 
   .header-brand{
-    font-size:25px;
+    font-size:26px;
   }
 
   .search-wrap{
@@ -960,42 +1318,58 @@ body::after{
   }
 
   .create-btn{
-    padding:10px 13px;
+    padding:10px 12px;
+    font-size:12px;
+  }
+
+  .round-btn{
+    width:39px;
+    height:39px;
+  }
+
+  .user-avatar{
+    width:39px;
+    height:39px;
   }
 
   .main-nav{
     overflow-x:auto;
-    padding:9px 10px;
+    padding:10px;
   }
 
   .nav-btn{
     white-space:nowrap;
-    padding:9px 13px;
+    padding:9px 14px;
   }
 
   .main{
-    padding:0 10px 50px;
+    padding:0 10px 55px;
   }
 
   .hero{
-    padding:32px 10px 25px;
+    padding:34px 8px 27px;
   }
 
   .hero h1{
-    letter-spacing:-2px;
+    font-size:39px;
+    letter-spacing:-1.8px;
+  }
+
+  .hero p{
+    font-size:13px;
   }
 
   .pin-grid{
     columns:2 140px;
-    column-gap:10px;
+    column-gap:11px;
   }
 
   .pin-card{
-    margin-bottom:12px;
+    margin-bottom:15px;
   }
 
   .pin-image-wrap{
-    border-radius:15px;
+    border-radius:17px;
   }
 
   .pin-overlay{
@@ -1003,7 +1377,7 @@ body::after{
   }
 
   .pin-info{
-    padding:7px 2px;
+    padding:7px 2px 2px;
   }
 
   .pin-title{
@@ -1014,29 +1388,52 @@ body::after{
     font-size:11px;
   }
 
-  .detail-content{
-    padding:50px 20px 25px;
+  .pin-meta{
+    font-size:10px;
+  }
+
+  .section-bar h2{
+    font-size:23px;
+  }
+
+  .modal{
+    padding:0;
+    align-items:flex-end;
+  }
+
+  .modal-card{
+    max-height:96vh;
+    border-radius:25px 25px 0 0;
   }
 
   .detail-image-area{
-    min-height:290px;
+    min-height:330px;
+    padding:15px;
+  }
+
+  .detail-content{
+    padding:50px 18px 25px;
+  }
+
+  .detail-title{
+    font-size:32px;
   }
 
   .detail-actions{
-    display:grid;
     grid-template-columns:1fr 1fr;
-  }
-
-  .action-btn{
-    width:100%;
   }
 
   .create-card{
     padding:30px 18px;
   }
 
+  .upload-box{
+    min-height:260px;
+  }
+
   .auth-card{
-    padding:32px 20px;
+    padding:34px 20px;
+    border-radius:27px;
   }
 
 }
@@ -1051,10 +1448,8 @@ body::after{
     font-size:23px;
   }
 
-  .user-avatar,
-  .round-btn{
-    width:40px;
-    height:40px;
+  .create-btn{
+    padding:9px 10px;
   }
 
 }
@@ -1063,463 +1458,503 @@ body::after{
 
 <body>
 
-<!-- ========================================================
+<!-- =========================================================
 AUTH
 ========================================================= -->
 
 <section id="authPage">
 
-<div class="auth-card">
+  <div class="auth-card">
 
-<div class="brand">KIVOO</div>
+    <div class="brand">KIVOO</div>
 
-<div class="brand-subtitle">
-Discover ideas. Save inspiration. Create your world.
-</div>
+    <div class="brand-subtitle">
+      Discover ideas. Save inspiration. Create your world.
+    </div>
 
-<div class="auth-tabs">
+    <div class="auth-tabs">
 
-<button
-id="loginTab"
-class="active"
-onclick="showAuth('login')">
-Sign in
-</button>
+      <button id="loginTab"
+              class="active"
+              onclick="showAuth('login')">
+        Sign in
+      </button>
 
-<button
-id="signupTab"
-onclick="showAuth('signup')">
-Create account
-</button>
+      <button id="signupTab"
+              onclick="showAuth('signup')">
+        Create account
+      </button>
 
-</div>
+    </div>
 
-<form id="loginForm">
+    <form id="loginForm">
 
-<div class="field">
-<label>Email address</label>
-<input
-id="loginEmail"
-type="email"
-required
-placeholder="you@example.com">
-</div>
+      <div class="field">
+        <label>Email address</label>
+        <input id="loginEmail"
+               type="email"
+               required
+               placeholder="you@example.com">
+      </div>
 
-<div class="field">
-<label>Password</label>
-<input
-id="loginPassword"
-type="password"
-required
-placeholder="Your password">
-</div>
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPassword"
+               type="password"
+               required
+               placeholder="Your password">
+      </div>
 
-<button class="primary-btn">
-Sign in to KIVOO
-</button>
+      <button class="primary-btn">
+        Sign in to KIVOO
+      </button>
 
-</form>
+    </form>
 
-<form
-id="signupForm"
-style="display:none">
+    <form id="signupForm" style="display:none">
 
-<div class="field">
-<label>Username</label>
-<input
-id="signupUsername"
-required
-minlength="3"
-maxlength="30"
-placeholder="yourusername">
-</div>
+      <div class="field">
+        <label>Username</label>
+        <input id="signupUsername"
+               required
+               minlength="3"
+               maxlength="30"
+               placeholder="yourusername">
+      </div>
 
-<div class="field">
-<label>Display name</label>
-<input
-id="signupDisplayName"
-required
-placeholder="Your name">
-</div>
+      <div class="field">
+        <label>Display name</label>
+        <input id="signupDisplayName"
+               required
+               placeholder="Your name">
+      </div>
 
-<div class="field">
-<label>Email address</label>
-<input
-id="signupEmail"
-type="email"
-required
-placeholder="you@example.com">
-</div>
+      <div class="field">
+        <label>Email address</label>
+        <input id="signupEmail"
+               type="email"
+               required
+               placeholder="you@example.com">
+      </div>
 
-<div class="field">
-<label>Password</label>
-<input
-id="signupPassword"
-type="password"
-minlength="6"
-required
-placeholder="At least 6 characters">
-</div>
+      <div class="field">
+        <label>Password</label>
+        <input id="signupPassword"
+               type="password"
+               minlength="6"
+               required
+               placeholder="At least 6 characters">
+      </div>
 
-<button class="primary-btn">
-Create my KIVOO account
-</button>
+      <button class="primary-btn">
+        Create my KIVOO account
+      </button>
 
-</form>
+    </form>
 
-<div
-id="authMessage"
-class="auth-message">
-</div>
+    <div id="authMessage"
+         class="auth-message">
+    </div>
 
-</div>
+  </div>
+
 </section>
 
 
-<!-- ========================================================
+<!-- =========================================================
 APP
 ========================================================= -->
 
 <div id="app">
 
-<header class="topbar">
+  <header class="topbar">
 
-<div class="header-brand">
-KIVOO
-</div>
+    <div class="header-brand">
+      KIVOO
+    </div>
 
-<div class="search-wrap">
+    <div class="search-wrap">
 
-<span class="search-icon">⌕</span>
+      <span class="search-icon">⌕</span>
 
-<input
-id="searchInput"
-class="search-input"
-placeholder="Search ideas, images and inspiration...">
+      <input id="searchInput"
+             class="search-input"
+             placeholder="Search ideas, images and inspiration...">
 
-</div>
+    </div>
 
-<div class="header-actions">
+    <div class="header-actions">
 
-<button
-class="round-btn"
-title="Home"
-onclick="loadHome()">
-⌂
-</button>
+      <button class="round-btn"
+              title="Home"
+              onclick="loadHome()">
+        ⌂
+      </button>
 
-<button
-class="create-btn"
-onclick="openCreate()">
-＋ Create
-</button>
+      <button class="create-btn"
+              onclick="openCreate()">
+        ＋ Create
+      </button>
 
-<div
-id="headerAvatar"
-class="user-avatar"
-onclick="showProfile()">
-K
-</div>
+      <div id="headerAvatar"
+           class="user-avatar"
+           onclick="showProfile()">
+        K
+      </div>
 
-</div>
+    </div>
 
-</header>
+  </header>
 
 
-<nav class="main-nav">
+  <nav class="main-nav">
 
-<button
-id="homeNav"
-class="nav-btn active"
-onclick="loadHome()">
-Home
-</button>
+    <button id="homeNav"
+            class="nav-btn active"
+            onclick="loadHome()">
+      Home
+    </button>
 
-<button
-id="savedNav"
-class="nav-btn"
-onclick="loadSaved()">
-Saved
-</button>
+    <button id="savedNav"
+            class="nav-btn"
+            onclick="loadSaved()">
+      Saved
+    </button>
 
-<button
-class="nav-btn"
-onclick="showProfile()">
-Profile
-</button>
+    <button class="nav-btn"
+            onclick="showProfile()">
+      Profile
+    </button>
 
-</nav>
+  </nav>
 
 
-<main
-id="mainContent"
-class="main">
-</main>
+  <main id="mainContent"
+        class="main">
+  </main>
 
 </div>
 
 
-<!-- ========================================================
+<!-- =========================================================
 PIN MODAL
 ========================================================= -->
 
-<div
-id="pinModal"
-class="modal">
+<div id="pinModal"
+     class="modal">
 
-<div class="modal-card">
+  <div class="modal-card">
 
-<button
-class="close-btn"
-onclick="closeModal('pinModal')">
-×
-</button>
+    <button class="close-btn"
+            onclick="closeModal('pinModal')">
+      ×
+    </button>
 
-<div class="pin-detail">
+    <div class="pin-detail">
 
-<div class="detail-image-area">
+      <div class="detail-image-area">
 
-<img
-id="detailImage"
-class="detail-image"
-alt="KIVOO image">
+        <img id="detailImage"
+             class="detail-image"
+             alt="KIVOO image">
+
+      </div>
+
+      <div class="detail-content">
+
+        <div class="detail-topline">
+          ✦ KIVOO PIN
+        </div>
+
+        <h1 id="detailTitle"
+            class="detail-title">
+        </h1>
+
+        <div id="detailUser"
+             class="detail-user">
+        </div>
+
+        <p id="detailDescription"
+           class="detail-description">
+        </p>
+
+        <div class="detail-stats">
+
+          <span id="detailLikes"
+                class="detail-stat">
+            ♥ 0 likes
+          </span>
+
+          <span id="detailSaves"
+                class="detail-stat">
+            ♡ 0 saves
+          </span>
+
+          <span id="detailCommentsCount"
+                class="detail-stat">
+            💬 0 comments
+          </span>
+
+        </div>
+
+        <div class="detail-actions">
+
+          <button id="saveBtn"
+                  class="action-btn save"
+                  onclick="toggleSave()">
+            ＋ Save
+          </button>
+
+          <button class="action-btn download"
+                  onclick="downloadImage()">
+            ↓ Download
+          </button>
+
+          <button id="likeBtn"
+                  class="action-btn"
+                  onclick="toggleLike()">
+            ♡ Like
+          </button>
+
+          <button id="deleteBtn"
+                  class="action-btn delete hidden"
+                  onclick="askDeletePin()">
+            🗑 Delete Pin
+          </button>
+
+        </div>
+
+        <div class="comments-section">
+
+          <h3 class="comments-heading">
+
+            <span>
+              Comments
+            </span>
+
+            <span id="commentsHeadingCount">
+              0
+            </span>
+
+          </h3>
+
+          <div id="comments"
+               class="comments-list">
+          </div>
+
+          <form id="commentForm"
+                class="comment-form">
+
+            <input id="commentInput"
+                   maxlength="500"
+                   required
+                   placeholder="Share your thoughts...">
+
+            <button>
+              Post
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
 
 </div>
 
-<div class="detail-content">
 
-<h1
-id="detailTitle"
-class="detail-title">
-</h1>
-
-<div
-id="detailUser"
-class="detail-user">
-</div>
-
-<p
-id="detailDescription"
-class="detail-description">
-</p>
-
-<div class="detail-stats">
-
-<span id="detailLikes">
-♥ 0 likes
-</span>
-
-<span id="detailSaves">
-♡ 0 saves
-</span>
-
-</div>
-
-<div class="detail-actions">
-
-<button
-id="saveBtn"
-class="action-btn save"
-onclick="toggleSave()">
-＋ Save
-</button>
-
-<button
-class="action-btn download"
-onclick="downloadImage()">
-↓ Download
-</button>
-
-<button
-id="likeBtn"
-class="action-btn"
-onclick="toggleLike()">
-♡ Like
-</button>
-
-</div>
-
-<h3 class="comments-heading">
-Comments
-</h3>
-
-<div
-id="comments"
-class="comments-list">
-</div>
-
-<form
-id="commentForm"
-class="comment-form">
-
-<input
-id="commentInput"
-maxlength="500"
-required
-placeholder="Add a comment...">
-
-<button>
-Post
-</button>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
-</div>
-
-
-<!-- ========================================================
+<!-- =========================================================
 CREATE MODAL
 ========================================================= -->
 
-<div
-id="createModal"
-class="modal">
+<div id="createModal"
+     class="modal">
 
-<div class="modal-card create-card">
+  <div class="modal-card create-card">
 
-<button
-class="close-btn"
-onclick="closeModal('createModal')">
-×
-</button>
+    <button class="close-btn"
+            onclick="closeModal('createModal')">
+      ×
+    </button>
 
-<h2>Create a Pin</h2>
+    <h2>Create a Pin</h2>
 
-<p class="create-subtitle">
-Share something inspiring with KIVOO.
-</p>
+    <p class="create-subtitle">
+      Turn something beautiful into inspiration for everyone.
+    </p>
 
-<label
-for="imageInput"
-class="upload-box">
+    <label for="imageInput"
+           class="upload-box">
 
-<div
-id="uploadPlaceholder"
-class="upload-placeholder">
+      <div id="uploadPlaceholder"
+           class="upload-placeholder">
 
-<div class="upload-icon">
-＋
-</div>
+        <div class="upload-icon">
+          ＋
+        </div>
 
-<strong>
-Choose an image
-</strong>
+        <strong>
+          Choose an image
+        </strong>
 
-<p style="margin-top:6px">
-JPG, PNG or WEBP
-</p>
+        <p style="margin-top:7px">
+          JPG, PNG, WEBP or GIF
+        </p>
 
-</div>
+      </div>
 
-<img
-id="preview"
-class="preview"
-alt="Preview">
+      <img id="preview"
+           class="preview"
+           alt="Preview">
 
-</label>
+    </label>
 
-<input
-id="imageInput"
-type="file"
-accept="image/*"
-hidden>
+    <input id="imageInput"
+           type="file"
+           accept="image/*"
+           hidden>
 
-<div class="field">
+    <div class="field">
 
-<label>Title</label>
+      <label>
+        Title
+      </label>
 
-<input
-id="pinTitle"
-maxlength="100"
-placeholder="Give your Pin a title">
+      <input id="pinTitle"
+             maxlength="100"
+             placeholder="Give your Pin a beautiful title">
 
-</div>
+    </div>
 
-<div class="field">
+    <div class="field">
 
-<label>Description</label>
+      <label>
+        Description
+      </label>
 
-<textarea
-id="pinDescription"
-maxlength="1000"
-placeholder="Tell people about this idea..."></textarea>
+      <textarea id="pinDescription"
+                maxlength="1000"
+                placeholder="Tell people about this idea..."></textarea>
 
-</div>
+    </div>
 
-<button
-id="publishBtn"
-class="primary-btn"
-onclick="createPin()">
-Publish Pin
-</button>
+    <button id="publishBtn"
+            class="primary-btn"
+            onclick="createPin()">
+      Publish Pin
+    </button>
+
+  </div>
 
 </div>
-</div>
 
 
-<!-- ========================================================
+<!-- =========================================================
 PROFILE MODAL
 ========================================================= -->
 
-<div
-id="profileModal"
-class="modal">
+<div id="profileModal"
+     class="modal">
 
-<div class="modal-card">
+  <div class="modal-card">
 
-<button
-class="close-btn"
-onclick="closeModal('profileModal')">
-×
-</button>
+    <button class="close-btn"
+            onclick="closeModal('profileModal')">
+      ×
+    </button>
 
-<div class="profile-header">
+    <div class="profile-header">
 
-<div
-id="profileAvatar"
-class="profile-avatar">
-K
+      <div id="profileAvatar"
+           class="profile-avatar">
+        K
+      </div>
+
+      <h1 id="profileName"></h1>
+
+      <div id="profileUsername"
+           class="profile-username">
+      </div>
+
+      <p id="profileBio"
+         class="profile-bio">
+      </p>
+
+      <button class="logout-btn"
+              onclick="logout()">
+        Sign out
+      </button>
+
+    </div>
+
+    <div style="padding:25px 25px 45px">
+
+      <div class="section-bar">
+
+        <h2>
+          Your Pins
+        </h2>
+
+        <span>
+          Your collection
+        </span>
+
+      </div>
+
+      <div id="profilePins"
+           class="pin-grid">
+      </div>
+
+    </div>
+
+  </div>
+
 </div>
 
-<h1 id="profileName"></h1>
 
-<div
-id="profileUsername"
-class="profile-username">
-</div>
+<!-- =========================================================
+DELETE CONFIRMATION
+========================================================= -->
 
-<p
-id="profileBio"
-class="profile-bio">
-</p>
+<div id="deleteModal"
+     class="modal">
 
-<button
-class="logout-btn"
-onclick="logout()">
-Sign out
-</button>
+  <div class="modal-card confirm-card">
 
-</div>
+    <div class="confirm-icon">
+      🗑
+    </div>
 
-<div style="padding:0 25px 45px">
+    <h2>
+      Delete this Pin?
+    </h2>
 
-<h3 style="margin-bottom:17px">
-Your Pins
-</h3>
+    <p>
+      This will permanently remove the Pin and its image.
+      This action cannot be undone.
+    </p>
 
-<div
-id="profilePins"
-class="pin-grid">
-</div>
+    <div class="confirm-actions">
 
-</div>
+      <button class="confirm-cancel"
+              onclick="closeModal('deleteModal')">
+        Cancel
+      </button>
 
-</div>
+      <button id="confirmDeleteBtn"
+              class="confirm-delete"
+              onclick="deletePin()">
+        Delete
+      </button>
+
+    </div>
+
+  </div>
+
 </div>
 
 
@@ -1540,8 +1975,8 @@ const SUPABASE_KEY =
 
 const db =
 window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
 
@@ -1549,11 +1984,12 @@ SUPABASE_KEY
 STATE
 ========================================================= */
 
-let currentUser=null;
-let currentProfile=null;
-let currentPin=null;
-let selectedFile=null;
-let searchTimer=null;
+let currentUser = null;
+let currentProfile = null;
+let currentPin = null;
+let selectedFile = null;
+let searchTimer = null;
+let deleteTarget = null;
 
 
 /* =========================================================
@@ -1562,28 +1998,19 @@ AUTH TABS
 
 function showAuth(type){
 
-document.getElementById("loginForm")
-.style.display =
-type==="login" ? "block" : "none";
+  document.getElementById("loginForm").style.display =
+    type === "login" ? "block" : "none";
 
-document.getElementById("signupForm")
-.style.display =
-type==="signup" ? "block" : "none";
+  document.getElementById("signupForm").style.display =
+    type === "signup" ? "block" : "none";
 
-document.getElementById("loginTab")
-.classList.toggle(
-"active",
-type==="login"
-);
+  document.getElementById("loginTab")
+    .classList.toggle("active",type === "login");
 
-document.getElementById("signupTab")
-.classList.toggle(
-"active",
-type==="signup"
-);
+  document.getElementById("signupTab")
+    .classList.toggle("active",type === "signup");
 
-document.getElementById("authMessage")
-.textContent="";
+  document.getElementById("authMessage").textContent = "";
 
 }
 
@@ -1596,111 +2023,110 @@ document
 .getElementById("signupForm")
 .addEventListener("submit",async e=>{
 
-e.preventDefault();
+  e.preventDefault();
 
-const username=
-document.getElementById("signupUsername")
-.value.trim()
-.toLowerCase();
+  const username =
+    document.getElementById("signupUsername")
+      .value.trim()
+      .toLowerCase();
 
-const displayName=
-document.getElementById("signupDisplayName")
-.value.trim();
+  const displayName =
+    document.getElementById("signupDisplayName")
+      .value.trim();
 
-const email=
-document.getElementById("signupEmail")
-.value.trim();
+  const email =
+    document.getElementById("signupEmail")
+      .value.trim();
 
-const password=
-document.getElementById("signupPassword")
-.value;
+  const password =
+    document.getElementById("signupPassword").value;
 
-const message=
-document.getElementById("authMessage");
+  const message =
+    document.getElementById("authMessage");
 
-if(!/^[a-zA-Z0-9_.-]+$/.test(username)){
+  if(!/^[a-zA-Z0-9_.-]+$/.test(username)){
 
-message.style.color="#a52d35";
+    message.style.color="#963a32";
 
-message.textContent=
-"Username can only contain letters, numbers, dots and dashes.";
+    message.textContent =
+      "Username can only contain letters, numbers, dots and dashes.";
 
-return;
-}
+    return;
+  }
 
-message.style.color=varColor("gray");
-message.textContent="Creating your account...";
+  message.style.color="#806f61";
+  message.textContent="Creating your account...";
 
+  const {
+    data:existing,
+    error:checkError
+  } =
+    await db
+      .from("profiles")
+      .select("id")
+      .eq("username",username)
+      .maybeSingle();
 
-const {data:existing,error:checkError}=
-await db
-.from("profiles")
-.select("id")
-.eq("username",username)
-.maybeSingle();
+  if(checkError){
 
+    console.error(checkError);
 
-if(checkError){
+    message.style.color="#963a32";
+    message.textContent =
+      "Could not check this username.";
 
-console.error(checkError);
+    return;
+  }
 
-message.style.color="#a52d35";
-message.textContent=
-"Could not check this username.";
+  if(existing){
 
-return;
-}
+    message.style.color="#963a32";
+    message.textContent =
+      "This username is already taken.";
 
+    return;
+  }
 
-if(existing){
+  const {
+    data,
+    error
+  } =
+    await db.auth.signUp({
 
-message.style.color="#a52d35";
-message.textContent=
-"This username is already taken.";
+      email,
+      password,
 
-return;
-}
+      options:{
+        data:{
+          username,
+          display_name:displayName
+        }
+      }
 
+    });
 
-const {data,error}=
-await db.auth.signUp({
+  if(error){
 
-email,
-password,
+    message.style.color="#963a32";
+    message.textContent=error.message;
 
-options:{
-data:{
-username,
-display_name:displayName
-}
-}
+    return;
+  }
 
-});
+  if(data.session){
 
+    currentUser=data.user;
 
-if(error){
+    await startApp();
 
-message.style.color="#a52d35";
-message.textContent=error.message;
+  }else{
 
-return;
-}
+    message.style.color="#6c8b52";
 
+    message.textContent =
+      "Account created. Check your email if confirmation is required.";
 
-if(data.session){
-
-currentUser=data.user;
-
-await startApp();
-
-}else{
-
-message.style.color="#6c8b52";
-
-message.textContent=
-"Account created. You can sign in now.";
-
-}
+  }
 
 });
 
@@ -1713,42 +2139,44 @@ document
 .getElementById("loginForm")
 .addEventListener("submit",async e=>{
 
-e.preventDefault();
+  e.preventDefault();
 
-const email=
-document.getElementById("loginEmail")
-.value.trim();
+  const email =
+    document.getElementById("loginEmail")
+      .value.trim();
 
-const password=
-document.getElementById("loginPassword")
-.value;
+  const password =
+    document.getElementById("loginPassword").value;
 
-const message=
-document.getElementById("authMessage");
+  const message =
+    document.getElementById("authMessage");
 
-message.style.color="#756b63";
-message.textContent="Signing in...";
+  message.style.color="#806f61";
+  message.textContent="Signing in...";
 
+  const {
+    data,
+    error
+  } =
+    await db.auth.signInWithPassword({
+      email,
+      password
+    });
 
-const {data,error}=
-await db.auth.signInWithPassword({
-email,
-password
-});
+  if(error){
 
+    console.error(error);
 
-if(error){
+    message.style.color="#963a32";
+    message.textContent =
+      "Invalid email or password.";
 
-message.style.color="#a52d35";
-message.textContent=
-"Invalid email or password.";
+    return;
+  }
 
-return;
-}
+  currentUser=data.user;
 
-currentUser=data.user;
-
-await startApp();
+  await startApp();
 
 });
 
@@ -1759,17 +2187,19 @@ START APP
 
 async function startApp(){
 
-await loadProfile();
+  if(!currentUser)return;
 
-document.getElementById("authPage")
-.style.display="none";
+  await loadProfile();
 
-document.getElementById("app")
-.style.display="block";
+  document.getElementById("authPage")
+    .style.display="none";
 
-updateAvatar();
+  document.getElementById("app")
+    .style.display="block";
 
-await loadHome();
+  updateAvatar();
+
+  await loadHome();
 
 }
 
@@ -1780,59 +2210,62 @@ PROFILE
 
 async function loadProfile(){
 
-const {data,error}=
-await db
-.from("profiles")
-.select("*")
-.eq("id",currentUser.id)
-.maybeSingle();
+  if(!currentUser)return;
 
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("profiles")
+      .select("*")
+      .eq("id",currentUser.id)
+      .maybeSingle();
 
-if(error){
+  if(error){
 
-console.error(error);
-return;
+    console.error(error);
+    return;
+  }
 
-}
+  if(data){
 
+    currentProfile=data;
+    return;
+  }
 
-if(data){
+  const username =
+    currentUser.user_metadata?.username ||
+    "user_"+currentUser.id.slice(0,8);
 
-currentProfile=data;
-return;
+  const displayName =
+    currentUser.user_metadata?.display_name ||
+    "User";
 
-}
+  const {
+    data:created,
+    error:createError
+  } =
+    await db
+      .from("profiles")
+      .insert({
 
+        id:currentUser.id,
+        username,
+        display_name:displayName,
+        bio:""
 
-const username=
-currentUser.user_metadata?.username ||
-"user_"+currentUser.id.slice(0,8);
+      })
+      .select()
+      .single();
 
-const displayName=
-currentUser.user_metadata?.display_name ||
-"User";
+  if(createError){
 
+    console.error(createError);
+    return;
+  }
 
-const {data:created,error:createError}=
-await db
-.from("profiles")
-.insert({
-
-id:currentUser.id,
-username,
-display_name:displayName,
-bio:""
-
-})
-.select()
-.single();
-
-
-if(!createError){
-
-currentProfile=created;
-
-}
+  currentProfile=created;
 
 }
 
@@ -1843,20 +2276,22 @@ AVATAR
 
 function updateAvatar(){
 
-const avatar=
-document.getElementById("headerAvatar");
+  const avatar =
+    document.getElementById("headerAvatar");
 
-if(currentProfile?.avatar_url){
+  if(currentProfile?.avatar_url){
 
-avatar.innerHTML=
-`<img src="${safe(currentProfile.avatar_url)}" alt="Profile">`;
+    avatar.innerHTML =
+      `<img src="${safe(currentProfile.avatar_url)}" alt="Profile">`;
 
-}else{
+  }else{
 
-avatar.textContent=
-initial(currentProfile?.display_name||"K");
+    avatar.textContent =
+      initial(
+        currentProfile?.display_name || "K"
+      );
 
-}
+  }
 
 }
 
@@ -1867,35 +2302,50 @@ HOME
 
 async function loadHome(){
 
-setNav("homeNav");
+  setNav("homeNav");
 
-document.getElementById("mainContent").innerHTML=`
+  document.getElementById("searchInput").value="";
 
-<section class="hero">
+  document.getElementById("mainContent").innerHTML=`
 
-<div class="hero-kicker">
-✦ Welcome to KIVOO
-</div>
+    <section class="hero">
 
-<h1>
-Discover what <span>inspires</span> you.
-</h1>
+      <div class="hero-kicker">
+        ✦ Welcome to KIVOO
+      </div>
 
-<p>
-Explore beautiful ideas, save the things you love,
-and create your own collection of inspiration.
-</p>
+      <h1>
+        Discover what
+        <span>inspires</span>
+        you.
+      </h1>
 
-</section>
+      <p>
+        Explore beautiful ideas, save the things you love,
+        and build your own world of inspiration.
+      </p>
 
-<div
-id="pinsGrid"
-class="pin-grid">
-</div>
+    </section>
 
-`;
+    <div class="section-bar">
 
-await fetchPins();
+      <h2>
+        Fresh inspiration
+      </h2>
+
+      <span>
+        Newest Pins
+      </span>
+
+    </div>
+
+    <div id="pinsGrid"
+         class="pin-grid">
+    </div>
+
+  `;
+
+  await fetchPins();
 
 }
 
@@ -1906,234 +2356,284 @@ FETCH PINS
 
 async function fetchPins(query=""){
 
-const grid=
-document.getElementById("pinsGrid");
+  const grid =
+    document.getElementById("pinsGrid");
 
-if(!grid)return;
+  if(!grid)return;
 
-grid.innerHTML=`
+  grid.innerHTML=`
 
-<div class="empty">
+    <div class="empty">
 
-<div class="empty-icon">
-✦
-</div>
+      <div class="empty-icon">
+        ✦
+      </div>
 
-<p>Loading inspiration...</p>
+      <p>
+        Loading inspiration...
+      </p>
 
-</div>
+    </div>
 
-`;
+  `;
 
+  let request =
+    db
+      .from("pins")
+      .select(`
+        *,
+        profiles(
+          username,
+          display_name,
+          avatar_url
+        )
+      `)
+      .order("created_at",{ascending:false});
 
-let request=
-db
-.from("pins")
-.select(`
-*,
-profiles(
-username,
-display_name,
-avatar_url
-)
-`)
-.order("created_at",{ascending:false});
+  if(query){
 
+    const q =
+      query
+        .replace(/[%_]/g,"")
+        .trim();
 
-if(query){
+    request =
+      request.or(
+        `title.ilike.%${q}%,description.ilike.%${q}%`
+      );
 
-const q=
-query
-.replace(/[%_]/g,"");
+  }
 
-request=request.or(
-`title.ilike.%${q}%,description.ilike.%${q}%`
-);
+  const {
+    data,
+    error
+  } =
+    await request;
 
-}
+  if(error){
 
+    console.error(error);
 
-const {data,error}=
-await request;
+    grid.innerHTML=`
 
+      <div class="empty">
 
-if(error){
+        <div class="empty-icon">
+          !
+        </div>
 
-console.error(error);
+        <h2>
+          Something went wrong
+        </h2>
 
-grid.innerHTML=`
+        <p>
+          ${safe(error.message)}
+        </p>
 
-<div class="empty">
+      </div>
 
-<div class="empty-icon">
-!
-</div>
+    `;
 
-<h2>Something went wrong</h2>
+    return;
+  }
 
-<p>${safe(error.message)}</p>
+  const pins =
+    await addCounts(data || []);
 
-</div>
-
-`;
-
-return;
-
-}
-
-
-const pins=await addCounts(data||[]);
-
-renderPins(grid,pins);
+  renderPins(grid,pins);
 
 }
 
 
 /* =========================================================
-ADD LIKE / SAVE COUNTS
+ADD COUNTS
 ========================================================= */
 
 async function addCounts(pins){
 
-if(!pins.length)
-return [];
+  if(!pins.length)return [];
 
+  const ids =
+    pins.map(p=>p.id);
 
-const ids=
-pins.map(p=>p.id);
+  const [
+    likesResult,
+    savesResult,
+    commentsResult
+  ] =
+    await Promise.all([
 
+      db
+        .from("likes")
+        .select("pin_id")
+        .in("pin_id",ids),
 
-const {data:likes}=
-await db
-.from("likes")
-.select("pin_id")
-.in("pin_id",ids);
+      db
+        .from("saved_pins")
+        .select("pin_id")
+        .in("pin_id",ids),
 
+      db
+        .from("comments")
+        .select("pin_id")
+        .in("pin_id",ids)
 
-const {data:saves}=
-await db
-.from("saved_pins")
-.select("pin_id")
-.in("pin_id",ids);
+    ]);
 
+  const likes =
+    likesResult.data || [];
 
-return pins.map(pin=>({
+  const saves =
+    savesResult.data || [];
 
-...pin,
+  const comments =
+    commentsResult.data || [];
 
-likeCount:
-(likes||[])
-.filter(x=>x.pin_id===pin.id)
-.length,
+  return pins.map(pin=>({
 
-saveCount:
-(saves||[])
-.filter(x=>x.pin_id===pin.id)
-.length
+    ...pin,
 
-}));
+    likeCount:
+      likes.filter(
+        x=>x.pin_id===pin.id
+      ).length,
+
+    saveCount:
+      saves.filter(
+        x=>x.pin_id===pin.id
+      ).length,
+
+    commentCount:
+      comments.filter(
+        x=>x.pin_id===pin.id
+      ).length
+
+  }));
 
 }
 
 
 /* =========================================================
-RENDER
+RENDER PINS
 ========================================================= */
 
 function renderPins(container,pins){
 
-if(!pins.length){
+  if(!pins.length){
 
-container.innerHTML=`
+    container.innerHTML=`
 
-<div class="empty">
+      <div class="empty">
 
-<div class="empty-icon">
-⌕
-</div>
+        <div class="empty-icon">
+          ⌕
+        </div>
 
-<h2>No Pins found</h2>
+        <h2>
+          No Pins found
+        </h2>
 
-<p>Try another search or create the first Pin.</p>
+        <p>
+          Try another search or create the first Pin.
+        </p>
 
-</div>
+      </div>
 
-`;
+    `;
 
-return;
-}
+    return;
+  }
 
+  container.innerHTML =
+    pins.map(pin=>{
 
-container.innerHTML=
-pins.map(pin=>{
+      const profile =
+        pin.profiles || {};
 
-const profile=
-pin.profiles||{};
+      const image =
+        safe(pin.image_url);
 
-return `
+      const title =
+        safe(pin.title || "Untitled");
 
-<article
-class="pin-card"
-onclick="openPin('${pin.id}')">
+      const username =
+        safe(profile.username || "user");
 
-<div class="pin-image-wrap">
+      return `
 
-<img
-class="pin-image"
-src="${safe(pin.image_url)}"
-alt="${safe(pin.title)}"
-loading="lazy">
+        <article
+          class="pin-card"
+          onclick="openPin('${pin.id}')">
 
-<div class="pin-overlay">
+          <div class="pin-image-wrap">
 
-<button
-class="pin-save"
-onclick="event.stopPropagation();quickSave('${pin.id}')">
-Save
-</button>
+            <img
+              class="pin-image"
+              src="${image}"
+              alt="${title}"
+              loading="lazy">
 
-<span class="pin-likes-overlay">
-♥ ${pin.likeCount||0}
-</span>
+            <div class="pin-overlay">
 
-</div>
+              <button
+                class="pin-save"
+                onclick="event.stopPropagation();quickSave('${pin.id}')">
+                Save
+              </button>
 
-</div>
+              <span class="pin-likes-overlay">
+                ♥ ${pin.likeCount || 0}
+              </span>
 
-<div class="pin-info">
+            </div>
 
-<div class="pin-title">
-${safe(pin.title)}
-</div>
+          </div>
 
-${
-pin.description
-?
-`<div class="pin-description">
-${safe(pin.description)}
-</div>`
-:""
-}
+          <div class="pin-info">
 
-<div class="pin-meta">
+            <div class="pin-title">
+              ${title}
+            </div>
 
-<span>
-@${safe(profile.username||"user")}
-</span>
+            ${
+              pin.description
+              ?
+              `
+                <div class="pin-description">
+                  ${safe(pin.description)}
+                </div>
+              `
+              :
+              ""
+            }
 
-<span class="pin-likes">
-♥ ${pin.likeCount||0}
-</span>
+            <div class="pin-meta">
 
-</div>
+              <span class="pin-meta-user">
+                @${username}
+              </span>
 
-</div>
+              <div class="pin-stats">
 
-</article>
+                <span class="pin-likes">
+                  ♥ ${pin.likeCount || 0}
+                </span>
 
-`;
+                <span class="pin-comments-count">
+                  💬 ${pin.commentCount || 0}
+                </span>
 
-}).join("");
+              </div>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }).join("");
 
 }
 
@@ -2146,53 +2646,72 @@ document
 .getElementById("searchInput")
 .addEventListener("input",function(){
 
-clearTimeout(searchTimer);
+  clearTimeout(searchTimer);
 
-const query=this.value.trim();
+  const query =
+    this.value.trim();
 
-searchTimer=setTimeout(()=>{
+  searchTimer =
+    setTimeout(()=>{
 
-if(!query){
+      if(!query){
 
-loadHome();
+        loadHome();
 
-}else{
+      }else{
 
-searchPins(query);
+        searchPins(query);
 
-}
+      }
 
-},300);
+    },300);
 
 });
 
 
 async function searchPins(query){
 
-setNav(null);
+  setNav(null);
 
-document.getElementById("mainContent").innerHTML=`
+  document.getElementById("mainContent").innerHTML=`
 
-<section class="hero" style="padding-bottom:25px">
+    <section class="hero"
+             style="padding-bottom:25px">
 
-<div class="hero-kicker">
-⌕ Search
-</div>
+      <div class="hero-kicker">
+        ⌕ Search
+      </div>
 
-<h1>
-Results for <span>${safe(query)}</span>
-</h1>
+      <h1>
+        Results for
+        <span>${safe(query)}</span>
+      </h1>
 
-</section>
+      <p>
+        Discover Pins matching your search.
+      </p>
 
-<div
-id="pinsGrid"
-class="pin-grid">
-</div>
+    </section>
 
-`;
+    <div class="section-bar">
 
-await fetchPins(query);
+      <h2>
+        Results
+      </h2>
+
+      <span>
+        KIVOO Search
+      </span>
+
+    </div>
+
+    <div id="pinsGrid"
+         class="pin-grid">
+    </div>
+
+  `;
+
+  await fetchPins(query);
 
 }
 
@@ -2203,135 +2722,177 @@ OPEN PIN
 
 async function openPin(id){
 
-const {data,error}=
-await db
-.from("pins")
-.select(`
-*,
-profiles(
-username,
-display_name,
-avatar_url
-)
-`)
-.eq("id",id)
-.single();
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("pins")
+      .select(`
+        *,
+        profiles(
+          username,
+          display_name,
+          avatar_url
+        )
+      `)
+      .eq("id",id)
+      .single();
 
+  if(error){
 
-if(error){
+    console.error(error);
 
-console.error(error);
-showToast("Could not open this Pin.");
-return;
+    showToast("Could not open this Pin.");
 
-}
+    return;
+  }
 
+  currentPin=data;
 
-currentPin=data;
+  document.getElementById("detailImage")
+    .src=data.image_url;
 
-document.getElementById("detailImage")
-.src=data.image_url;
+  document.getElementById("detailTitle")
+    .textContent=data.title || "Untitled";
 
-document.getElementById("detailTitle")
-.textContent=data.title;
+  document.getElementById("detailDescription")
+    .textContent=data.description || "";
 
-document.getElementById("detailDescription")
-.textContent=data.description||"";
+  const profile =
+    data.profiles || {};
 
+  document.getElementById("detailUser")
+    .innerHTML =
+      `By <strong>@${safe(profile.username || "user")}</strong>`;
 
-const profile=
-data.profiles||{};
+  const deleteBtn =
+    document.getElementById("deleteBtn");
 
+  if(data.user_id === currentUser.id){
 
-document.getElementById("detailUser")
-.innerHTML=`
-By <strong>
-@${safe(profile.username||"user")}
-</strong>
-`;
+    deleteBtn.classList.remove("hidden");
 
+  }else{
 
-await updateActions();
+    deleteBtn.classList.add("hidden");
 
-await loadComments();
+  }
 
-document
-.getElementById("pinModal")
-.classList.add("show");
+  await updateActions();
+  await loadComments();
+
+  document
+    .getElementById("pinModal")
+    .classList.add("show");
 
 }
 
 
 /* =========================================================
-UPDATE ACTIONS + COUNTS
+UPDATE ACTIONS
 ========================================================= */
 
 async function updateActions(){
 
-if(!currentPin)return;
+  if(!currentPin)return;
 
+  const [
+    savedResult,
+    likedResult,
+    likesCountResult,
+    savesCountResult,
+    commentsCountResult
+  ] =
+    await Promise.all([
 
-const {data:saved}=
-await db
-.from("saved_pins")
-.select("id")
-.eq("pin_id",currentPin.id)
-.eq("user_id",currentUser.id)
-.maybeSingle();
+      db
+        .from("saved_pins")
+        .select("id")
+        .eq("pin_id",currentPin.id)
+        .eq("user_id",currentUser.id)
+        .maybeSingle(),
 
+      db
+        .from("likes")
+        .select("id")
+        .eq("pin_id",currentPin.id)
+        .eq("user_id",currentUser.id)
+        .maybeSingle(),
 
-const {data:liked}=
-await db
-.from("likes")
-.select("id")
-.eq("pin_id",currentPin.id)
-.eq("user_id",currentUser.id)
-.maybeSingle();
+      db
+        .from("likes")
+        .select("*",{count:"exact",head:true})
+        .eq("pin_id",currentPin.id),
 
+      db
+        .from("saved_pins")
+        .select("*",{count:"exact",head:true})
+        .eq("pin_id",currentPin.id),
 
-const {count:likeCount}=
-await db
-.from("likes")
-.select("*",{count:"exact",head:true})
-.eq("pin_id",currentPin.id);
+      db
+        .from("comments")
+        .select("*",{count:"exact",head:true})
+        .eq("pin_id",currentPin.id)
 
+    ]);
 
-const {count:saveCount}=
-await db
-.from("saved_pins")
-.select("*",{count:"exact",head:true})
-.eq("pin_id",currentPin.id);
+  const saved =
+    savedResult.data;
 
+  const liked =
+    likedResult.data;
 
-const saveBtn=
-document.getElementById("saveBtn");
+  const likeCount =
+    likesCountResult.count || 0;
 
-saveBtn.textContent=
-saved
-?"✓ Saved"
-:"＋ Save";
+  const saveCount =
+    savesCountResult.count || 0;
 
-saveBtn.classList.toggle("save",!saved);
+  const commentCount =
+    commentsCountResult.count || 0;
 
+  const saveBtn =
+    document.getElementById("saveBtn");
 
-const likeBtn=
-document.getElementById("likeBtn");
+  saveBtn.textContent =
+    saved
+      ? "✓ Saved"
+      : "＋ Save";
 
-likeBtn.textContent=
-liked
-?"♥ Liked"
-:"♡ Like";
+  saveBtn.classList.toggle(
+    "save",
+    !saved
+  );
 
-likeBtn.classList.toggle("liked",!!liked);
+  const likeBtn =
+    document.getElementById("likeBtn");
 
+  likeBtn.textContent =
+    liked
+      ? "♥ Liked"
+      : "♡ Like";
 
-document.getElementById("detailLikes")
-.textContent=
-`♥ ${likeCount||0} likes`;
+  likeBtn.classList.toggle(
+    "liked",
+    !!liked
+  );
 
-document.getElementById("detailSaves")
-.textContent=
-`♡ ${saveCount||0} saves`;
+  document.getElementById("detailLikes")
+    .textContent =
+      `♥ ${likeCount} likes`;
+
+  document.getElementById("detailSaves")
+    .textContent =
+      `♡ ${saveCount} saves`;
+
+  document.getElementById("detailCommentsCount")
+    .textContent =
+      `💬 ${commentCount} comments`;
+
+  document.getElementById("commentsHeadingCount")
+    .textContent =
+      commentCount;
 
 }
 
@@ -2342,48 +2903,57 @@ QUICK SAVE
 
 async function quickSave(pinId){
 
-const {data:existing}=
-await db
-.from("saved_pins")
-.select("id")
-.eq("pin_id",pinId)
-.eq("user_id",currentUser.id)
-.maybeSingle();
+  const {
+    data:existing
+  } =
+    await db
+      .from("saved_pins")
+      .select("id")
+      .eq("pin_id",pinId)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
 
+  if(existing){
 
-if(existing){
+    const {error} =
+      await db
+        .from("saved_pins")
+        .delete()
+        .eq("id",existing.id);
 
-await db
-.from("saved_pins")
-.delete()
-.eq("id",existing.id);
+    if(error){
 
-showToast("Removed from Saved.");
+      console.error(error);
+      showToast("Could not remove this Pin.");
 
-}else{
+      return;
+    }
 
-const {error}=
-await db
-.from("saved_pins")
-.insert({
+    showToast("Removed from Saved.");
 
-pin_id:pinId,
-user_id:currentUser.id
+  }else{
 
-});
+    const {error} =
+      await db
+        .from("saved_pins")
+        .insert({
 
+          pin_id:pinId,
+          user_id:currentUser.id
 
-if(error){
+        });
 
-console.error(error);
-showToast("Could not save this Pin.");
-return;
+    if(error){
 
-}
+      console.error(error);
+      showToast("Could not save this Pin.");
 
-showToast("Saved to your collection.");
+      return;
+    }
 
-}
+    showToast("Saved to your collection.");
+
+  }
 
 }
 
@@ -2394,53 +2964,61 @@ SAVE
 
 async function toggleSave(){
 
-if(!currentPin)return;
+  if(!currentPin)return;
 
+  const {
+    data:existing
+  } =
+    await db
+      .from("saved_pins")
+      .select("id")
+      .eq("pin_id",currentPin.id)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
 
-const {data:existing}=
-await db
-.from("saved_pins")
-.select("id")
-.eq("pin_id",currentPin.id)
-.eq("user_id",currentUser.id)
-.maybeSingle();
+  if(existing){
 
+    const {error} =
+      await db
+        .from("saved_pins")
+        .delete()
+        .eq("id",existing.id);
 
-if(existing){
+    if(error){
 
-await db
-.from("saved_pins")
-.delete()
-.eq("id",existing.id);
+      console.error(error);
+      showToast("Could not remove this Pin.");
 
-showToast("Removed from Saved.");
+      return;
+    }
 
-}else{
+    showToast("Removed from Saved.");
 
-const {error}=
-await db
-.from("saved_pins")
-.insert({
+  }else{
 
-pin_id:currentPin.id,
-user_id:currentUser.id
+    const {error} =
+      await db
+        .from("saved_pins")
+        .insert({
 
-});
+          pin_id:currentPin.id,
+          user_id:currentUser.id
 
+        });
 
-if(error){
+    if(error){
 
-console.error(error);
-showToast("Could not save this Pin.");
-return;
+      console.error(error);
+      showToast("Could not save this Pin.");
 
-}
+      return;
+    }
 
-showToast("Saved to your collection.");
+    showToast("Saved to your collection.");
 
-}
+  }
 
-await updateActions();
+  await updateActions();
 
 }
 
@@ -2451,110 +3029,117 @@ LIKE
 
 async function toggleLike(){
 
-if(!currentPin)return;
+  if(!currentPin)return;
 
+  const {
+    data:existing
+  } =
+    await db
+      .from("likes")
+      .select("id")
+      .eq("pin_id",currentPin.id)
+      .eq("user_id",currentUser.id)
+      .maybeSingle();
 
-const {data:existing}=
-await db
-.from("likes")
-.select("id")
-.eq("pin_id",currentPin.id)
-.eq("user_id",currentUser.id)
-.maybeSingle();
+  if(existing){
 
+    const {error} =
+      await db
+        .from("likes")
+        .delete()
+        .eq("id",existing.id);
 
-if(existing){
+    if(error){
 
-await db
-.from("likes")
-.delete()
-.eq("id",existing.id);
+      console.error(error);
+      showToast("Could not unlike this Pin.");
 
-}else{
+      return;
+    }
 
-const {error}=
-await db
-.from("likes")
-.insert({
+  }else{
 
-pin_id:currentPin.id,
-user_id:currentUser.id
+    const {error} =
+      await db
+        .from("likes")
+        .insert({
 
-});
+          pin_id:currentPin.id,
+          user_id:currentUser.id
 
+        });
 
-if(error){
+    if(error){
 
-console.error(error);
-showToast("Could not like this Pin.");
-return;
+      console.error(error);
+      showToast("Could not like this Pin.");
 
-}
+      return;
+    }
 
-}
+  }
 
-await updateActions();
+  await updateActions();
 
 }
 
 
 /* =========================================================
-DOWNLOAD ORIGINAL
+DOWNLOAD
 ========================================================= */
 
 async function downloadImage(){
 
-if(!currentPin?.image_url)
-return;
+  if(!currentPin?.image_url)return;
 
+  try{
 
-try{
+    showToast("Preparing image...");
 
-showToast("Preparing original image...");
+    const response =
+      await fetch(currentPin.image_url);
 
-const response=
-await fetch(currentPin.image_url);
+    if(!response.ok)
+      throw new Error("Download failed");
 
-if(!response.ok)
-throw new Error("Download failed");
+    const blob =
+      await response.blob();
 
+    const url =
+      URL.createObjectURL(blob);
 
-const blob=
-await response.blob();
+    const a =
+      document.createElement("a");
 
-const url=
-URL.createObjectURL(blob);
+    a.href=url;
 
-const a=
-document.createElement("a");
+    a.download =
+      cleanFileName(
+        currentPin.title || "KIVOO-image"
+      ) +
+      "." +
+      getExtension(currentPin.image_url);
 
-a.href=url;
+    document.body.appendChild(a);
 
-a.download=
-cleanFileName(
-currentPin.title||"KIVOO-image"
-)+"."+getExtension(currentPin.image_url);
+    a.click();
 
-document.body.appendChild(a);
+    a.remove();
 
-a.click();
+    URL.revokeObjectURL(url);
 
-a.remove();
+    showToast("Image downloaded.");
 
-URL.revokeObjectURL(url);
+  }catch(error){
 
-showToast("Image downloaded.");
+    console.error(error);
 
-}catch(error){
+    window.open(
+      currentPin.image_url,
+      "_blank"
+    );
 
-console.error(error);
-
-window.open(
-currentPin.image_url,
-"_blank"
-);
-
-}
+  }
 
 }
 
@@ -2565,136 +3150,174 @@ COMMENTS
 
 async function loadComments(){
 
-const box=
-document.getElementById("comments");
+  const box =
+    document.getElementById("comments");
 
-box.innerHTML=
-`<div style="color:#756b63">Loading comments...</div>`;
+  box.innerHTML =
+    `<div style="color:#806f61;padding:8px 0">
+      Loading comments...
+    </div>`;
 
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("comments")
+      .select(`
+        *,
+        profiles(
+          username,
+          display_name,
+          avatar_url
+        )
+      `)
+      .eq("pin_id",currentPin.id)
+      .order("created_at",{ascending:true});
 
-const {data,error}=
-await db
-.from("comments")
-.select(`
-*,
-profiles(
-username,
-display_name
-)
-`)
-.eq("pin_id",currentPin.id)
-.order("created_at",{ascending:true});
+  if(error){
 
+    console.error(error);
 
-if(error){
+    box.innerHTML =
+      `<div style="color:#963a32">
+        Could not load comments.
+      </div>`;
 
-box.innerHTML=
-`<div style="color:#a52d35">
-Could not load comments.
-</div>`;
+    return;
+  }
 
-return;
+  document.getElementById("commentsHeadingCount")
+    .textContent =
+      data.length;
+
+  if(!data.length){
+
+    box.innerHTML =
+      `<div style="color:#806f61;padding:8px 0">
+        No comments yet. Be the first.
+      </div>`;
+
+    return;
+  }
+
+  box.innerHTML =
+    data.map(comment=>{
+
+      const profile =
+        comment.profiles || {};
+
+      const avatar =
+        profile.avatar_url
+        ?
+        `<img src="${safe(profile.avatar_url)}" alt="">`
+        :
+        initial(
+          profile.display_name ||
+          profile.username ||
+          "U"
+        );
+
+      return `
+
+        <div class="comment">
+
+          <div class="comment-avatar">
+            ${avatar}
+          </div>
+
+          <div class="comment-body">
+
+            <strong>
+              @${safe(profile.username || "user")}
+            </strong>
+
+            <p>
+              ${safe(comment.content)}
+            </p>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
 
 }
 
 
-if(!data.length){
-
-box.innerHTML=
-`<div style="color:#756b63">
-No comments yet. Be the first.
-</div>`;
-
-return;
-
-}
-
-
-box.innerHTML=
-data.map(comment=>`
-
-<div class="comment">
-
-<strong>
-@${safe(comment.profiles?.username||"user")}
-</strong>
-
-<p>
-${safe(comment.content)}
-</p>
-
-</div>
-
-`).join("");
-
-}
-
+/* =========================================================
+POST COMMENT
+========================================================= */
 
 document
 .getElementById("commentForm")
 .addEventListener("submit",async e=>{
 
-e.preventDefault();
+  e.preventDefault();
 
-const input=
-document.getElementById("commentInput");
+  if(!currentPin)return;
 
-const content=
-input.value.trim();
+  const input =
+    document.getElementById("commentInput");
 
-if(!content)return;
+  const content =
+    input.value.trim();
 
+  if(!content)return;
 
-const {error}=
-await db
-.from("comments")
-.insert({
+  const {error} =
+    await db
+      .from("comments")
+      .insert({
 
-user_id:currentUser.id,
-pin_id:currentPin.id,
-content
+        user_id:currentUser.id,
+        pin_id:currentPin.id,
+        content
 
-});
+      });
 
+  if(error){
 
-if(error){
+    console.error(error);
 
-console.error(error);
-showToast("Could not post comment.");
-return;
+    showToast("Could not post comment.");
 
-}
+    return;
+  }
 
-input.value="";
+  input.value="";
 
-await loadComments();
+  await loadComments();
+  await updateActions();
 
 });
 
 
 /* =========================================================
-CREATE
+CREATE MODAL
 ========================================================= */
 
 function openCreate(){
 
-selectedFile=null;
+  selectedFile=null;
 
-document.getElementById("imageInput").value="";
+  document.getElementById("imageInput").value="";
 
-document.getElementById("preview")
-.style.display="none";
+  document.getElementById("preview")
+    .style.display="none";
 
-document.getElementById("uploadPlaceholder")
-.style.display="block";
+  document.getElementById("uploadPlaceholder")
+    .style.display="block";
 
-document.getElementById("pinTitle").value="";
+  document.getElementById("pinTitle").value="";
 
-document.getElementById("pinDescription").value="";
+  document.getElementById("pinDescription").value="";
 
-document
-.getElementById("createModal")
-.classList.add("show");
+  document
+    .getElementById("createModal")
+    .classList.add("show");
 
 }
 
@@ -2703,38 +3326,44 @@ document
 .getElementById("imageInput")
 .addEventListener("change",e=>{
 
-const file=e.target.files[0];
+  const file =
+    e.target.files[0];
 
-if(!file)return;
+  if(!file)return;
 
+  if(!file.type.startsWith("image/")){
 
-if(!file.type.startsWith("image/")){
+    showToast("Please select an image.");
 
-showToast("Please select an image.");
-return;
+    return;
+  }
 
-}
+  if(file.size > 15 * 1024 * 1024){
 
+    showToast("Image must be smaller than 15 MB.");
 
-selectedFile=file;
+    return;
+  }
 
+  selectedFile=file;
 
-const reader=new FileReader();
+  const reader =
+    new FileReader();
 
-reader.onload=e=>{
+  reader.onload=e=>{
 
-document.getElementById("preview")
-.src=e.target.result;
+    document.getElementById("preview")
+      .src=e.target.result;
 
-document.getElementById("preview")
-.style.display="block";
+    document.getElementById("preview")
+      .style.display="block";
 
-document.getElementById("uploadPlaceholder")
-.style.display="none";
+    document.getElementById("uploadPlaceholder")
+      .style.display="none";
 
-};
+  };
 
-reader.readAsDataURL(file);
+  reader.readAsDataURL(file);
 
 });
 
@@ -2745,137 +3374,133 @@ CREATE PIN
 
 async function createPin(){
 
-if(!selectedFile){
+  if(!selectedFile){
 
-showToast("Choose an image first.");
-return;
+    showToast("Choose an image first.");
 
-}
+    return;
+  }
 
+  const title =
+    document.getElementById("pinTitle")
+      .value.trim();
 
-const title=
-document.getElementById("pinTitle")
-.value.trim();
+  const description =
+    document.getElementById("pinDescription")
+      .value.trim();
 
-const description=
-document.getElementById("pinDescription")
-.value.trim();
+  if(!title){
 
+    showToast("Please add a title.");
 
-if(!title){
+    return;
+  }
 
-showToast("Please add a title.");
-return;
+  const button =
+    document.getElementById("publishBtn");
 
-}
+  button.disabled=true;
+  button.textContent="Uploading...";
 
+  try{
 
-const button=
-document.getElementById("publishBtn");
+    const extension =
+      getSafeExtension(
+        selectedFile.name
+      );
 
-button.disabled=true;
-button.textContent="Uploading...";
+    const fileName =
+      crypto.randomUUID() +
+      "." +
+      extension;
 
+    const path =
+      currentUser.id +
+      "/" +
+      fileName;
 
-try{
+    const {
+      error:uploadError
+    } =
+      await db
+        .storage
+        .from("pins")
+        .upload(
+          path,
+          selectedFile,
+          {
+            cacheControl:"3600",
+            upsert:false,
+            contentType:selectedFile.type
+          }
+        );
 
-const extension=
-selectedFile.name
-.split(".")
-.pop()
-.toLowerCase();
+    if(uploadError){
 
+      throw new Error(
+        "Image upload failed: " +
+        uploadError.message
+      );
 
-const fileName=
-crypto.randomUUID()+"."+extension;
+    }
 
-const path=
-currentUser.id+"/"+fileName;
+    const {
+      data:urlData
+    } =
+      db
+        .storage
+        .from("pins")
+        .getPublicUrl(path);
 
+    const imageUrl =
+      urlData.publicUrl;
 
-const {error:uploadError}=
-await db
-.storage
-.from("pins")
-.upload(
-path,
-selectedFile,
-{
-cacheControl:"3600",
-upsert:false,
-contentType:selectedFile.type
-}
-);
+    const {
+      error:pinError
+    } =
+      await db
+        .from("pins")
+        .insert({
 
+          user_id:currentUser.id,
+          title,
+          description,
+          image_url:imageUrl
 
-if(uploadError){
+        });
 
-throw new Error(
-"Image upload failed: "+
-uploadError.message
-);
+    if(pinError){
 
-}
+      await db
+        .storage
+        .from("pins")
+        .remove([path]);
 
+      throw new Error(
+        "Could not create Pin: " +
+        pinError.message
+      );
 
-const {data:urlData}=
-db
-.storage
-.from("pins")
-.getPublicUrl(path);
+    }
 
+    closeModal("createModal");
 
-const imageUrl=
-urlData.publicUrl;
+    showToast("Your Pin is live ✦");
 
+    await loadHome();
 
-const {error:pinError}=
-await db
-.from("pins")
-.insert({
+  }catch(error){
 
-user_id:currentUser.id,
-title,
-description,
-image_url:imageUrl
+    console.error(error);
 
-});
+    showToast(error.message);
 
+  }finally{
 
-if(pinError){
+    button.disabled=false;
+    button.textContent="Publish Pin";
 
-await db
-.storage
-.from("pins")
-.remove([path]);
-
-throw new Error(
-"Could not create Pin: "+
-pinError.message
-);
-
-}
-
-
-closeModal("createModal");
-
-showToast("Your Pin is live.");
-
-await loadHome();
-
-
-}catch(error){
-
-console.error(error);
-
-showToast(error.message);
-
-}finally{
-
-button.disabled=false;
-button.textContent="Publish Pin";
-
-}
+  }
 
 }
 
@@ -2886,99 +3511,123 @@ SAVED
 
 async function loadSaved(){
 
-setNav("savedNav");
+  setNav("savedNav");
 
-document.getElementById("mainContent").innerHTML=`
+  document.getElementById("mainContent").innerHTML=`
 
-<section class="hero" style="padding-bottom:25px">
+    <section class="hero"
+             style="padding-bottom:25px">
 
-<div class="hero-kicker">
-♡ Your collection
-</div>
+      <div class="hero-kicker">
+        ♡ Your collection
+      </div>
 
-<h1>
-Your <span>Saved</span> Pins
-</h1>
+      <h1>
+        Your
+        <span>Saved</span>
+        Pins
+      </h1>
 
-<p>
-Everything you want to keep in one beautiful place.
-</p>
+      <p>
+        Everything you want to keep in one beautiful place.
+      </p>
 
-</section>
+    </section>
 
-<div
-id="pinsGrid"
-class="pin-grid">
-</div>
+    <div class="section-bar">
 
-`;
+      <h2>
+        Saved inspiration
+      </h2>
 
+      <span>
+        Your collection
+      </span>
 
-const grid=
-document.getElementById("pinsGrid");
+    </div>
 
-grid.innerHTML=`
+    <div id="pinsGrid"
+         class="pin-grid">
+    </div>
 
-<div class="empty">
-<div class="empty-icon">♡</div>
-<p>Loading your collection...</p>
-</div>
+  `;
 
-`;
+  const grid =
+    document.getElementById("pinsGrid");
 
+  grid.innerHTML=`
 
-const {data,error}=
-await db
-.from("saved_pins")
-.select(`
-pin_id,
-created_at,
-pins(
-*,
-profiles(
-username,
-display_name,
-avatar_url
-)
-)
-`)
-.eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
+    <div class="empty">
 
+      <div class="empty-icon">
+        ♡
+      </div>
 
-if(error){
+      <p>
+        Loading your collection...
+      </p>
 
-console.error(error);
+    </div>
 
-grid.innerHTML=`
+  `;
 
-<div class="empty">
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("saved_pins")
+      .select(`
+        pin_id,
+        created_at,
+        pins(
+          *,
+          profiles(
+            username,
+            display_name,
+            avatar_url
+          )
+        )
+      `)
+      .eq("user_id",currentUser.id)
+      .order("created_at",{ascending:false});
 
-<div class="empty-icon">!</div>
+  if(error){
 
-<h2>Could not load Saved</h2>
+    console.error(error);
 
-<p>${safe(error.message)}</p>
+    grid.innerHTML=`
 
-</div>
+      <div class="empty">
 
-`;
+        <div class="empty-icon">
+          !
+        </div>
 
-return;
+        <h2>
+          Could not load Saved
+        </h2>
 
-}
+        <p>
+          ${safe(error.message)}
+        </p>
 
+      </div>
 
-const pins=
-(data||[])
-.map(x=>x.pins)
-.filter(Boolean);
+    `;
 
+    return;
+  }
 
-const counted=
-await addCounts(pins);
+  const pins =
+    (data || [])
+      .map(x=>x.pins)
+      .filter(Boolean);
 
-renderPins(grid,counted);
+  const counted =
+    await addCounts(pins);
+
+  renderPins(grid,counted);
 
 }
 
@@ -2989,65 +3638,247 @@ PROFILE
 
 async function showProfile(){
 
-await loadProfile();
+  await loadProfile();
 
-document.getElementById("profileName")
-.textContent=
-currentProfile?.display_name||"User";
+  document.getElementById("profileName")
+    .textContent =
+      currentProfile?.display_name || "User";
 
-document.getElementById("profileUsername")
-.textContent=
-"@"+(currentProfile?.username||"user");
+  document.getElementById("profileUsername")
+    .textContent =
+      "@" +
+      (currentProfile?.username || "user");
 
-document.getElementById("profileBio")
-.textContent=
-currentProfile?.bio||"";
+  document.getElementById("profileBio")
+    .textContent =
+      currentProfile?.bio || "";
 
+  const avatar =
+    document.getElementById("profileAvatar");
 
-const avatar=
-document.getElementById("profileAvatar");
+  if(currentProfile?.avatar_url){
 
+    avatar.innerHTML =
+      `<img src="${safe(currentProfile.avatar_url)}" alt="Profile">`;
 
-if(currentProfile?.avatar_url){
+  }else{
 
-avatar.innerHTML=
-`<img src="${safe(currentProfile.avatar_url)}">`;
+    avatar.textContent =
+      initial(
+        currentProfile?.display_name || "K"
+      );
 
-}else{
+  }
 
-avatar.textContent=
-initial(currentProfile?.display_name||"K");
+  const {
+    data,
+    error
+  } =
+    await db
+      .from("pins")
+      .select(`
+        *,
+        profiles(
+          username,
+          display_name,
+          avatar_url
+        )
+      `)
+      .eq("user_id",currentUser.id)
+      .order("created_at",{ascending:false});
+
+  if(error){
+
+    console.error(error);
+
+    showToast("Could not load your Pins.");
+
+    return;
+  }
+
+  const pins =
+    await addCounts(data || []);
+
+  renderPins(
+    document.getElementById("profilePins"),
+    pins
+  );
+
+  document
+    .getElementById("profileModal")
+    .classList.add("show");
 
 }
 
 
-const {data}=
-await db
-.from("pins")
-.select(`
-*,
-profiles(
-username,
-display_name,
-avatar_url
-)
-`)
-.eq("user_id",currentUser.id)
-.order("created_at",{ascending:false});
+/* =========================================================
+DELETE PIN
+========================================================= */
+
+function askDeletePin(){
+
+  if(!currentPin)return;
+
+  if(currentPin.user_id !== currentUser.id){
+
+    showToast("You can only delete your own Pins.");
+
+    return;
+  }
+
+  deleteTarget=currentPin;
+
+  document
+    .getElementById("deleteModal")
+    .classList.add("show");
+
+}
 
 
-const pins=
-await addCounts(data||[]);
+/* =========================================================
+DELETE PIN + IMAGE
+========================================================= */
 
-renderPins(
-document.getElementById("profilePins"),
-pins
-);
+async function deletePin(){
+
+  const pin =
+    deleteTarget;
+
+  if(!pin)return;
+
+  if(pin.user_id !== currentUser.id){
+
+    showToast("You are not allowed to delete this Pin.");
+
+    closeModal("deleteModal");
+
+    return;
+  }
+
+  const button =
+    document.getElementById("confirmDeleteBtn");
+
+  button.disabled=true;
+  button.textContent="Deleting...";
+
+  try{
+
+    /*
+      First remove the database row.
+    */
+
+    const {
+      error:deleteError
+    } =
+      await db
+        .from("pins")
+        .delete()
+        .eq("id",pin.id)
+        .eq("user_id",currentUser.id);
+
+    if(deleteError){
+
+      throw new Error(
+        "Could not delete Pin: " +
+        deleteError.message
+      );
+
+    }
+
+    /*
+      Then try to remove the image from Storage.
+
+      Your Storage policy allows users to delete files
+      located inside their own user-id folder.
+    */
+
+    const storagePath =
+      getStoragePath(
+        pin.image_url
+      );
+
+    if(storagePath){
+
+      const {
+        error:storageError
+      } =
+        await db
+          .storage
+          .from("pins")
+          .remove([storagePath]);
+
+      if(storageError){
+
+        console.warn(
+          "Pin deleted but image cleanup failed:",
+          storageError
+        );
+
+      }
+
+    }
+
+    currentPin=null;
+    deleteTarget=null;
+
+    closeModal("deleteModal");
+    closeModal("pinModal");
+
+    showToast("Pin deleted successfully.");
+
+    await loadHome();
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(error.message);
+
+  }finally{
+
+    button.disabled=false;
+    button.textContent="Delete";
+
+  }
+
+}
 
 
-document
-.getElementById("profileModal")
-.classList.add("show");
+/* =========================================================
+GET STORAGE PATH
+========================================================= */
+
+function getStoragePath(publicUrl){
+
+  try{
+
+    const url =
+      new URL(publicUrl);
+
+    const marker =
+      "/storage/v1/object/public/pins/";
+
+    const index =
+      url.pathname.indexOf(marker);
+
+    if(index === -1){
+
+      return null;
+    }
+
+    return decodeURIComponent(
+      url.pathname.slice(
+        index + marker.length
+      )
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    return null;
+
+  }
 
 }
 
@@ -3058,18 +3889,19 @@ LOGOUT
 
 async function logout(){
 
-await db.auth.signOut();
+  await db.auth.signOut();
 
-currentUser=null;
-currentProfile=null;
+  currentUser=null;
+  currentProfile=null;
+  currentPin=null;
 
-document.getElementById("app")
-.style.display="none";
+  document.getElementById("app")
+    .style.display="none";
 
-document.getElementById("authPage")
-.style.display="flex";
+  document.getElementById("authPage")
+    .style.display="flex";
 
-showAuth("login");
+  showAuth("login");
 
 }
 
@@ -3080,16 +3912,19 @@ SESSION
 
 async function checkSession(){
 
-const {data}=
-await db.auth.getSession();
+  const {
+    data
+  } =
+    await db.auth.getSession();
 
-if(data.session?.user){
+  if(data.session?.user){
 
-currentUser=data.session.user;
+    currentUser =
+      data.session.user;
 
-await startApp();
+    await startApp();
 
-}
+  }
 
 }
 
@@ -3097,33 +3932,71 @@ checkSession();
 
 
 /* =========================================================
-UTILITIES
+AUTH STATE LISTENER
+========================================================= */
+
+db.auth.onAuthStateChange(
+  async (event,session)=>{
+
+    if(
+      event === "SIGNED_IN" &&
+      session?.user &&
+      !currentUser
+    ){
+
+      currentUser=session.user;
+
+      await startApp();
+
+    }
+
+    if(event === "SIGNED_OUT"){
+
+      currentUser=null;
+      currentProfile=null;
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+NAV
 ========================================================= */
 
 function setNav(id){
 
-document
-.querySelectorAll(".nav-btn")
-.forEach(button=>
-button.classList.remove("active")
-);
+  document
+    .querySelectorAll(".nav-btn")
+    .forEach(button=>{
+      button.classList.remove("active");
+    });
 
-if(id){
+  if(id){
 
-document
-.getElementById(id)
-.classList.add("active");
+    const element =
+      document.getElementById(id);
+
+    if(element)
+      element.classList.add("active");
+
+  }
 
 }
 
-}
 
+/* =========================================================
+MODALS
+========================================================= */
 
 function closeModal(id){
 
-document
-.getElementById(id)
-.classList.remove("show");
+  const modal =
+    document.getElementById(id);
+
+  if(modal)
+    modal.classList.remove("show");
 
 }
 
@@ -3132,101 +4005,152 @@ document
 .querySelectorAll(".modal")
 .forEach(modal=>{
 
-modal.addEventListener("click",e=>{
+  modal.addEventListener(
+    "click",
+    e=>{
 
-if(e.target===modal){
+      if(e.target===modal){
 
-modal.classList.remove("show");
+        modal.classList.remove("show");
 
-}
+      }
+
+    }
+  );
 
 });
 
-});
 
+document.addEventListener(
+  "keydown",
+  e=>{
+
+    if(e.key==="Escape"){
+
+      document
+        .querySelectorAll(".modal.show")
+        .forEach(modal=>{
+          modal.classList.remove("show");
+        });
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+UTILITIES
+========================================================= */
 
 function initial(value){
 
-return String(value||"K")
-.trim()
-.charAt(0)
-.toUpperCase();
+  return String(value || "K")
+    .trim()
+    .charAt(0)
+    .toUpperCase();
 
 }
 
 
 function safe(value){
 
-return String(value??"")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+function getSafeExtension(filename){
+
+  const ext =
+    String(filename)
+      .split(".")
+      .pop()
+      .toLowerCase();
+
+  const allowed=[
+    "jpg",
+    "jpeg",
+    "png",
+    "webp",
+    "gif",
+    "avif"
+  ];
+
+  return allowed.includes(ext)
+    ? ext
+    : "jpg";
 
 }
 
 
 function getExtension(url){
 
-try{
+  try{
 
-const pathname=
-new URL(url).pathname;
+    const pathname =
+      new URL(url).pathname;
 
-const ext=
-pathname.split(".").pop().toLowerCase();
+    const ext =
+      pathname
+        .split(".")
+        .pop()
+        .toLowerCase();
 
-if(
-["jpg","jpeg","png","webp","gif","avif"]
-.includes(ext)
-){
+    if([
+      "jpg",
+      "jpeg",
+      "png",
+      "webp",
+      "gif",
+      "avif"
+    ].includes(ext)){
 
-return ext;
+      return ext;
 
-}
+    }
 
-}catch(e){}
+  }catch(e){}
 
-return "jpg";
+  return "jpg";
 
 }
 
 
 function cleanFileName(value){
 
-return String(value)
-.replace(/[\\/:*?"<>|]/g,"-")
-.trim()
-.substring(0,80);
+  return String(value)
+    .replace(/[\\/:*?"<>|]/g,"-")
+    .trim()
+    .substring(0,80);
 
 }
 
 
 function showToast(message){
 
-const toast=
-document.getElementById("toast");
+  const toast =
+    document.getElementById("toast");
 
-toast.textContent=message;
+  toast.textContent=message;
 
-toast.classList.add("show");
+  toast.classList.add("show");
 
-setTimeout(()=>{
+  clearTimeout(
+    window.__kivooToast
+  );
 
-toast.classList.remove("show");
+  window.__kivooToast =
+    setTimeout(()=>{
 
-},3000);
+      toast.classList.remove("show");
 
-}
-
-
-function varColor(name){
-
-if(name==="gray")
-return "#756b63";
-
-return "#211a15";
+    },3000);
 
 }
 
