@@ -567,13 +567,18 @@ img{
   border-radius:22px;
   background:var(--brown-300);
   box-shadow:0 8px 24px rgba(70,39,22,.10);
+  aspect-ratio:4 / 5;
 }
+
+/* Controlled, Pinterest-like variety without extreme height differences */
+.pin-card:nth-child(4n+2) .pin-image-wrap{aspect-ratio:1 / 1;}
+.pin-card:nth-child(4n+3) .pin-image-wrap{aspect-ratio:5 / 6;}
+.pin-card:nth-child(4n+4) .pin-image-wrap{aspect-ratio:4 / 5;}
 
 .pin-image{
   display:block;
   width:100%;
-  height:auto;
-  min-height:150px;
+  height:100%;
   object-fit:cover;
   transition:transform .45s cubic-bezier(.2,.7,.2,1),filter .35s;
 }
@@ -1079,8 +1084,11 @@ img{
 .preview{
   display:none;
   width:100%;
-  max-height:520px;
-  object-fit:contain;
+  height:100%;
+  min-height:310px;
+  object-fit:cover;
+  object-position:center;
+  border-radius:21px;
 }
 
 /* =========================================================
@@ -1756,6 +1764,148 @@ img{
 
 @media(min-width:651px){
   .chat-page{height:calc(100vh - 150px);}
+}
+
+
+/* =========================================================
+   KIVOO V5 - STABLE RESPONSIVE LAYOUT
+   Prevent mobile chat jumping and keep pin cards balanced.
+========================================================= */
+html,body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+@media(max-width:650px){
+  .pin-grid{
+    columns:2 minmax(0,1fr)!important;
+    column-gap:10px!important;
+    width:100%!important;
+  }
+  .pin-card{
+    width:100%!important;
+    break-inside:avoid!important;
+    margin-bottom:14px!important;
+  }
+  .pin-image-wrap{
+    width:100%!important;
+    min-height:0!important;
+    aspect-ratio:4/5!important;
+    border-radius:16px!important;
+  }
+  .pin-card:nth-child(4n+2) .pin-image-wrap{aspect-ratio:1/1!important;}
+  .pin-card:nth-child(4n+3) .pin-image-wrap{aspect-ratio:5/6!important;}
+  .pin-card:nth-child(4n+4) .pin-image-wrap{aspect-ratio:4/5!important;}
+  .pin-image{width:100%!important;height:100%!important;object-fit:cover!important;}
+
+  .upload-box{
+    width:100%!important;
+    min-height:0!important;
+    aspect-ratio:4/5!important;
+    max-height:62vh!important;
+    margin-bottom:16px!important;
+    border-radius:20px!important;
+  }
+  .preview{
+    width:100%!important;
+    height:100%!important;
+    min-height:0!important;
+    object-fit:cover!important;
+    border-radius:18px!important;
+  }
+
+  /* The chat owns the entire phone viewport. Nothing behind it can move. */
+  body.kivoo-chat-mode{
+    position:fixed!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    overflow:hidden!important;
+    padding:0!important;
+    background:#fbf7f2!important;
+  }
+  body.kivoo-chat-mode #app,
+  body.kivoo-chat-mode .main{
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    overflow:hidden!important;
+  }
+  body.kivoo-chat-mode .chat-page{
+    position:fixed!important;
+    inset:0!important;
+    width:100%!important;
+    height:100%!important;
+    min-height:100%!important;
+    margin:0!important;
+    padding:0!important;
+    display:grid!important;
+    grid-template-rows:calc(62px + env(safe-area-inset-top)) minmax(0,1fr) auto!important;
+    border:0!important;
+    border-radius:0!important;
+    overflow:hidden!important;
+  }
+  body.kivoo-chat-mode .chat-head{
+    grid-row:1!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    padding:calc(8px + env(safe-area-inset-top)) 12px 8px!important;
+    box-sizing:border-box!important;
+  }
+  body.kivoo-chat-mode .chat-messages{
+    grid-row:2!important;
+    width:100%!important;
+    min-height:0!important;
+    height:auto!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    padding:14px 12px 14px!important;
+    box-sizing:border-box!important;
+    -webkit-overflow-scrolling:touch!important;
+    overscroll-behavior:contain!important;
+  }
+  body.kivoo-chat-mode .chat-form{
+    grid-row:3!important;
+    position:relative!important;
+    left:auto!important;right:auto!important;bottom:auto!important;
+    width:100%!important;
+    min-height:62px!important;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important;
+    box-sizing:border-box!important;
+    z-index:10!important;
+    display:flex!important;
+    align-items:center!important;
+    background:#fff!important;
+    border-top:1px solid var(--line)!important;
+    box-shadow:0 -5px 18px rgba(36,26,20,.08)!important;
+  }
+  body.kivoo-chat-mode .chat-form input{
+    width:100%!important;
+    min-width:0!important;
+    height:44px!important;
+    flex:1 1 auto!important;
+  }
+  body.kivoo-chat-mode .chat-form button{
+    width:44px!important;height:44px!important;
+    min-width:44px!important;max-width:44px!important;
+    flex:0 0 44px!important;
+    padding:0!important;
+  }
+  body.kivoo-chat-mode .bubble{
+    max-width:78%!important;
+  }
+}
+
+@media(min-width:651px){
+  .pin-image-wrap{aspect-ratio:4/5;}
+  .pin-card:nth-child(4n+2) .pin-image-wrap{aspect-ratio:1/1;}
+  .pin-card:nth-child(4n+3) .pin-image-wrap{aspect-ratio:5/6;}
+  .pin-card:nth-child(4n+4) .pin-image-wrap{aspect-ratio:4/5;}
 }
 
 </style>
