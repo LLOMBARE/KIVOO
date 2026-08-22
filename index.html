@@ -294,14 +294,15 @@ img{
   align-items:center;
   gap:18px;
   padding:12px 28px;
-  background:rgba(49,28,16,.96);
+  background:rgba(34,18,10,.98);
   border-bottom:1px solid rgba(255,255,255,.08);
   backdrop-filter:blur(20px);
   box-shadow:0 8px 35px rgba(42,23,12,.18);
 }
 
 .header-brand{
-  color:#fff7ef;
+  color:#f4d8bd;
+  text-shadow:0 1px 10px rgba(0,0,0,.22);
   font-family:"Space Grotesk",sans-serif;
   font-size:31px;
   font-weight:700;
@@ -876,6 +877,10 @@ img{
   color:white;
   border-color:var(--brown);
 }
+
+.action-btn.save.saved{background:var(--brown-800)!important;color:#fff!important;border-color:var(--brown-800)!important;box-shadow:0 7px 18px rgba(74,39,21,.22)!important;}
+
+.action-btn.save.saved:hover{background:#3b1e10!important;}
 
 .action-btn.save:hover{
   background:var(--brown-800);
@@ -1537,7 +1542,7 @@ img{
     flex-wrap:nowrap;background:rgba(255,255,255,.96);
     backdrop-filter:blur(14px);
   }
-  .header-brand{font-size:25px;flex:0 0 auto}
+  .header-brand{font-size:23px;flex:0 0 auto}
   .search-wrap{
     order:0;flex:1;min-width:0;max-width:none;
   }
@@ -1547,6 +1552,9 @@ img{
   .header-actions>.round-btn{display:none}
   .header-actions>.create-btn{display:none}
   .header-actions>.messages-top-btn{display:none}
+  .header-actions>.mobile-saved-top{display:flex;min-width:40px;width:40px;height:40px;padding:0;border-radius:13px;justify-content:center}
+  .header-actions>.mobile-saved-top span:not(.message-icon){display:none}
+  .header-actions>.mobile-saved-top .message-icon{font-size:21px}
   .header-actions>.user-avatar{width:40px;height:40px;flex:0 0 40px}
 
   .main-nav{
@@ -1559,23 +1567,26 @@ img{
     overflow:visible;
   }
   .main-nav .nav-btn{
-    display:flex;flex:1;max-width:92px;height:56px;
-    padding:5px 2px;border-radius:15px;
+    display:flex;flex:1;max-width:88px;min-width:0;height:56px;
+    padding:5px 1px;border-radius:15px;
     flex-direction:column;align-items:center;justify-content:center;gap:3px;
     font-size:10px;font-weight:800;white-space:normal;
   }
-  .main-nav .nav-btn:not(.mobile-only-nav){display:none}
-  .main-nav .mobile-only-nav{display:flex}
-  .main-nav .mobile-only-nav:nth-last-child(4){display:flex}
+  .main-nav .nav-btn{display:flex}
+  .main-nav .desktop-profile-nav{display:none}
+  .main-nav #savedNav{display:none}
   .main-nav .nav-icon{font-size:19px}
   .main-nav .nav-create-icon{
     width:34px;height:34px;border-radius:12px;
     display:flex;align-items:center;justify-content:center;
     background:var(--brown);color:#fff;font-size:24px;
   }
-  .main-nav .nav-btn.active{background:transparent;color:var(--brown)}
+  .main-nav .nav-btn.active{background:rgba(112,67,40,.08);color:var(--brown)}
+  .main-nav .nav-btn span:last-child{font-size:9px;line-height:1.05}
+  .main-nav .nav-icon{font-size:18px}
+  .main-nav .nav-create-icon{width:32px;height:32px}
 
-  .main{padding:0 11px 30px}
+  .main{padding:0 11px 92px}
   .hero{padding:25px 5px 20px}
   .hero h1{font-size:34px;line-height:1.02}
   .hero p{max-width:320px}
@@ -1598,26 +1609,33 @@ img{
   .chat-page{
     height:calc(100dvh - 58px - 68px);min-height:0;
     margin:0 -11px;border:0;border-radius:0;
+    position:relative;overflow:hidden;background:#fbf7f2;
   }
   .chat-head{
-    position:sticky;top:58px;z-index:5;
-    padding:10px 12px;min-height:58px;
+    position:relative;top:auto;z-index:5;flex:0 0 58px;
+    padding:8px 12px;min-height:58px;
   }
   .chat-back{font-size:0;width:38px;height:38px;padding:0}
   .chat-back:after{content:'‹';font-size:27px;line-height:38px}
-  .chat-messages{padding:13px 11px 18px;gap:7px}
-  .bubble{max-width:82%;font-size:13px;padding:9px 12px}
-  .chat-form{
-    position:sticky;bottom:0;z-index:6;
-    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
-    gap:7px;
+  .chat-messages{
+    flex:1;min-height:0;overflow-y:auto;
+    padding:14px 12px 86px;gap:8px;
+    -webkit-overflow-scrolling:touch;
   }
-  .chat-form input{height:44px;padding:11px 13px;font-size:14px}
+  .bubble{max-width:78%;font-size:14px;padding:10px 13px;line-height:1.4}
+  .chat-form{
+    position:absolute;left:0;right:0;bottom:0;z-index:20;
+    padding:8px 10px calc(8px + env(safe-area-inset-bottom));
+    gap:7px;background:rgba(255,255,255,.98);
+    box-shadow:0 -6px 22px rgba(36,26,20,.10);
+  }
   .chat-form button{
     width:44px;height:44px;flex:0 0 44px;padding:0;
-    border-radius:50%;font-size:18px;
+    border-radius:50%;font-size:0;
     display:flex;align-items:center;justify-content:center;
   }
+  .chat-form button::before{content:'➤';font-size:18px;transform:translateX(1px)}
+  .chat-messages{padding-bottom:92px}
 
   .profile-social{padding:22px 13px 20px}
   .profile-social .profile-avatar{width:76px;height:76px}
@@ -1645,6 +1663,101 @@ img{
 
 
 .inline-profile-link{border:0;background:transparent;color:var(--brown);font-weight:850;padding:0;cursor:pointer}
+
+/* =========================================================
+   KIVOO FINAL RESPONSIVE / CHAT MODE
+========================================================= */
+@media(max-width:650px){
+  .header-brand{
+    display:block!important;
+    font-size:22px!important;
+    letter-spacing:-1.8px!important;
+    color:#f6d9be!important;
+    text-shadow:0 1px 10px rgba(0,0,0,.25);
+    line-height:1;
+  }
+  .topbar{min-height:58px;height:58px;padding:8px 10px!important;gap:8px!important;}
+  .search-wrap{min-width:0!important;}
+  .search-input{height:40px!important;border-radius:14px!important;}
+  .header-actions{gap:5px!important;}
+  .header-actions>.mobile-saved-top{width:40px!important;height:40px!important;border-radius:12px!important;}
+  .header-actions>.user-avatar{width:40px!important;height:40px!important;}
+
+  /* Saved: compact, clear icon */
+  .mobile-saved-top{
+    background:#ead8c8!important;color:#3a1d0f!important;
+    border:2px solid rgba(91,48,25,.28)!important;
+    box-shadow:0 3px 12px rgba(40,20,10,.08);
+  }
+  .mobile-saved-top .message-icon{font-size:22px!important;line-height:1;font-weight:900;}
+
+  /* Full-screen conversation on phones */
+  body.kivoo-chat-mode{padding-bottom:0!important;}
+  body.kivoo-chat-mode .topbar,
+  body.kivoo-chat-mode .main-nav{display:none!important;}
+  body.kivoo-chat-mode .main{padding:0!important;margin:0!important;}
+  body.kivoo-chat-mode .chat-page{
+    width:100%!important;height:100dvh!important;min-height:100dvh!important;
+    margin:0!important;border:0!important;border-radius:0!important;
+  }
+  body.kivoo-chat-mode .chat-head{
+    flex:0 0 62px!important;height:62px!important;min-height:62px!important;
+    padding:8px 12px!important;
+    padding-top:calc(8px + env(safe-area-inset-top))!important;
+    background:#fff!important;
+  }
+  body.kivoo-chat-mode .chat-back{
+    width:42px!important;height:42px!important;flex:0 0 42px!important;
+    display:grid!important;place-items:center!important;padding:0!important;
+    border-radius:13px!important;font-size:0!important;
+    background:#f4eadf!important;color:var(--brown-800)!important;
+  }
+  body.kivoo-chat-mode .chat-back:after{content:'‹';font-size:31px;line-height:1;transform:translateY(-2px);}
+  body.kivoo-chat-mode .chat-head-user{min-width:0!important;}
+  body.kivoo-chat-mode .chat-head-user .conversation-avatar{width:42px;height:42px;}
+  body.kivoo-chat-mode .chat-head-user strong{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:55vw;}
+  body.kivoo-chat-mode .chat-head-user small{font-size:11px;}
+  body.kivoo-chat-mode .chat-messages{
+    flex:1!important;min-height:0!important;height:auto!important;
+    padding:14px 12px 96px!important;
+    background:#fbf7f2!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain;
+  }
+  body.kivoo-chat-mode .bubble{max-width:80%!important;font-size:14px!important;padding:10px 13px!important;}
+  body.kivoo-chat-mode .chat-form{
+    position:absolute!important;left:0!important;right:0!important;bottom:0!important;
+    min-height:62px!important;padding:8px 10px calc(8px + env(safe-area-inset-bottom))!important;
+    background:rgba(255,255,255,.98)!important;
+    border-top:1px solid var(--line)!important;
+    box-shadow:0 -5px 20px rgba(36,26,20,.10)!important;
+    z-index:50!important;
+  }
+  body.kivoo-chat-mode .chat-form input{
+    height:44px!important;min-width:0!important;font-size:14px!important;
+    border-radius:22px!important;padding:0 16px!important;background:#f8f2eb!important;
+  }
+  body.kivoo-chat-mode .chat-form button{
+    width:44px!important;height:44px!important;flex:0 0 44px!important;
+    border-radius:50%!important;padding:0!important;font-size:0!important;
+    display:grid!important;place-items:center!important;
+  }
+  body.kivoo-chat-mode .chat-form button:before{content:'➤';font-size:18px;}
+
+  /* Consistent buttons and cards */
+  .social-btn,.profile-buttons button,.social-tab,.messages-top-btn,.nav-btn{
+    min-height:40px;
+  }
+  .pin-save{
+    border-radius:999px!important;padding:8px 12px!important;font-weight:800!important;
+    box-shadow:0 5px 15px rgba(40,20,10,.12);
+  }
+}
+
+@media(min-width:651px){
+  .chat-page{height:calc(100vh - 150px);}
+}
+
 </style>
 </head>
 
@@ -1789,6 +1902,12 @@ APP
         <span class="create-icon">＋</span><span class="create-label">Create</span>
       </button>
 
+      <button class="messages-top-btn mobile-saved-top"
+              title="Saved"
+              onclick="loadSaved()">
+        <span class="message-icon">♡</span><span>Saved</span>
+      </button>
+
       <button class="messages-top-btn"
               title="Messages"
               onclick="loadMessages()">
@@ -1808,20 +1927,15 @@ APP
 
   <nav class="main-nav">
 
-    <button id="homeNav"
-            class="nav-btn active"
-            onclick="loadHome()">
-      Home
+    <button id="homeNav" class="nav-btn active" onclick="loadHome()">
+      <span class="nav-icon">⌂</span><span>Home</span>
     </button>
 
-    <button id="savedNav"
-            class="nav-btn"
-            onclick="loadSaved()">
-      Saved
+    <button id="savedNav" class="nav-btn" onclick="loadSaved()">
+      <span class="nav-icon">♡</span><span>Saved</span>
     </button>
 
-    <button class="nav-btn desktop-profile-nav"
-            onclick="showProfile()">
+    <button class="nav-btn desktop-profile-nav" onclick="showProfile()">
       Profile
     </button>
 
@@ -2524,6 +2638,7 @@ HOME
 
 async function loadHome(){
 
+  document.body.classList.remove("kivoo-chat-mode");
   setNav("homeNav");
 
   document.getElementById("searchInput").value="";
@@ -3155,15 +3270,13 @@ async function updateActions(){
   const saveBtn =
     document.getElementById("saveBtn");
 
-  saveBtn.textContent =
+  saveBtn.innerHTML =
     saved
-      ? "✓ Saved"
-      : "＋ Save";
+      ? "♥&nbsp; Saved"
+      : "♡&nbsp; Save";
 
-  saveBtn.classList.toggle(
-    "save",
-    !saved
-  );
+  saveBtn.classList.toggle("saved", !!saved);
+  saveBtn.classList.toggle("save", !saved);
 
   const likeBtn =
     document.getElementById("likeBtn");
@@ -3937,6 +4050,7 @@ PROFILE
 ========================================================= */
 
 async function showProfile(){
+  document.body.classList.remove("kivoo-chat-mode");
   await showUserProfile(currentUser.id);
 }
 
@@ -3960,6 +4074,7 @@ async function getConversation(userId){
 
 async function loadMessages(){
   if(!currentUser)return;
+  document.body.classList.remove("kivoo-chat-mode");
   if(messageChannel){await db.removeChannel(messageChannel);messageChannel=null;}
   setNav(null);
   const {data:convs,error}=await db.from("conversations").select("*").or(`user_one.eq.${currentUser.id},user_two.eq.${currentUser.id}`).order("created_at",{ascending:false});
@@ -3987,6 +4102,7 @@ function conversationRowHTML(x){
 
 async function openConversation(userId){
   if(!currentUser || userId===currentUser.id)return;
+  document.body.classList.add("kivoo-chat-mode");
   if(document.getElementById("profileModal")?.classList.contains("show"))closeModal("profileModal");
   const {data:user,error:userError}=await db.from("profiles").select("id,username,display_name,avatar_url").eq("id",userId).single();
   if(userError){showToast("Could not open this conversation.");return;}
@@ -3999,7 +4115,7 @@ async function openConversation(userId){
 async function renderConversation(){
   const user=activeChatUser;
   const avatar=user.avatar_url?`<img src="${safe(user.avatar_url)}" alt="">`:initial(user.display_name||user.username||"K");
-  document.getElementById("mainContent").innerHTML=`<section class="chat-page"><div class="chat-head"><button class="chat-back" onclick="loadMessages()">←</button><div class="chat-head-user" onclick="showUserProfile('${user.id}')"><div class="conversation-avatar">${avatar}</div><div><strong>${safe(user.display_name||user.username||"User")}</strong><small>@${safe(user.username||"user")}</small></div></div></div><div id="chatMessages" class="chat-messages"></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="2000" autocomplete="off" placeholder="Write a message..." required><button>Send</button></form></section>`;
+  document.getElementById("mainContent").innerHTML=`<section class="chat-page"><div class="chat-head"><button class="chat-back" onclick="loadMessages()">←</button><div class="chat-head-user" onclick="showUserProfile('${user.id}')"><div class="conversation-avatar">${avatar}</div><div><strong>${safe(user.display_name||user.username||"User")}</strong><small>@${safe(user.username||"user")}</small></div></div></div><div id="chatMessages" class="chat-messages"></div><form id="chatForm" class="chat-form"><input id="chatInput" maxlength="2000" autocomplete="off" placeholder="Write a message..." required><button type="submit" aria-label="Send message" title="Send message">Send</button></form></section>`;
   document.getElementById("chatForm").addEventListener("submit",sendMessage);
   await loadConversationMessages();
   if(messageChannel)await db.removeChannel(messageChannel);
