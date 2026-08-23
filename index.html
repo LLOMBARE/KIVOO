@@ -2282,76 +2282,6 @@ body,button,input,textarea{ -webkit-tap-highlight-color:transparent; }
 }
 </style>
 
-
-<style>
-/* =========================================================
-   KIVOO APP FEEL — SAFE MOBILE-ONLY POLISH
-   Does not change desktop layout or chat structure.
-========================================================= */
-@media (max-width:650px){
-  html{background:#f7f1ea;overscroll-behavior-y:none;}
-  body{
-    background:#f7f1ea;
-    -webkit-user-select:none;
-    user-select:none;
-    -webkit-touch-callout:none;
-  }
-  input,textarea,[contenteditable="true"]{
-    -webkit-user-select:text!important;
-    user-select:text!important;
-    -webkit-touch-callout:default;
-  }
-
-  /* Clean app-style top bar */
-  .topbar{
-    box-sizing:border-box!important;
-    border-bottom:1px solid rgba(112,67,40,.08)!important;
-    box-shadow:0 2px 14px rgba(36,21,13,.05)!important;
-  }
-
-  /* App-like content spacing without changing the existing grid */
-  .main{
-    -webkit-overflow-scrolling:touch;
-  }
-  .pin-card,.person-row,.messages-page,.profile-card,.create-card{
-    -webkit-tap-highlight-color:transparent;
-  }
-
-  /* Native-app feeling for tappable controls */
-  .nav-btn,.round-btn,.create-btn,.social-btn,.profile-buttons button,
-  .messages-top-btn,.mobile-saved-top,.chat-back,.chat-form button,
-  .pin-save,.save-btn,.follow-btn{
-    touch-action:manipulation;
-  }
-
-  /* Bottom navigation stays above the iPhone home indicator */
-  .main-nav{
-    padding-bottom:calc(6px + env(safe-area-inset-bottom))!important;
-    height:calc(68px + env(safe-area-inset-bottom))!important;
-  }
-
-  /* Keep normal pages above the app navigation */
-  body:not(.kivoo-chat-mode) .main{
-    padding-bottom:calc(92px + env(safe-area-inset-bottom))!important;
-  }
-
-  /* Chat remains completely independent — do not let the app nav cover it */
-  body.kivoo-chat-mode .main-nav,
-  body.kivoo-chat-mode .topbar{
-    display:none!important;
-  }
-
-  /* Slightly more native card corners/shadows */
-  .pin-card,.profile-social,.messages-page,.create-card{
-    border-radius:20px;
-  }
-}
-
-@media (max-width:380px){
-  .main-nav .nav-btn{max-width:72px!important;}
-  .main-nav .nav-btn span:last-child{font-size:8px!important;}
-}
-</style>
 </head>
 
 <body>
@@ -2918,7 +2848,14 @@ const SUPABASE_KEY =
 const db =
 window.supabase.createClient(
   SUPABASE_URL,
-  SUPABASE_KEY
+  SUPABASE_KEY,
+  {
+    auth:{
+      persistSession:true,
+      autoRefreshToken:true,
+      detectSessionInUrl:true
+    }
+  }
 );
 
 
@@ -5069,18 +5006,33 @@ SESSION
 
 async function checkSession(){
 
-  const {
-    data
-  } =
-    await db.auth.getSession();
+  try{
 
-  if(data.session?.user){
+    const {
+      data,
+      error
+    } = await db.auth.getSession();
 
-    currentUser =
-      data.session.user;
+    if(error){
+      console.error("KIVOO session error:",error);
+      return;
+    }
 
-    await startApp();
+    if(data.session?.user){
 
+      currentUser=data.session.user;
+      await startApp();
+
+    }else{
+
+      currentUser=null;
+      document.getElementById("app").style.display="none";
+      document.getElementById("authPage").style.display="flex";
+
+    }
+
+  }catch(error){
+    console.error("KIVOO session check failed:",error);
   }
 
 }
