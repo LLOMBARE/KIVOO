@@ -1586,18 +1586,11 @@ img{
     backdrop-filter:blur(14px);
   }
   .header-brand{font-size:23px;flex:0 0 auto}
-  .search-wrap{
-    order:0;flex:1;min-width:0;max-width:none;
-  }
-  .search-input{height:42px;font-size:13px;padding-left:38px}
-  .search-wrap .search-icon{left:13px}
+  .search-wrap{display:none!important}
   .header-actions{margin-left:0;gap:5px;flex:0 0 auto}
   .header-actions>.round-btn{display:none}
   .header-actions>.create-btn{display:none}
   .header-actions>.messages-top-btn{display:none}
-  .header-actions>.mobile-saved-top{display:flex;min-width:40px;width:40px;height:40px;padding:0;border-radius:13px;justify-content:center}
-  .header-actions>.mobile-saved-top span:not(.message-icon){display:none}
-  .header-actions>.mobile-saved-top .message-icon{font-size:21px}
   .header-actions>.user-avatar{width:40px;height:40px;flex:0 0 40px}
 
   .main-nav{
@@ -1723,16 +1716,7 @@ img{
   .search-wrap{min-width:0!important;}
   .search-input{height:40px!important;border-radius:14px!important;}
   .header-actions{gap:5px!important;}
-  .header-actions>.mobile-saved-top{width:40px!important;height:40px!important;border-radius:12px!important;}
   .header-actions>.user-avatar{width:40px!important;height:40px!important;}
-
-  /* Saved: compact, clear icon */
-  .mobile-saved-top{
-    background:#ead8c8!important;color:#3a1d0f!important;
-    border:2px solid rgba(91,48,25,.28)!important;
-    box-shadow:0 3px 12px rgba(40,20,10,.08);
-  }
-  .mobile-saved-top .message-icon{font-size:22px!important;line-height:1;font-weight:900;}
 
   /* Full-screen conversation on phones */
   body.kivoo-chat-mode{padding-bottom:0!important;}
@@ -2098,7 +2082,7 @@ body,button,input,textarea{ -webkit-tap-highlight-color:transparent; }
   }
 
   /* Avoid accidental zoom / layout shifts on tiny iPhones. */
-  .round-btn,.create-btn,.messages-top-btn,.mobile-saved-top,.user-avatar,.nav-btn,.social-btn,.profile-buttons button{
+  .round-btn,.create-btn,.messages-top-btn,.user-avatar,.nav-btn,.social-btn,.profile-buttons button{
     touch-action:manipulation;
   }
 }
@@ -2279,6 +2263,60 @@ body,button,input,textarea{ -webkit-tap-highlight-color:transparent; }
   body.kivoo-chat-mode .chat-messages{
     padding-bottom:14px!important;
   }
+}
+
+
+/* =========================================================
+   KIVOO MODERN MOBILE UX
+   Search page + settings + refined app surfaces
+========================================================= */
+.kivoo-search-page,.settings-page{max-width:900px;margin:0 auto;padding:24px 0 60px}
+.search-page-head,.settings-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.search-page-head h1,.settings-head h1{margin:2px 0 0;font-size:42px;letter-spacing:-1.8px}
+.search-page-head h1 span{color:var(--brown)}
+.search-page-box{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:8px 10px 8px 16px;box-shadow:0 12px 30px rgba(55,32,20,.07);position:sticky;top:10px;z-index:20}
+.search-page-box>span{font-size:24px;color:var(--brown)}
+.search-page-box input{border:0;outline:0;flex:1;min-width:0;font-size:16px;background:transparent;padding:12px 0;color:var(--text)}
+.search-page-box button{border:0;background:var(--cream);color:var(--brown-800);width:38px;height:38px;border-radius:12px;font-size:20px;cursor:pointer}
+.search-results{padding-top:22px}.search-empty{text-align:center;padding:60px 20px;color:var(--muted);line-height:1.7}
+.settings-back{border:0;background:var(--cream);color:var(--brown-800);width:44px;height:44px;border-radius:14px;font-size:28px;cursor:pointer}
+.settings-card{background:#fff;border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:0 12px 35px rgba(55,32,20,.06)}
+.settings-row{width:100%;border:0;border-bottom:1px solid var(--line);background:#fff;padding:17px 18px;display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;color:var(--text)}
+.settings-row:last-child{border-bottom:0}.settings-row:hover{background:var(--cream)}
+.settings-row>span:nth-child(2){flex:1;min-width:0}.settings-row strong{display:block;font-size:15px}.settings-row small{display:block;color:var(--muted);margin-top:3px;font-size:12px}.settings-row>b{font-size:22px;color:var(--muted)}
+.settings-icon{width:42px;height:42px;border-radius:14px;background:var(--cream);display:grid;place-items:center;color:var(--brown);font-size:21px;font-weight:900;flex:none}
+.settings-signout{width:100%;margin-top:14px;border:1px solid #ead8cb;background:#fff;color:#8a3d2b;border-radius:16px;padding:14px;font-weight:850;cursor:pointer}
+
+@media(max-width:650px){
+  .kivoo-search-page,.settings-page{padding:14px 0 calc(100px + env(safe-area-inset-bottom))}
+  .search-page-head h1,.settings-head h1{font-size:32px;letter-spacing:-1.2px}
+  .search-page-box{top:6px;border-radius:17px;padding:7px 8px 7px 13px}
+  .search-page-box input{font-size:16px;height:42px}
+  .search-page-box button{width:38px;height:38px}
+  .settings-card{border-radius:20px}
+  .settings-row{padding:15px 14px}
+  .profile-buttons .social-btn{min-height:43px}
+  /* Hide the desktop search field on phones: Search is its own app screen. */
+  .topbar .search-wrap{display:none!important}
+  .topbar{justify-content:space-between}
+  .header-brand{font-weight:950;color:var(--brown)!important;letter-spacing:-1.5px;text-shadow:0 2px 12px rgba(112,67,40,.12)}
+  .main-nav #searchNav{display:flex!important}
+  .main-nav .nav-btn{transition:transform .16s ease,background .16s ease}
+  .main-nav .nav-btn:active{transform:scale(.94)}
+}
+
+/* Clean mobile header/search */
+@media(max-width:650px){
+  .topbar .search-wrap,.header-actions>.mobile-saved-top{display:none!important;}
+  .topbar{justify-content:space-between!important;background:rgba(255,250,244,.96)!important;}
+  .header-brand{color:var(--brown-800)!important;font-size:24px!important;font-weight:900!important;}
+  .header-actions{margin-left:auto!important;}
+  .kivoo-search-page{max-width:680px!important;margin:0 auto!important;}
+  .search-page-head{margin-bottom:12px!important;}
+  .search-page-head h1{font-size:30px!important;color:var(--brown-950)!important;}
+  .search-page-box{position:relative!important;top:auto!important;}
+  .search-result-heading{margin-top:22px!important;margin-bottom:10px!important;}
+  .pins-heading{margin-top:28px!important;}
 }
 </style>
 
@@ -2462,7 +2500,7 @@ APP
       Profile
     </button>
 
-    <button class="nav-btn mobile-only-nav" onclick="focusSearch()">
+    <button id="searchNav" class="nav-btn mobile-only-nav" onclick="openSearchPage()">
       <span class="nav-icon">⌕</span><span>Search</span>
     </button>
 
@@ -3520,11 +3558,131 @@ function renderPins(container,pins){
 
 
 function focusSearch(){
+  if(window.matchMedia && window.matchMedia("(max-width:650px)").matches){
+    openSearchPage();
+    return;
+  }
   const input=document.getElementById("searchInput");
   if(!input)return;
   input.scrollIntoView({behavior:"smooth",block:"center"});
   setTimeout(()=>{ input.focus(); input.select(); },250);
 }
+
+/* =========================================================
+MOBILE SEARCH PAGE
+========================================================= */
+function openSearchPage(){
+  if(document.body)document.body.classList.remove("kivoo-chat-mode");
+  setNav("searchNav");
+  const main=document.getElementById("mainContent");
+  if(!main)return;
+  main.innerHTML=`
+    <section class="kivoo-search-page">
+      <div class="search-page-head">
+        <button class="settings-back" type="button" onclick="loadHome()" aria-label="Back">‹</button>
+        <div><h1>Search</h1></div>
+      </div>
+      <div class="search-page-box">
+        <span>⌕</span>
+        <input id="mobileSearchInput" autocomplete="off" placeholder="Search accounts or Pins...">
+        <button type="button" onclick="clearMobileSearch()" aria-label="Clear">×</button>
+      </div>
+      <div id="mobileSearchResults" class="search-results">
+        <div class="search-empty">Search for an account name, username, or Pin.</div>
+      </div>
+    </section>`;
+  const input=document.getElementById("mobileSearchInput");
+  if(!input)return;
+  input.addEventListener("input",()=>{
+    clearTimeout(searchTimer);
+    const q=input.value.trim();
+    if(!q){document.getElementById("mobileSearchResults").innerHTML='<div class="search-empty">Search for an account name, username, or Pin.</div>';return;}
+    searchTimer=setTimeout(()=>searchEverythingInto("#mobileSearchResults",q),250);
+  });
+  setTimeout(()=>input.focus(),80);
+}
+
+function clearMobileSearch(){
+  const input=document.getElementById("mobileSearchInput");
+  const results=document.getElementById("mobileSearchResults");
+  if(input){input.value="";input.focus();}
+  if(results)results.innerHTML='<div class="search-empty">Search for an account name, username, or Pin.</div>';
+}
+
+async function searchPinsInto(selector,query){
+  return searchEverythingInto(selector,query);
+}
+
+async function searchEverythingInto(selector,query){
+  const target=document.querySelector(selector);
+  if(!target)return;
+  target.innerHTML='<div class="search-empty">Searching...</div>';
+  const q=String(query||"").replace(/[%_]/g,"").trim();
+  if(!q){target.innerHTML='<div class="search-empty">Search for an account name, username, or Pin.</div>';return;}
+
+  const [{data:people,error:peopleError},{data:pins,error:pinsError}]=await Promise.all([
+    db.from("profiles")
+      .select("id,username,display_name,bio,avatar_url")
+      .or(`username.ilike.%${q}%,display_name.ilike.%${q}%`)
+      .limit(20),
+    db.from("pins")
+      .select(`*,profiles(username,display_name,avatar_url)`)
+      .or(`title.ilike.%${q}%,description.ilike.%${q}%`)
+      .order("created_at",{ascending:false})
+      .limit(40)
+  ]);
+
+  let html="";
+  if(peopleError){
+    html+='<div class="search-empty">Could not search accounts right now.</div>';
+  }else if(people?.length){
+    const enriched=await Promise.all(people.map(async p=>({...p,...(await getFollowState(p.id))})));
+    html+=`<div class="section-bar search-result-heading"><h2>Accounts</h2><span>${enriched.length}</span></div>`;
+    html+=`<div class="people-list">${enriched.map(p=>personRowHTML(p)).join("")}</div>`;
+  }
+
+  if(pinsError){
+    html+='<div class="search-empty">Could not search Pins right now.</div>';
+  }else if(pins?.length){
+    const counted=await addCounts(pins);
+    html+=`<div class="section-bar search-result-heading pins-heading"><h2>Pins</h2><span>${counted.length}</span></div>`;
+    html+='<div id="mobileSearchGrid" class="pin-grid"></div>';
+  }
+
+  if(!html){
+    target.innerHTML='<div class="search-empty"><strong>No results</strong><br>Try another account name or Pin title.</div>';
+    return;
+  }
+  target.innerHTML=html;
+  if(pins?.length){
+    const counted=await addCounts(pins);
+    renderPins(document.getElementById("mobileSearchGrid"),counted);
+  }
+}
+
+/* =========================================================
+SETTINGS
+========================================================= */
+function openSettings(){
+  document.body.classList.remove("kivoo-chat-mode");
+  closeModal("profileModal");
+  setNav(null);
+  const main=document.getElementById("mainContent");
+  main.innerHTML=`
+    <section class="settings-page">
+      <div class="settings-head">
+        <button class="settings-back" onclick="showProfile()">‹</button>
+        <div><div class="hero-kicker">KIVOO</div><h1>Settings</h1></div>
+      </div>
+      <div class="settings-card">
+        <button class="settings-row" onclick="loadSaved()"><span class="settings-icon">♡</span><span><strong>Saved</strong><small>Your saved Pins and collections</small></span><b>›</b></button>
+        <button class="settings-row" onclick="showProfile()"><span class="settings-icon">◉</span><span><strong>Profile</strong><small>Photo, name and profile</small></span><b>›</b></button>
+        <div class="settings-row static"><span class="settings-icon">✓</span><span><strong>Your account</strong><small>@${safe(currentProfile?.username||"user")}</small></span></div>
+      </div>
+      <button class="settings-signout" onclick="logout()">Sign out</button>
+    </section>`;
+}
+
 
 /* =========================================================
 SEARCH
@@ -3742,7 +3900,7 @@ async function showUserProfile(userId){
 
   const oldActions=document.getElementById("profileSocialActions");
   oldActions.innerHTML=user.id===currentUser.id
-    ? ``
+    ? `<button class="social-btn following" onclick="loadSaved()">♡ Saved</button><button class="social-btn following" onclick="openSettings()">⚙ Settings</button>`
     : `<button id="profileFollowBtn" class="social-btn ${state.isFollowing?'following':'follow'}" onclick="toggleFollow('${user.id}',this)">${state.isFollowing?'Following':'Follow'}</button><button class="social-btn message" onclick="openConversation('${user.id}')">Message</button>`;
   document.getElementById("profileFollowersCount").textContent=state.followers;
   document.getElementById("profileFollowingCount").textContent=state.following;
