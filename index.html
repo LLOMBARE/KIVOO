@@ -2384,6 +2384,13 @@ body,button,input,textarea{ -webkit-tap-highlight-color:transparent; }
 .message-delete-btn{border:0;background:transparent;color:#9a806d;font-size:13px;padding:3px 6px;margin-left:4px;cursor:pointer;opacity:.7}
 .message-delete-btn:hover{opacity:1;color:#704328}
 </style>
+
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="application-name" content="KIVOO">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KIVOO">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
 </head>
 
 <body>
@@ -5515,6 +5522,17 @@ function showToast(message){
 
 
 
+
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(err => {
+      console.warn("KIVOO service worker registration failed:", err);
+    });
+  });
+}
+</script>
 
 </body>
 </html>
